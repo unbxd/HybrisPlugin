@@ -8,7 +8,10 @@ junk/
 /hybris/bin/*
 !/hybris/bin/custom/
 !/env/common/hybris/bin/platform/build.xml
-
+!/hybris/config/
+/hybris/config/*
+!hybris/config/localextensions.xml
+!hybris/config/local.properties
 
 /installer/
 
