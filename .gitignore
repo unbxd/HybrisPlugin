@@ -91,3 +91,10 @@ idea-module-files/
 # sonar qube plugin
 /tomcat.8080/
 
+build-tools/
+c4c-integration/
+hybris-Mobile-Apps-SDK/
+hybris-ems/
+hybris-sbg/
+licenses/
+
