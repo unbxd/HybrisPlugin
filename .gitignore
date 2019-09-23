@@ -1,0 +1,93 @@
+# env and custom build
+/env/private/
+junk/
+
+# hybris suite
+/hybris/*
+!/hybris/bin/
+/hybris/bin/*
+!/hybris/bin/custom/
+!/env/common/hybris/bin/platform/build.xml
+
+
+/installer/
+
+# gradle
+/build/
+/.gradle/
+/buildSrc/.gradle/
+/buildSrc/build/
+
+########################################################################################
+#Docker
+docker/developerDB.sql
+########################################################################################
+
+# ignore other config stuff
+*.log
+*.orig
+*.sublime-*
+*.swp
+*~
+.DS_Store
+.hg/
+.metadata/*
+.sass-cache
+
+###########################################################################################################
+# integration tests embedded server
+tomcat.8080/
+
+#**/*.class
+**/hmc/bin
+**/jalo/
+**/beans.xsd
+**/items.xsd
+**/extensioninfo.xsd
+**/hmc.xsd
+**/gensrc
+**/classes
+**/.checkstyle
+**/.ruleset
+**/build.xml
+**/platformhome.properties
+**/eclipsebin
+**/.metadata
+**/rebel-remote.xml
+**/rebel.xml
+wro_addons.xml
+**/ruleset.xml
+**/*testclasses.xml
+**/testclasses/
+*.build.number
+#  storefronts and addon instalees
+**/web/addonsrc/
+**/web/commonwebsrc
+**/web/webroot/_ui/addons/
+**/web/webroot/WEB-INF/views/addons/
+**/web/webroot/WEB-INF/messages/addons
+**/web/webroot/WEB-INF/tags/addons
+**/web/webroot/WEB-INF/tld/addons
+**/web/webroot/WEB-INF/_ui-src/addons
+
+# Backoffice & cockpits
+**/web/webroot/cmscockpit
+**/web/webroot/cockpit
+**/*_bof.jar
+
+# idea
+velocity.log
+*.iws
+*.eml
+*.iml
+
+*.bak
+.idea/
+out/
+
+# idea hybris plugin
+idea-module-files/
+
+# sonar qube plugin
+/tomcat.8080/
+
