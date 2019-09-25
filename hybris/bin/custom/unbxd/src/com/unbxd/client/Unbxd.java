@@ -1,13 +1,7 @@
 package com.unbxd.client;
 
-import com.unbxd.client.autosuggest.AutoSuggestClient;
-import com.unbxd.client.autosuggest.AutoSuggestClientFactory;
 import com.unbxd.client.feed.FeedClient;
 import com.unbxd.client.feed.FeedClientFactory;
-import com.unbxd.client.recommendations.RecommendationsClient;
-import com.unbxd.client.recommendations.RecommendationsClientFactory;
-import com.unbxd.client.search.SearchClient;
-import com.unbxd.client.search.SearchClientFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 public class Unbxd {
@@ -62,38 +56,5 @@ public class Unbxd {
         if(!_configured)
             throw new ConfigException("Please configure first with Unbxd.configure()");
         return FeedClientFactory.getFeedClient(siteKey, secretKey, secure);
-    }
-
-    /**
-     * Should return a new Search Client
-     * @return {@link SearchClient}
-     * @throws ConfigException
-     */
-    public static SearchClient getSearchClient() throws ConfigException {
-        if(!_configured)
-            throw new ConfigException("Please configure first with Unbxd.configure()");
-        return SearchClientFactory.getSearchClient(siteKey, apiKey, secure, httpClient);
-    }
-
-    /**
-     * Should return a new Autosuggest Client
-     * @return {@link AutoSuggestClient}
-     * @throws ConfigException
-     */
-    public static AutoSuggestClient getAutoSuggestClient() throws ConfigException {
-        if(!_configured)
-            throw new ConfigException("Please configure first with Unbxd.configure()");
-        return AutoSuggestClientFactory.getAutoSuggestClient(siteKey, apiKey, secure, httpClient);
-    }
-
-    /**
-     * Should return a new Recommendations Client
-     * @return {@link RecommendationsClient}
-     * @throws ConfigException
-     */
-    public static RecommendationsClient getRecommendationsClient() throws ConfigException {
-        if(!_configured)
-            throw new ConfigException("Please configure first with Unbxd.configure()");
-        return RecommendationsClientFactory.getRecommendationsClient(siteKey, apiKey, secure, httpClient);
     }
 }
