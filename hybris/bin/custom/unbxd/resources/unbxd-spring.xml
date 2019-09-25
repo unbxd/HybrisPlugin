@@ -89,5 +89,9 @@
         <property name="mediaService" ref="mediaService"/>
         <property name="flexibleSearchService" ref="flexibleSearchService"/>
     </bean>
+
+    <bean id="catalogSyncService" class="com.unbxd.service.impl.CatalogSyncService">
+
+    </bean>
 			
 </beans>

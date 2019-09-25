@@ -12,6 +12,7 @@ package com.unbxd.controller;
 
 import static com.unbxd.constants.UnbxdConstants.PLATFORM_LOGO_CODE;
 
+import com.unbxd.service.impl.CatalogSyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,10 +28,14 @@ public class UnbxdHelloController
 	@Autowired
 	private UnbxdService unbxdService;
 
+	@Autowired
+	private CatalogSyncService catalogSyncService;
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String printWelcome(final ModelMap model)
 	{
-		model.addAttribute("logoUrl", unbxdService.getHybrisLogoUrl(PLATFORM_LOGO_CODE));
+	    catalogSyncService.syncCatalogProduct();
+		//model.addAttribute("logoUrl", unbxdService.getHybrisLogoUrl(PLATFORM_LOGO_CODE));
 		return "welcome";
 	}
 }

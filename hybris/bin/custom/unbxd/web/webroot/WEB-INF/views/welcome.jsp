@@ -6,7 +6,7 @@
           media="screen, projection"/>
 </head>
 <div class="container">
-    <img src="<c:url value="${logoUrl}" />" alt="Hybris platform logo"/>
+
 
     <h2>Welcome to "unbxd" extension</h2>
 
