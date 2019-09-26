@@ -126,7 +126,7 @@ public class FeedClient {
             throw new FeedInputException("Parent product needs to be added");
         }
 
-        _addedDocs.get(parentUniqueId).addAssociatedProduct(variantAttributes);
+        _addedDocs.get(parentUniqueId).addVariant(variantAttributes);
 
         return this;
     }
@@ -234,6 +234,8 @@ public class FeedClient {
             //ToDo Delta + incremental
             if (isFullImport) {
                 url += "full";
+            } else {
+                url += "delta";
             }
 
             HttpPost post = new HttpPost(url);

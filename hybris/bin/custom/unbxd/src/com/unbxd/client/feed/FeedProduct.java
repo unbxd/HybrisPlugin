@@ -6,7 +6,7 @@ public class FeedProduct {
     // Unique Id of the product. Generally corresponds to the SKU.
     private String uniqueId;
     private final Map<String, Object> _attributes;
-    private List<Map<String, Object>> _associatedDocuments;
+    private List<Map<String, Object>> _variants;
 
     /**
      * @param uniqueId
@@ -18,7 +18,7 @@ public class FeedProduct {
         attributes.put("uniqueId", uniqueId);
 
         _attributes = attributes;
-        _associatedDocuments = new ArrayList<Map<String, Object>>();
+        _variants = new ArrayList<Map<String, Object>>();
 
         this.uniqueId = uniqueId;
     }
@@ -40,12 +40,12 @@ public class FeedProduct {
     /**
      * @return get list of associated products
      */
-    public List<Map<String, Object>> getAssociatedProducts(){
-        return _associatedDocuments;
+    public List<Map<String, Object>> getVariants(){
+        return _variants;
     }
 
-    public void addAssociatedProduct(Map<String, Object> product){
-        _associatedDocuments.add(product);
+    public void addVariant(Map<String, Object> product){
+        _variants.add(product);
     }
 
     /**
@@ -62,7 +62,7 @@ public class FeedProduct {
         final StringBuffer sb = new StringBuffer("FeedProduct{");
         sb.append("uniqueId='").append(uniqueId).append('\'');
         sb.append(", _attributes=").append(_attributes);
-        sb.append(", _associatedDocuments=").append(_associatedDocuments);
+        sb.append(", _variants=").append(_variants);
         sb.append('}');
         return sb.toString();
     }

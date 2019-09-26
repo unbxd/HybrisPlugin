@@ -49,8 +49,8 @@ public class JsonFeedFile {
             JSONObject jsonField = new JSONObject();
             jsonField.put("fieldName", field.getName());
             jsonField.put("dataType", field.getDataType().getValue());
-            jsonField.put("multiValued", new Boolean(field.isMultiValued()).toString());
-            jsonField.put("autoSuggest", new Boolean(field.isMultiValued()).toString());
+            jsonField.put("multiValued", Boolean.toString(field.isMultiValued()));
+            jsonField.put("autoSuggest", Boolean.toString(field.isMultiValued()));
 
             schema.appendElement(jsonField);
         }
@@ -71,7 +71,7 @@ public class JsonFeedFile {
             String str = value.toString();
             str = str.replaceAll("[\u0000-\u001f]", "");
             str = StringEscapeUtils.escapeXml(str);
-            item.put(field + (associated ? "Associated" : ""), str);
+            item.put(field, str);
         }
     }
 
@@ -85,16 +85,16 @@ public class JsonFeedFile {
                 writeAttribute(item, field, product.get(field), false);
             }
 
-            if (product.getAssociatedProducts() != null && product.getAssociatedProducts().size() > 0) {
-                JSONArray associatedProducts = new JSONArray();
-                for (Map<String, Object> associatedProduct : product.getAssociatedProducts()) {
-                    JSONObject associatedItem = new JSONObject();
-                    for (String field : associatedProduct.keySet()) {
-                        writeAttribute(associatedItem, field, associatedProduct.get(field), true);
+            if (product.getVariants() != null && product.getVariants().size() > 0) {
+                JSONArray variants = new JSONArray();
+                for (Map<String, Object> productVariant : product.getVariants()) {
+                    JSONObject variant = new JSONObject();
+                    for (String field : productVariant.keySet()) {
+                        writeAttribute(variant, field, productVariant.get(field), true);
                     }
-                    associatedProducts.appendElement(associatedItem);
+                    variants.appendElement(variant);
                 }
-                item.put("associatedProducts", associatedProducts);
+                item.put("variants", variants);
             }
             items.appendElement(item);
         }
