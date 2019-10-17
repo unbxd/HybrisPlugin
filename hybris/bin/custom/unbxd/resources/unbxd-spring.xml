@@ -93,5 +93,30 @@
     <bean id="catalogSyncService" class="com.unbxd.service.impl.CatalogSyncService">
 
     </bean>
+
+    <alias name="unbxdDefaultDocumentFactory" alias="unbxdDocumentFactory" />
+    <bean id="unbxdDefaultDocumentFactory" class="com.unbxd.service.impl.UnbxdDefaultDocumentFactory">
+        <property name="modelService" ref="modelService" />
+        <property name="typeService" ref="typeService" />
+        <property name="solrSearchProviderFactory" ref="solrSearchProviderFactory" />
+        <property name="indexerBatchContextFactory" ref="indexerBatchContextFactory" />
+        <property name="fieldNameProvider" ref="solrFieldNameProvider" />
+        <property name="rangeNameProvider" ref="rangeNameProvider" />
+        <property name="valueProviderSelectionStrategy" ref="valueProviderSelectionStrategy" />
+    </bean>
+
+    <alias name="unbxdIndexer" alias="unbxdIndexer" />
+    <bean id="unbxdIndexer" class="com.unbxd.service.UnbxdIndexer">
+        <property name="unbxdDocumentFactory" ref="unbxdDocumentFactory" />
+        <property name="solrSearchProviderFactory" ref="solrSearchProviderFactory" />
+    </bean>
+
+    <alias name="unbxdIndexerBatchStrategy" alias="indexerBatchStrategy" />
+    <bean id="unbxdIndexerBatchStrategy" class="com.unbxd.strategy.UnbxdIndexerBatchStrategy"
+          scope="prototype">
+        <property name="indexerQueriesExecutor" ref="indexerQueriesExecutor" />
+        <property name="indexerBatchContextFactory" ref="indexerBatchContextFactory" />
+        <property name="indexer" ref="unbxdIndexer" />
+    </bean>
 			
 </beans>

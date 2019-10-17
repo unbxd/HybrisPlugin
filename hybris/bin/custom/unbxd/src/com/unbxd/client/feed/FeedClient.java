@@ -6,10 +6,12 @@ import com.unbxd.client.feed.exceptions.FeedUploadException;
 import com.unbxd.client.feed.response.FeedResponse;
 import net.minidev.json.JSONObject;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -19,6 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class FeedClient {
 
@@ -45,7 +48,7 @@ public class FeedClient {
 
     }
 
-    private String getFeedUrl() {
+    public String getFeedUrl() {
         return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/upload/catalog/";
     }
 
@@ -206,7 +209,9 @@ public class FeedClient {
      * @throws FeedUploadException
      */
     public FeedResponse push(boolean isFullImport) throws FeedUploadException {
-        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(ConnectionManager.getConnectionManager()).build();
+        CloseableHttpClient httpClient = HttpClients.custom().setConnectionTimeToLive(1, TimeUnit.MINUTES).setConnectionManager(ConnectionManager.getConnectionManager()).build();
+        HttpClientBuilder builder = HttpClientBuilder.create();
+        HttpClient httpClient1 = builder.build();
 
         //Document doc = new FeedFile(_fields, _addedDocs.values(), _updatedDocs.values(), _deletedDocs, _taxonomyNodes, _taxonomyMappings).getDoc();
 
@@ -244,7 +249,7 @@ public class FeedClient {
             entity.addPart("file", new FileBody(file));
             post.setEntity(entity.build());
 
-            HttpResponse response = httpClient.execute(post);
+            HttpResponse response = httpClient1.execute(post);
 
             t = new Date().getTime() - t;
             LOG.debug("Took : " + t + " millisecs");
@@ -253,9 +258,12 @@ public class FeedClient {
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     Map<String, Object> map = mapper.readValue(new InputStreamReader(response.getEntity().getContent()), Map.class);
+                    httpClient.close();
                     return new FeedResponse(map);
+
                 } catch (Exception e) {
                     LOG.error("Failed to parse response", e);
+                    httpClient.close();
                     throw new FeedUploadException(e);
                 }
             } else {
@@ -269,8 +277,10 @@ public class FeedClient {
                 String responseText = sb.toString();
 
                 LOG.error(responseText);
+                httpClient.close();
                 throw new FeedUploadException(responseText);
             }
+
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw new FeedUploadException(e);

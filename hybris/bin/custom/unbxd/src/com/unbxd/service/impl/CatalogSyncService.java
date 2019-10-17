@@ -1,5 +1,6 @@
 package com.unbxd.service.impl;
 
+import com.unbxd.client.ConnectionManager;
 import com.unbxd.client.Unbxd;
 import com.unbxd.client.feed.DataType;
 import com.unbxd.client.feed.FeedClient;
@@ -9,9 +10,21 @@ import com.unbxd.client.feed.exceptions.FeedUploadException;
 import com.unbxd.client.feed.response.FeedResponse;
 import com.unbxd.constants.UnbxdConstants;
 import de.hybris.platform.util.Config;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.FileEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class CatalogSyncService {
 
@@ -38,12 +51,33 @@ public class CatalogSyncService {
 //        pid1.put("category", "Sports Shoes");
 //        pid1.put("price", 1195);
 
-        feedClient.addProduct(new FeedProduct("sku id1",pid1));
-        FeedResponse response= feedClient.push(true);
+        //feedClient.addProduct(new FeedProduct("sku id1",pid1));
+        //FeedResponse response= feedClient.push(true);
+
+            String url = feedClient.getFeedUrl()+"full";
+
+
+            HttpClientBuilder builder = HttpClientBuilder.create();
+            HttpClient httpClient1 = builder.build();
+
+            //CloseableHttpClient httpClient = HttpClients.custom().setConnectionTimeToLive(1, TimeUnit.MINUTES).setConnectionManager(ConnectionManager.getConnectionManager()).build();
+            //CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(ConnectionManager.getConnectionManager()).build();
+            File file = new File("/Users/i313831/Documents/temp.json");
+            HttpPost post = new HttpPost(url);
+            post.addHeader("Authorization", Config.getParameter(UnbxdConstants.SECRET_KEY));
+            post.addHeader("Content-Type", ContentType.TEXT_PLAIN.toString());
+            MultipartEntityBuilder entity = MultipartEntityBuilder.create();
+            entity.addPart("file", new FileBody(file));
+            post.setEntity(entity.build());
+            //post.setEntity(new FileEntity(file));
+
+            HttpResponse response = httpClient1.execute(post);
+
+
             System.out.println(response.toString());
-        } catch (FeedUploadException e) {
+        } /*catch (FeedUploadException e) {
             e.printStackTrace();
-        } catch (Exception e){
+        } */catch (Exception e){
             e.printStackTrace();
         }
     }
