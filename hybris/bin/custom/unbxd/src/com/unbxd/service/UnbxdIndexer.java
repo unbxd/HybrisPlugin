@@ -140,10 +140,10 @@ public class UnbxdIndexer implements BeanFactoryAware {
 
 
                 feedClient.addProducts(new ArrayList<>(documents));
-                FeedResponse response= feedClient.push(true);
-                System.out.println(response.toString());
+                //FeedResponse response= feedClient.push(true);
+                //System.out.println(response.toString());
             }
-            catch (FeedUploadException | ConfigException e) {
+            catch (/*FeedUploadException | */ConfigException e) {
                 e.printStackTrace();
             }
 

@@ -118,5 +118,11 @@
         <property name="indexerBatchContextFactory" ref="indexerBatchContextFactory" />
         <property name="indexer" ref="unbxdIndexer" />
     </bean>
-			
+
+    <alias name="unbxdIndexerBatchStrategyFactory" alias="indexerBatchStrategyFactory" />
+    <bean id="unbxdIndexerBatchStrategyFactory" class="com.unbxd.service.impl.UnbxdIndexerBatchStrategyFactory" parent="defaultIndexerBatchStrategyFactory">
+        <property name="unbxdIndexerBatchStrategyBeanId" value="unbxdIndexerBatchStrategy" />
+        <property name="defaultIndexerBatchStrategyBeanId" value="defaultIndexerBatchStrategy" />
+    </bean>
+
 </beans>
