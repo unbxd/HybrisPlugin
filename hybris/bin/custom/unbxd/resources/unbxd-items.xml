@@ -53,5 +53,13 @@
                 </attribute>
             </attributes>
         </itemtype>
+		<itemtype code="Product" generate="false" autocreate="false">
+			<attributes>
+				<attribute qualifier="unbxdSyncDate" type="java.util.Date">
+					<modifiers read="true" write="true" search="false" optional="true"/>
+					<persistence type="property"/>
+				</attribute>
+			</attributes>
+		</itemtype>
 	</itemtypes>
 </items>

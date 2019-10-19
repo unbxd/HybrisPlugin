@@ -6,6 +6,7 @@ import com.unbxd.client.feed.exceptions.FeedUploadException;
 import com.unbxd.client.feed.response.FeedResponse;
 import net.minidev.json.JSONObject;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -254,10 +255,11 @@ public class FeedClient {
             t = new Date().getTime() - t;
             LOG.debug("Took : " + t + " millisecs");
 
-            if (response.getStatusLine().getStatusCode() == 200) {
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK || response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     Map<String, Object> map = mapper.readValue(new InputStreamReader(response.getEntity().getContent()), Map.class);
+                    map.put("statusCode", response.getStatusLine().getStatusCode());
                     httpClient.close();
                     return new FeedResponse(map);
 
