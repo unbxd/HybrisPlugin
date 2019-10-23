@@ -6,18 +6,6 @@ Support Hybris 6.6.\* - 18.08.\*
 
 # Installation Guide
 
-### Install by composer
-
-```
-composer require unbxd/magento2-product-feed
-php bin/magento module:enable Unbxd_ProductFeed
-php bin/magento setup:upgrade
-php bin/magento setup:di:compile
-php bin/magento cache:flush
-```
-
-### Manual installation
-
 1. Download this module [Link](https://github.com/unbxd/HybrisPlugin/archive/master.zip)
 3. Unzip module & copy:
 
