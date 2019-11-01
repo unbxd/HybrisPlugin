@@ -14,6 +14,7 @@ import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.solrfacetsearch.config.*;
 import de.hybris.platform.solrfacetsearch.config.exceptions.FieldValueProviderException;
+import de.hybris.platform.solrfacetsearch.enums.SolrPropertiesTypes;
 import de.hybris.platform.solrfacetsearch.indexer.exceptions.IndexerException;
 import de.hybris.platform.solrfacetsearch.indexer.spi.Exporter;
 import de.hybris.platform.solrfacetsearch.provider.IdentityProvider;
@@ -117,45 +118,7 @@ public class UnbxdIndexer implements BeanFactoryAware {
                 Unbxd.configure(Config.getParameter(UnbxdConstants.SITE_KEY), Config.getParameter(UnbxdConstants.API_KEY), Config.getParameter(UnbxdConstants.SECRET_KEY));
 
                 FeedClient feedClient = Unbxd.getFeedClient();
-                feedClient.addSchema("catalogVersion", DataType.TEXT);
-                feedClient.addSchema("code_string", DataType.TEXT);
-                feedClient.addSchema("autosuggest_en", DataType.TEXT);
-                feedClient.addSchema("collectionName_text_en_mv", DataType.TEXT);
-                feedClient.addSchema("name_text_en", DataType.TEXT);
-                feedClient.addSchema("configurable_boolean", DataType.TEXT);
-                feedClient.addSchema("img-96Wx96H_string", DataType.TEXT);
-                feedClient.addSchema("categoryPath_string_mv", DataType.TEXT);
-                feedClient.addSchema("priceValue_gbp_double", DataType.TEXT);
-                feedClient.addSchema("catalogId", DataType.TEXT);
-                feedClient.addSchema("categoryName_text_en_mv", DataType.TEXT);
-                feedClient.addSchema("allCategories_string_mv", DataType.TEXT);
-                feedClient.addSchema("brand_string_mv", DataType.TEXT);
-                feedClient.addSchema("pickupAvailableFlag_boolean", DataType.TEXT);
-                feedClient.addSchema("url_en_string", DataType.TEXT);
-                feedClient.addSchema("img-65Wx65H_string", DataType.TEXT);
-                feedClient.addSchema("inStockFlag_boolean", DataType.TEXT);
-                feedClient.addSchema("baseProductCode", DataType.TEXT);
-                feedClient.addSchema("id", DataType.TEXT);
-                feedClient.addSchema("name_sortable_en_sortabletext", DataType.TEXT);
-                feedClient.addSchema("stockLevelStatus_string", DataType.TEXT);
-                feedClient.addSchema("brandName_text_en_mv", DataType.TEXT);
-                feedClient.addSchema("img-515Wx515H_string", DataType.TEXT);
-                feedClient.addSchema("img-300Wx300H_string", DataType.TEXT);
-                feedClient.addSchema("img-30Wx30H_string", DataType.TEXT);
-                feedClient.addSchema("collection_string_mv", DataType.TEXT);
-                feedClient.addSchema("spellcheck_en", DataType.TEXT);
-                feedClient.addSchema("availableInStores_string_mv", DataType.TEXT);
-                feedClient.addSchema("ean_string", DataType.TEXT);
-                feedClient.addSchema("url_en_string", DataType.TEXT);
-                feedClient.addSchema("itemtype_string", DataType.TEXT);
-                feedClient.addSchema("spellcheck", DataType.TEXT);
-                feedClient.addSchema("price_gbp_string", DataType.TEXT);
-                //feedClient.addSchema("autosuggest", DataType.TEXT);
-                feedClient.addSchema("pk", DataType.TEXT);
-                feedClient.addSchema("gender_string_mv", DataType.TEXT);
-                feedClient.addSchema("summary_text_en", DataType.TEXT);
-                feedClient.addSchema("category_string_mv", DataType.TEXT);
-
+                indexedType.getIndexedProperties().forEach((s, indexedProperty) -> feedClient.addSchema(s, map(indexedProperty.getType()), indexedProperty.isMultiValue(), indexedProperty.isAutoSuggest()) );
 
                 feedClient.addProducts(new ArrayList<>(documents));
                 feedClient.updateProducts(new ArrayList<>(updateDocuments));
@@ -188,6 +151,16 @@ public class UnbxdIndexer implements BeanFactoryAware {
             documents.addAll(updateDocuments);
             return documents;
         }
+    }
+
+    private DataType map(String type){
+        if (type.equalsIgnoreCase(SolrPropertiesTypes.STRING.getCode()) || type.equalsIgnoreCase(SolrPropertiesTypes.TEXT.getCode()))
+        { return DataType.TEXT;}
+        if (type.equalsIgnoreCase(SolrPropertiesTypes.DOUBLE.getCode()))
+        { return DataType.DECIMAL;}
+        if (type.equalsIgnoreCase(SolrPropertiesTypes.BOOLEAN.getCode()))
+        { return DataType.BOOL;}
+        return DataType.TEXT;
     }
 
     public Collection<FeedProduct> indexItems(Collection<ItemModel> items, FacetSearchConfig facetSearchConfig, IndexedType indexedType, Collection<IndexedProperty> indexedProperties) throws IndexerException, InterruptedException {

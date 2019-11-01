@@ -3,6 +3,8 @@ package com.unbxd.client.feed;
 import de.hybris.platform.solrfacetsearch.config.IndexedProperty;
 import de.hybris.platform.solrfacetsearch.config.exceptions.FieldValueProviderException;
 import de.hybris.platform.solrfacetsearch.indexer.spi.InputDocument;
+import de.hybris.platform.util.Config;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -11,6 +13,7 @@ public class FeedProduct implements InputDocument {
     private String uniqueId;
     private final Map<String, Object> _attributes;
     private List<Map<String, Object>> _variants;
+    private static final String USED_SEPARATOR = Config.getString("solr.indexedproperty.forbidden.char", "_");
 
     public FeedProduct(){
         _attributes = new HashMap<String, Object>();
@@ -58,8 +61,11 @@ public class FeedProduct implements InputDocument {
 
     @Override
     public void addField(String name, Object value){
-        if(!name.equalsIgnoreCase("autosuggest")) {
-            _attributes.put(name, value);
+        if(!(name.startsWith("autosuggest") || name.startsWith("spellcheck"))) {
+            String fieldName = StringUtils.substringBefore(name, USED_SEPARATOR);
+            if (!_attributes.containsKey(fieldName) && !fieldName.equalsIgnoreCase("price")){
+                _attributes.put(fieldName, value);
+            }
         }
     }
 
