@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<config xmlns="http://www.hybris.com/cockpit/config"
+		xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch"
+		xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch"
+		xmlns:y="http://www.hybris.com/cockpit/config/hybris"
+		xmlns:list-view="http://www.hybris.com/cockpitng/component/listView"
+		xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea"
+		xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config"
+		xmlns:na="http://www.hybris.com/cockpitng/config/notifications">
+
+	<!-- unbxdBackoffice UI configuration should be provided here -->
+
+	<!--<context component="component-code" module="unbxdBackoffice">-->
+		<!--Please check documentation for code snippets for specific components-->
+	<!--</context>-->
+	<context merge-by="module" component="explorer-tree">
+		<n:explorer-tree xmlns:n="http://www.hybris.com/cockpitng/config/explorertree">
+			<n:navigation-node id="Unbxd">
+				<n:type-node id="hmc.unbxd.products" code="Product"/>
+				<n:type-node id="hmc.unbxd.uploads" code="UnbxdUploadTask"/>
+				<n:type-node id="hmc.unbxd.analytics"/>
+			</n:navigation-node>
+		</n:explorer-tree>
+	</context>
+
+	<context type="Product" component="listviewactions" merge-by="type">
+		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:group qualifier="common">
+				<y:action action-id="com.unbxd.backoffice.widgets.actions.sync" property="selectedObjects"/>
+			</y:group>
+		</y:actions>
+	</context>
+
+	<context type="Product" component="editorareaactions" merge-by="type" parent="auto">
+		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:group qualifier="common">
+				<y:action action-id="com.unbxd.backoffice.widgets.actions.sync" property="currentObject"/>
+			</y:group>
+		</y:actions>
+	</context>
+
+	<context type="UnbxdUploadTask" component="listviewactions" merge-by="type">
+		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:group qualifier="common">
+				<y:action action-id="com.unbxd.backoffice.widgets.actions.refresh" property="selectedObjects">
+					<y:parameter>
+						<y:name>viewMode</y:name>
+						<y:value>iconAndText</y:value>
+					</y:parameter>
+					<y:parameter>
+						<y:name>actionName</y:name>
+						<y:value>label.unbxdbackoffice.refresh</y:value>
+					</y:parameter>
+					<y:parameter>
+						<y:name>actionStyleClass</y:name>
+						<y:value>z-button y-btn-primary</y:value>
+					</y:parameter>
+				</y:action>
+			</y:group>
+		</y:actions>
+	</context>
+
+	<context type="UnbxdUploadTask" component="editorareaactions" merge-by="type" parent="auto">
+		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:group qualifier="common">
+				<y:action action-id="com.unbxd.backoffice.widgets.actions.refresh" property="currentObject">
+					<y:parameter>
+						<y:name>viewMode</y:name>
+						<y:value>iconAndText</y:value>
+					</y:parameter>
+					<y:parameter>
+						<y:name>actionName</y:name>
+						<y:value>label.unbxdbackoffice.refresh</y:value>
+					</y:parameter>
+					<y:parameter>
+						<y:name>actionStyleClass</y:name>
+						<y:value>z-button y-btn-primary</y:value>
+					</y:parameter>
+				</y:action>
+			</y:group>
+		</y:actions>
+	</context>
+
+<!--	<context merge-by="type" parent="GenericItem" type="Product" component="listview">-->
+<!--		<list-view:list-view>-->
+<!--			<list-view:column qualifier="" spring-bean="unbxdProductStatusRenderer" label="unbxd.product.status.column.label" width="160px" merge-mode="REPLACE"/>-->
+<!--		</list-view:list-view>-->
+<!--	</context>-->
+
+</config>

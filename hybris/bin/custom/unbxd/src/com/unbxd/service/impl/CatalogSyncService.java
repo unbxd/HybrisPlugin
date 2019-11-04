@@ -1,14 +1,19 @@
 package com.unbxd.service.impl;
 
+import com.unbxd.client.ConfigException;
 import com.unbxd.client.ConnectionManager;
 import com.unbxd.client.Unbxd;
 import com.unbxd.client.feed.DataType;
 import com.unbxd.client.feed.FeedClient;
 import com.unbxd.client.feed.FeedClientFactory;
 import com.unbxd.client.feed.FeedProduct;
+import com.unbxd.client.feed.exceptions.FeedStatusException;
 import com.unbxd.client.feed.exceptions.FeedUploadException;
 import com.unbxd.client.feed.response.FeedResponse;
+import com.unbxd.client.feed.response.FeedStatusResponse;
 import com.unbxd.constants.UnbxdConstants;
+import com.unbxd.model.UnbxdUploadTaskModel;
+import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.util.Config;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -21,6 +26,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +35,8 @@ import java.util.concurrent.TimeUnit;
 public class CatalogSyncService {
 
     private FeedClientFactory feedClientFactory;
+    @Resource(name = "modelService")
+    private ModelService modelService;
 
     public void syncCatalogProduct(){
 
@@ -83,6 +91,32 @@ public class CatalogSyncService {
     }
 
     //comment1
+
+    public void refreshUploadStatus(UnbxdUploadTaskModel uploadTaskObj) {
+        try{
+            String uploadId = uploadTaskObj.getUploadId();
+            boolean isDelta = uploadTaskObj.getIsDelta();
+            Unbxd.configure(Config.getParameter(UnbxdConstants.SITE_KEY), Config.getParameter(UnbxdConstants.API_KEY), Config.getParameter(UnbxdConstants.SECRET_KEY));
+            FeedClient feedClient = Unbxd.getFeedClient();
+            FeedStatusResponse feedStatusResponse = null;
+            if(isDelta) {
+                feedStatusResponse = feedClient.getDeltaStatus(uploadId);
+            } else {
+                feedStatusResponse = feedClient.getFullStatus(uploadId);
+            }
+            uploadTaskObj.setStatus(feedStatusResponse.getStatus());
+            uploadTaskObj.setTimeStamp(feedStatusResponse.get_timestamp());
+            uploadTaskObj.setMessage(feedStatusResponse.getMessage());
+            uploadTaskObj.setCode(feedStatusResponse.getCode());
+            modelService.save(uploadTaskObj);
+        } catch (FeedStatusException | ConfigException e) {
+            e.printStackTrace();
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     public FeedClientFactory getFeedClientFactory() {
         return feedClientFactory;

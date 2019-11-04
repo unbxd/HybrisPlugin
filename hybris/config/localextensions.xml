@@ -60,5 +60,7 @@
     <extension name='textfieldconfiguratortemplateatddtests' />
     <extension name='pcmbackofficesamplesaddon' />
     <extension name='unbxd' />
+<!--    <extension name='unbxdAnalytics' />-->
+    <extension name='unbxdBackoffice' />
   </extensions>
 </hybrisconfig>

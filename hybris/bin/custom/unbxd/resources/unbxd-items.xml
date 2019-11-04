@@ -13,36 +13,44 @@
 	ATTENTION: This is just an example file. You have to edit it according to your needs.
 -->
 
-<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-			xsi:noNamespaceSchemaLocation="items.xsd">
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="items.xsd">
+    <enumtypes>
+        <enumtype generate="true" code="UnbxdUploadStatus"
+                  autocreate="true" dynamic="true">
+            <description>This type determines status of unbxd upload.</description>
+            <value code="INDEXING" />
+            <value code="INDEXED" />
+            <value code="FAILED" />
+        </enumtype>
+    </enumtypes>
+    <itemtypes>
+        <!--
+                <itemtype generate="true"
+                   code="MyProduct"
+                   jaloclass="com.unbxd.jalo.MyProduct"
+                   extends="Product"
+                   autocreate="true"
+               >
+                    <attributes>
+                        <attribute qualifier="myExampleInitialStringField" type="java.lang.String">
+                            <description>My Example Initial String Value</description>
+                            <modifiers initial="true"/>
+                            <persistence type="property"/>
+                        </attribute>
 
-	<itemtypes>
-<!--
-		<itemtype generate="true"
-		   code="MyProduct"
-		   jaloclass="com.unbxd.jalo.MyProduct"
-		   extends="Product"
-		   autocreate="true"
-	   >
-			<attributes>
-				<attribute qualifier="myExampleInitialStringField" type="java.lang.String">
-					<description>My Example Initial String Value</description>
-					<modifiers initial="true"/>
-					<persistence type="property"/>
-				</attribute>
+                        <attribute qualifier="myExampleBooleanField" type="java.lang.Boolean">
+                            <description>Example Initial Boolean Field</description>
+                       <persistence type="property"/>
+                        </attribute>
 
-				<attribute qualifier="myExampleBooleanField" type="java.lang.Boolean">
-					<description>Example Initial Boolean Field</description>
-               <persistence type="property"/>
-				</attribute>
+                        <attribute qualifier="media" type="Media">
+                            <persistence type="property"/>
+                        </attribute>
 
-				<attribute qualifier="media" type="Media">
-					<persistence type="property"/>
-				</attribute>
-
-			</attributes>
-		</itemtype>
--->
+                    </attributes>
+                </itemtype>
+        -->
         <itemtype code="SolrIndexedType" generate="false" autocreate="false">
             <attributes>
                 <attribute qualifier="isUnbxd" type="java.lang.Boolean">
@@ -53,13 +61,49 @@
                 </attribute>
             </attributes>
         </itemtype>
-		<itemtype code="Product" generate="false" autocreate="false">
-			<attributes>
-				<attribute qualifier="unbxdSyncDate" type="java.util.Date">
-					<modifiers read="true" write="true" search="false" optional="true"/>
-					<persistence type="property"/>
-				</attribute>
-			</attributes>
-		</itemtype>
-	</itemtypes>
+        <itemtype code="Product" generate="false" autocreate="false">
+            <attributes>
+                <attribute qualifier="unbxdSyncDate" type="java.util.Date">
+                    <modifiers read="true" write="true" search="false" optional="true"/>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="UnbxdUploadTask" extends="GenericItem" autocreate="true" generate="true">
+            <deployment table="unbxduploadtasks" typecode="10300"/>
+            <attributes>
+                <attribute type="java.lang.String" qualifier="fileName">
+                    <modifiers read="true" write="true"  optional="false" />
+                    <persistence type="property" />
+                </attribute>
+                <attribute type="java.lang.String" qualifier="uploadId">
+                    <modifiers read="true" write="true" optional="false" />
+                    <persistence type="property" />
+                </attribute>
+                <attribute type="java.lang.String" qualifier="status">
+                    <modifiers read="true" write="true"  optional="false" />
+                    <persistence type="property" />
+                </attribute>
+                <attribute type="java.lang.String" qualifier="message">
+                    <modifiers read="true" write="true"  optional="true" />
+                    <persistence type="property" />
+                </attribute>
+                <attribute type="java.lang.Integer" qualifier="code">
+                    <modifiers read="true" write="true"  optional="true" />
+                    <persistence type="property" />
+                </attribute>
+                <attribute qualifier="timeStamp" type="java.util.Date">
+                    <modifiers read="true" write="true"  optional="false" />
+                    <persistence type="property" />
+                </attribute>
+                <attribute type="java.lang.Boolean" qualifier="isDelta">
+                    <modifiers read="true" write="true"  optional="false" />
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <persistence type="property" />
+                </attribute>
+            </attributes>
+        </itemtype>
+
+    </itemtypes>
 </items>

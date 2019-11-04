@@ -180,9 +180,11 @@ public class UnbxdIndexerBatchStrategy implements IndexerBatchStrategy {
     protected void executeIndexerOperation(IndexerBatchContext batchContext) throws IndexerException, InterruptedException {
         switch(batchContext.getIndexOperation().ordinal()) {
             case 0:
+                this.indexer.indexItems(batchContext.getItems(), batchContext.getFacetSearchConfig(), batchContext.getIndexedType(), true);
+                break;
             case 1:
             case 2:
-                this.indexer.indexItems(batchContext.getItems(), batchContext.getFacetSearchConfig(), batchContext.getIndexedType());
+                this.indexer.indexItems(batchContext.getItems(), batchContext.getFacetSearchConfig(), batchContext.getIndexedType(), false);
                 break;
             case 3:
                 this.indexer.removeItemsByPk(batchContext.getPks(), batchContext.getFacetSearchConfig(), batchContext.getIndexedType(), batchContext.getIndex());

@@ -2,12 +2,15 @@ package com.unbxd.client.feed;
 
 import com.unbxd.client.ConnectionManager;
 import com.unbxd.client.feed.exceptions.FeedInputException;
+import com.unbxd.client.feed.exceptions.FeedStatusException;
 import com.unbxd.client.feed.exceptions.FeedUploadException;
 import com.unbxd.client.feed.response.FeedResponse;
+import com.unbxd.client.feed.response.FeedStatusResponse;
 import net.minidev.json.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
@@ -23,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class FeedClient {
 
@@ -51,6 +55,22 @@ public class FeedClient {
 
     public String getFeedUrl() {
         return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/upload/catalog/";
+    }
+
+    public String getFeedStatusUrl() {
+        return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/catalog/status";
+    }
+
+    public String getDeltaFeedStatusUrl() {
+        return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/catalog/delta/status";
+    }
+
+    public String getFeedStatusUrlForUploadId(String uploadId) {
+        return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/catalog/" + uploadId + "/status";
+    }
+
+    public String getDeltaFeedStatusUrlForUploadId(String uploadId) {
+        return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/catalog/delta/" + uploadId + "/status";
     }
 
     /**
@@ -292,5 +312,156 @@ public class FeedClient {
             }
         }
     }
+
+    /**
+     * get status of the upload feed from Unbxd platform.
+
+     * @param count coint of last N status to be retrieved.
+     * @param isDelta If true it will get last N delta upload status else it will get last N full upload
+     * @return {@link List<FeedStatusResponse>}
+     * @throws FeedStatusException
+     */
+    public List<FeedStatusResponse> getStatus(int count, boolean isDelta) throws FeedStatusException {
+        CloseableHttpClient httpClient = HttpClients.custom().setConnectionTimeToLive(1, TimeUnit.MINUTES).setConnectionManager(ConnectionManager.getConnectionManager()).build();
+        HttpClientBuilder builder = HttpClientBuilder.create();
+        HttpClient httpClient1 = builder.build();
+
+        try {
+            long t = new Date().getTime();
+            String url = getFeedStatusUrl();
+
+            if (isDelta) {
+                url = getDeltaFeedStatusUrl();
+            }
+
+            if(count > 1) {
+                url += "?count=" + count;
+            } else {
+                url += "?count=1";
+            }
+
+            HttpGet get = new HttpGet(url);
+            get.addHeader("Authorization", this.secretKey);
+            HttpResponse response = httpClient1.execute(get);
+
+            t = new Date().getTime() - t;
+            LOG.debug("Took : " + t + " millisecs");
+
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    List<Map<String, Object>> map = mapper.readValue(new InputStreamReader(response.getEntity().getContent()), List.class);
+                    List<FeedStatusResponse> result = map.stream().map(m -> new FeedStatusResponse(m)).collect(Collectors.toList());
+                    httpClient.close();
+                    return result;
+
+                } catch (Exception e) {
+                    LOG.error("Failed to parse response", e);
+                    httpClient.close();
+                    throw new FeedStatusException(e);
+                }
+            } else {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer sb = new StringBuffer();
+                String line = "";
+                while ((line = rd.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                String responseText = sb.toString();
+
+                LOG.error(responseText);
+                httpClient.close();
+                throw new FeedStatusException(responseText);
+            }
+
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+            throw new FeedStatusException(e);
+        }
+    }
+
+    /**
+     * get status of the upload feed from Unbxd platform.
+
+     * @param uploadId upload id of feed.
+     * @return {@link FeedStatusResponse}
+     * @throws FeedStatusException
+     */
+    public FeedStatusResponse getStatus(String uploadId, boolean isDelta) throws FeedStatusException {
+        CloseableHttpClient httpClient = HttpClients.custom().setConnectionTimeToLive(1, TimeUnit.MINUTES).setConnectionManager(ConnectionManager.getConnectionManager()).build();
+        HttpClientBuilder builder = HttpClientBuilder.create();
+        HttpClient httpClient1 = builder.build();
+
+        try {
+            long t = new Date().getTime();
+            String url = getFeedStatusUrlForUploadId(uploadId);
+
+            if (isDelta) {
+                url = getDeltaFeedStatusUrlForUploadId(uploadId);
+            }
+
+            HttpGet get = new HttpGet(url);
+            get.addHeader("Authorization", this.secretKey);
+            HttpResponse response = httpClient1.execute(get);
+
+            t = new Date().getTime() - t;
+            LOG.debug("Took : " + t + " millisecs");
+
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    Map<String, Object> map = mapper.readValue(new InputStreamReader(response.getEntity().getContent()), Map.class);
+                    httpClient.close();
+                    return new FeedStatusResponse(map);
+
+                } catch (Exception e) {
+                    LOG.error("Failed to parse response", e);
+                    httpClient.close();
+                    throw new FeedStatusException(e);
+                }
+            } else {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer sb = new StringBuffer();
+                String line = "";
+                while ((line = rd.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                String responseText = sb.toString();
+
+                LOG.error(responseText);
+                httpClient.close();
+                throw new FeedStatusException(responseText);
+            }
+
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+            throw new FeedStatusException(e);
+        }
+    }
+
+    /**
+     * get status of the full upload feed from Unbxd platform.
+
+     * @param uploadId upload id of feed.
+     * @return {@link FeedStatusResponse}
+     * @throws FeedStatusException
+     */
+    public FeedStatusResponse getFullStatus(String uploadId) throws FeedStatusException {
+        return getStatus(uploadId, false);
+    }
+
+    /**
+     * get status of the delta upload feed from Unbxd platform.
+
+     * @param uploadId upload id of feed.
+     * @return {@link FeedStatusResponse}
+     * @throws FeedStatusException
+     */
+    public FeedStatusResponse getDeltaStatus(String uploadId) throws FeedStatusException {
+        return getStatus(uploadId, true);
+    }
+
 
 }

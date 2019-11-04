@@ -8,7 +8,7 @@ import java.util.Map;
 public class FeedResponse {
 
     private int _statusCode;
-    private String _status;
+    private Integer _status;
     private String _message;
     private String _uploadID;
     private String _fileName;
@@ -20,12 +20,11 @@ public class FeedResponse {
 
     public FeedResponse(Map<String, Object> response){
         _statusCode = (Integer) response.get("statusCode");
-        _statusCode = (Integer) response.get("statusCode");
-        _status = (String) response.get("status");
+        _status = (Integer) response.get("status");
         _message = (String) response.get("message");
         _uploadID = (String) response.get("uploadId");
         _fileName = (String) response.get("fileName");
-        _timestamp = new Date((Long)response.get("timestamp"));
+        _timestamp = new Date((Long)response.get("timeStamp"));
         if(response.containsKey("unknownSchemaFields")) {
             _unknownSchemaFields = (List<String>) response.get("unknownSchemaFields");
         }
@@ -48,7 +47,7 @@ public class FeedResponse {
         return _statusCode;
     }
 
-    public String getStatus(){
+    public Integer getStatus(){
         return _status;
     }
 

@@ -1,0 +1,20 @@
+<action-definition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				   id="com.unbxd.backoffice.widgets.actions.refresh"
+				   xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/action-definition.xsd">
+	<sockets>
+		<output id="currentObjects" type="java.util.List"/>
+	</sockets>
+
+	<name>UnBxd Refresh Status</name>
+	<description>Refresh Upload Status.</description>
+	<author>unxd</author>
+	<version>1.0</version>
+
+<!--	<iconUri>icons/icon_action_sync_default.png</iconUri>-->
+<!--	<iconHoverUri>icons/icon_action_sync_hover.png</iconHoverUri>-->
+<!--	<iconDisabledUri>icons/icon_action_sync_disabled.png</iconDisabledUri>-->
+	<settings>
+		<setting key="viewMode" default-value="iconAndText"></setting>
+	</settings>
+	<actionClassName>com.unbxd.backoffice.widgets.actions.UnbxdUploadStatusRefreshAction</actionClassName>
+</action-definition>

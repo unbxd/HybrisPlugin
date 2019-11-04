@@ -31,6 +31,9 @@ public class UnbxdIndexerBatchStrategyFactory extends DefaultIndexerBatchStrateg
         boolean isUnbxd = false;
         try {
             IndexedType indexedType = facetSearchConfig.getIndexConfig().getIndexedTypes().get("Product");
+            if(indexedType == null && facetSearchConfig.getIndexConfig().getIndexedTypes().size() > 0){
+                indexedType = facetSearchConfig.getIndexConfig().getIndexedTypes().entrySet().iterator().next().getValue();
+            }
             final List<SolrIndexModel> indexes = solrIndexService.getIndexesForConfigAndType(facetSearchConfig.getName(),
                     indexedType.getIdentifier());
             isUnbxd = indexes.get(0).getIndexedType().getIsUnbxd();
