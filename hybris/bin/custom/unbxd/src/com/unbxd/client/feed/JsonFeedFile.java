@@ -110,6 +110,17 @@ public class JsonFeedFile {
             for (String field : product.getAttributes().keySet()) {
                 writeAttribute(item, field, product.get(field), false);
             }
+            if (product.getVariants() != null && product.getVariants().size() > 0) {
+                JSONArray variants = new JSONArray();
+                for (Map<String, Object> productVariant : product.getVariants()) {
+                    JSONObject variant = new JSONObject();
+                    for (String field : productVariant.keySet()) {
+                        writeAttribute(variant, field, productVariant.get(field), true);
+                    }
+                    variants.appendElement(variant);
+                }
+                item.put("variants", variants);
+            }
 
             items.appendElement(item);
         }
