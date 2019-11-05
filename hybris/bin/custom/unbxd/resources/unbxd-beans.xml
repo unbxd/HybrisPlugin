@@ -65,5 +65,10 @@
     </bean>
 
 	-->
-
+    <bean class="de.hybris.platform.solrfacetsearch.config.IndexedType">
+        <property name="unbxd" type="boolean" />
+    </bean>
+    <bean class="de.hybris.platform.solrfacetsearch.config.IndexedProperty">
+        <property name="unbxd" type="boolean" />
+    </bean>
 </beans>

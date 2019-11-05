@@ -61,6 +61,18 @@
                 </attribute>
             </attributes>
         </itemtype>
+
+        <itemtype code="SolrIndexedProperty" generate="false" autocreate="false">
+            <attributes>
+                <attribute qualifier="isUnbxd" type="java.lang.Boolean">
+                    <description>If index property is relevant for Unbxd</description>
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" optional="false"/>
+                    <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+                </attribute>
+            </attributes>
+        </itemtype>
+
         <itemtype code="Product" generate="false" autocreate="false">
             <attributes>
                 <attribute qualifier="unbxdSyncDate" type="java.util.Date">

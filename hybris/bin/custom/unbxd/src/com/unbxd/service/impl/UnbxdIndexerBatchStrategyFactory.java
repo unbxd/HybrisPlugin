@@ -31,20 +31,23 @@ public class UnbxdIndexerBatchStrategyFactory extends DefaultIndexerBatchStrateg
         boolean isUnbxd = false;
         try {
             IndexedType indexedType = facetSearchConfig.getIndexConfig().getIndexedTypes().get("Product");
-            if(indexedType == null && facetSearchConfig.getIndexConfig().getIndexedTypes().size() > 0){
+            isUnbxd = indexedType != null && indexedType.isUnbxd();
+            /*if(indexedType == null && facetSearchConfig.getIndexConfig().getIndexedTypes().size() > 0){
                 indexedType = facetSearchConfig.getIndexConfig().getIndexedTypes().entrySet().iterator().next().getValue();
             }
             final List<SolrIndexModel> indexes = solrIndexService.getIndexesForConfigAndType(facetSearchConfig.getName(),
                     indexedType.getIdentifier());
-            isUnbxd = indexes.get(0).getIndexedType().getIsUnbxd();
+            if (indexes.get(0).getIndexedType().getIsUnbxd() != null) {
+                isUnbxd = indexes.get(0).getIndexedType().getIsUnbxd();
+            }*/
 
             return (IndexerBatchStrategy) this.applicationContext.getBean((isUnbxd ? this.unbxdIndexerBatchStrategyBeanId : this.defaultIndexerBatchStrategyBeanId), IndexerBatchStrategy.class);
         } catch (BeansException var3) {
             throw new IndexerException("Cannot create indexer batch strategy [" + (isUnbxd ? this.unbxdIndexerBatchStrategyBeanId : this.defaultIndexerBatchStrategyBeanId) + "]", var3);
-        } catch (SolrServiceException e) {
+        } /*catch (SolrServiceException e) {
             e.printStackTrace();
-        }
-        return null;
+        }*/
+
     }
 
     public String getDefaultIndexerBatchStrategyBeanId() {

@@ -321,6 +321,7 @@ public class UnbxdDefaultDocumentFactory implements UnbxdDocumentFactory, BeanFa
                 IndexedType indexedType = batchContext.getIndexedType();
                 SolrSearchProvider solrSearchProvider = this.solrSearchProviderFactory.getSearchProvider(facetSearchConfig, indexedType);
                 Set<String> fields = this.getIndexedFields(index);
+                //Set<String> fields = this.getIndexedFields(facetSearchConfig, index);
                 Iterator var11 = fields.iterator();
 
                 while(var11.hasNext()) {
@@ -347,6 +348,24 @@ public class UnbxdDefaultDocumentFactory implements UnbxdDocumentFactory, BeanFa
         Map<String, IndexedProperty> fields = index.getIndexedType().getIndexedProperties();
         return fields != null ? fields.keySet() : Collections.emptySet();
     }
+
+/*    protected Set<String> getIndexedFields(FacetSearchConfig facetSearchConfig, Index index) *//*throws SolrServerException, IOException *//*{
+        try {
+            final List<SolrIndexModel> indexes = solrIndexService.getIndexesForConfigAndType(facetSearchConfig.getName(),
+                    index.getIndexedType().getIdentifier());
+
+            SolrIndexedTypeModel unbxdIndex = indexes.get(0).getIndexedType();
+
+            Set<String> fields = unbxdIndex.getSolrIndexedProperties().stream().
+                    filter(solrIndexedPropertyModel -> solrIndexedPropertyModel.getIsUnbxd() != null ? solrIndexedPropertyModel.getIsUnbxd() : false).
+                    map(solrIndexedPropertyModel -> solrIndexedPropertyModel.getName()).collect(Collectors.toSet());
+            return fields != null ? fields : Collections.emptySet();
+
+        } catch (SolrServiceException e) {
+            LOG.error(e.getMessage());
+            return Collections.emptySet();
+        }
+    }*/
 
     protected void handleError(IndexConfig indexConfig, String message, Exception error) throws FieldValueProviderException {
         if (indexConfig.isIgnoreErrors()) {

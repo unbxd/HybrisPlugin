@@ -125,4 +125,30 @@
         <property name="defaultIndexerBatchStrategyBeanId" value="defaultIndexerBatchStrategy" />
     </bean>
 
+    <alias alias="facetSearchConfigService" name="defaultUnbxdFacetSearchConfigService" />
+    <bean id="defaultUnbxdFacetSearchConfigService" class="com.unbxd.service.impl.DefaultUnbxdFacetSearchConfigService" parent="defaultFacetSearchConfigService">
+    </bean>
+
+    <bean id="unbxdIndexedTypePopulator" class="com.unbxd.populator.UnbxdIndexedTypePopulator">
+    </bean>
+    <alias name="unbxdIndexedTypeConverter" alias="solrIndexedTypeConverter" />
+    <bean id="unbxdIndexedTypeConverter" parent="commerceIndexedTypeConverter">
+        <property name="populators">
+            <list merge="true">
+                <ref bean="unbxdIndexedTypePopulator" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="unbxdIndexedPropertyPopulator" class="com.unbxd.populator.UnbxdIndexedPropertyPopulator">
+    </bean>
+    <alias name="unbxdIndexedPropertyConverter" alias="indexedPropertyConverter" />
+    <bean id="unbxdIndexedPropertyConverter" parent="commerceIndexedPropertyConverter">
+        <property name="populators">
+            <list merge="true">
+                <ref bean="unbxdIndexedPropertyPopulator" />
+            </list>
+        </property>
+    </bean>
+
 </beans>
