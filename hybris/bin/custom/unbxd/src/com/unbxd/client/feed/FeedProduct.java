@@ -63,9 +63,64 @@ public class FeedProduct implements InputDocument {
     public void addField(String name, Object value){
         if(!(name.startsWith("autosuggest") || name.startsWith("spellcheck"))) {
             String fieldName = StringUtils.substringBefore(name, USED_SEPARATOR);
-            if (!_attributes.containsKey(fieldName) && !fieldName.equalsIgnoreCase("price")){
+
+            Object existingValue = this._attributes.get(fieldName);
+            if (existingValue != null) {
+                Object derivedValue = addValue(value, existingValue);
+                _attributes.put(fieldName, derivedValue);
+            } else {
                 _attributes.put(fieldName, value);
             }
+        }
+    }
+
+    public Object addValue(Object newValue,  Object existingValue) {
+        Iterator var3;
+        Object o;
+        if (existingValue == null) {
+            if (newValue instanceof Collection) {
+                Collection<Object> c = new ArrayList(3);
+                var3 = ((Collection) newValue).iterator();
+
+                while (var3.hasNext()) {
+                    o = var3.next();
+                    c.add(o);
+                }
+
+                return c;
+            } else {
+                return newValue;
+            }
+
+        } else {
+            Collection<Object> vals = null;
+            if (existingValue instanceof Collection) {
+                vals = (Collection) existingValue;
+            } else {
+                vals = new ArrayList(3);
+                ((Collection) vals).add(existingValue);
+                //return vals;
+            }
+
+            if (newValue instanceof Iterable) {
+                var3 = ((Iterable) newValue).iterator();
+
+                while (var3.hasNext()) {
+                    o = var3.next();
+                    ((Collection) vals).add(o);
+                }
+            } else if (newValue instanceof Object[]) {
+                Object[] var7 = (Object[]) ((Object[]) newValue);
+                int var9 = var7.length;
+
+                for (int var5 = 0; var5 < var9; ++var5) {
+                    Object obj = var7[var5];
+                    ((Collection) vals).add(obj);
+                }
+            } else {
+                ((Collection) vals).add(newValue);
+            }
+            return vals;
         }
     }
 
