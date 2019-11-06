@@ -165,15 +165,15 @@ public class UnbxdDefaultDocumentFactory implements UnbxdDocumentFactory, BeanFa
             LOG.debug("Using FeedProduct id [" + id + "]");
         }
         document.setUniqueId(id);
-        document.addField("id", id);
+        //document.addField("id", id);
         document.addField("uniqueId", id);
-        document.addField("pk", model.getPk().getLongValueAsString());
+        //document.addField("pk", model.getPk().getLongValueAsString());
         ComposedTypeModel composedType = this.typeService.getComposedTypeForClass(model.getClass());
         if (Objects.equals(composedType.getCatalogItemType(), Boolean.TRUE)) {
             AttributeDescriptorModel catalogAttDesc = composedType.getCatalogVersionAttribute();
             CatalogVersionModel catalogVersion = (CatalogVersionModel)this.modelService.getAttributeValue(model, catalogAttDesc.getQualifier());
-            document.addField("catalogId", catalogVersion.getCatalog().getId());
-            document.addField("catalogVersion", catalogVersion.getVersion());
+            //document.addField("catalogId", catalogVersion.getCatalog().getId());
+            //document.addField("catalogVersion", catalogVersion.getVersion());
         }
 
     }

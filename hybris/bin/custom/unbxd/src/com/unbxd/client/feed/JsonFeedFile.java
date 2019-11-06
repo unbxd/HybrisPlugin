@@ -58,7 +58,8 @@ public class JsonFeedFile {
     }
 
     private void writeAttribute(JSONObject item, String field, Object o, boolean associated) {
-        Collection<Object> values;
+        item.put(field, o);
+        /*Collection<Object> values;
         if (o instanceof Collection) {
             values = (Collection<Object>) o;
         } else {
@@ -72,7 +73,7 @@ public class JsonFeedFile {
             str = str.replaceAll("[\u0000-\u001f]", "");
             str = StringEscapeUtils.escapeXml(str);
             item.put(field, str);
-        }
+        }*/
     }
 
     private JSONObject writeAdd(Collection<FeedProduct> addedDocs) {
