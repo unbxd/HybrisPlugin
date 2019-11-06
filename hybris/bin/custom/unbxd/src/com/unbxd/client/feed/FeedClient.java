@@ -53,6 +53,10 @@ public class FeedClient {
 
     }
 
+    public List<FeedField> get_fields() {
+        return _fields;
+    }
+
     public String getFeedUrl() {
         return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/upload/catalog/";
     }
@@ -268,6 +272,7 @@ public class FeedClient {
             post.addHeader("Authorization", this.secretKey);
             MultipartEntityBuilder entity = MultipartEntityBuilder.create();
             entity.addPart("file", new FileBody(file));
+            entity.addTextBody("variantID","variantId");
             post.setEntity(entity.build());
 
             HttpResponse response = httpClient1.execute(post);
