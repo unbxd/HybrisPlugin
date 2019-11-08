@@ -91,6 +91,21 @@
 		</y:actions>
 	</context>
 
+	<context component="notification-area" merge-by="source">
+		<na:notification-area>
+			<na:notifications eventType="unbxdSyncInitiated" level="SUCCESS">
+				<na:message>user.notification.unbxd.sync.run</na:message>
+			</na:notifications>
+		</na:notification-area>
+	</context>
+	<context component="notification-area" merge-by="source">
+		<na:notification-area>
+			<na:notifications eventType="unbxdSyncInitFailed" level="FAILURE">
+				<na:message>user.notification.unbxd.sync.cannot.run</na:message>
+			</na:notifications>
+		</na:notification-area>
+	</context>
+
 <!--	<context merge-by="type" parent="GenericItem" type="Product" component="listview">-->
 <!--		<list-view:list-view>-->
 <!--			<list-view:column qualifier="" spring-bean="unbxdProductStatusRenderer" label="unbxd.product.status.column.label" width="160px" merge-mode="REPLACE"/>-->

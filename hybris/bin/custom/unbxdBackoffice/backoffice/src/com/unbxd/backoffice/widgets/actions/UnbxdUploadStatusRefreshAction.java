@@ -1,6 +1,9 @@
 package com.unbxd.backoffice.widgets.actions;
 
 import com.google.common.collect.Lists;
+import com.hybris.backoffice.widgets.notificationarea.event.NotificationEvent;
+import com.hybris.backoffice.widgets.notificationarea.event.NotificationEventTypes;
+import com.hybris.backoffice.widgets.notificationarea.event.NotificationUtils;
 import com.hybris.cockpitng.actions.ActionContext;
 import com.hybris.cockpitng.actions.ActionResult;
 import com.hybris.cockpitng.actions.CockpitAction;
@@ -47,14 +50,19 @@ public class UnbxdUploadStatusRefreshAction extends AbstractComponentWidgetAdapt
         ActionResult<List> result = new ActionResult("error");
         if (context.getData() != null) {
             //TODO call UnbxdSyncService
-            List<Object> currentObjects = this.getData(context);
-            for(Object currentObject : currentObjects) {
-                catalogSyncService.refreshUploadStatus((UnbxdUploadTaskModel)currentObject);
+            try {
+                List<Object> currentObjects = this.getData(context);
+                for(Object currentObject : currentObjects) {
+                    catalogSyncService.refreshUploadStatus((UnbxdUploadTaskModel)currentObject);
+                }
+                result = new ActionResult("success");
+                result.setStatusFlags(EnumSet.of(ActionResult.StatusFlag.OBJECT_MODIFIED));
+                NotificationUtils.notifyUser(NotificationUtils.getWidgetNotificationSource(context), "unbxdSyncInitiated", NotificationEvent.Level.SUCCESS, new Object[0]);
+                return result;
+            } catch (Exception e){
+                NotificationUtils.notifyUser(NotificationUtils.getWidgetNotificationSource(context), "unbxdSyncInitFailed", NotificationEvent.Level.FAILURE, e);
             }
-            result = new ActionResult("success");
-            result.setStatusFlags(EnumSet.of(ActionResult.StatusFlag.OBJECT_MODIFIED));
         }
-
         return result;
     }
 

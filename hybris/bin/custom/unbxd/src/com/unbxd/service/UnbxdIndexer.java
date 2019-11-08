@@ -99,11 +99,13 @@ public class UnbxdIndexer implements BeanFactoryAware {
                 Unbxd.configure(Config.getParameter(UnbxdConstants.SITE_KEY), Config.getParameter(UnbxdConstants.API_KEY), Config.getParameter(UnbxdConstants.SECRET_KEY));
 
                 FeedClient feedClient = Unbxd.getFeedClient();
-                indexedType.getIndexedProperties().entrySet().stream().filter(entry -> entry.getValue().isUnbxd()).forEach(entry ->
-                        feedClient.addSchema(entry.getKey(), map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest()));
-                        if(!(feedClient.get_fields().stream().anyMatch(f->( f.getName().equals("variantId") && f.getDataType().equals(DataType.TEXT))))) {
-                            feedClient.addSchema("variantId", DataType.TEXT, false, false);
-                        }
+                indexedType.getIndexedProperties().entrySet().stream().filter(entry -> entry.getValue().isUnbxd()).forEach(entry -> {
+                    feedClient.addSchema(entry.getKey(), map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest());
+                    feedClient.addSchema("v" + StringUtils.capitalize(entry.getKey()), map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest());
+                });
+                if(!(feedClient.get_fields().stream().anyMatch(f->( f.getName().equals("variantId") && f.getDataType().equals(DataType.TEXT))))) {
+                    feedClient.addSchema("variantId", DataType.TEXT, false, false);
+                }
                 IndexConfig indexConfig = facetSearchConfig.getIndexConfig();
                 SolrConfig solrConfig = facetSearchConfig.getSolrConfig();
                 Collection<FeedProduct> documents = new ArrayList();
@@ -124,22 +126,23 @@ public class UnbxdIndexer implements BeanFactoryAware {
                         FeedProduct solrDocument = this.unbxdDocumentFactory.createInputDocument(itemModel, indexConfig, indexedType);
                         if (itemModel instanceof ProductModel) {
                             ProductModel productModel = (ProductModel) itemModel;
-                            if (productModel.getVariantType() != null && CollectionUtils.isNotEmpty(productModel.getVariants())) {
-                                productModel.getVariants().forEach(variantProductModel -> {
-
+                            if(productModel instanceof VariantProductModel && ((VariantProductModel)productModel).getBaseProduct() != null) {
+                                productModel = getParentProductModel(productModel);
+                                solrDocument = this.unbxdDocumentFactory.createInputDocument(productModel, indexConfig, indexedType);
+                            }
+                            FeedProduct finalSolrDocument = solrDocument;
+                            List<VariantProductModel> variants = getAllProductVariants(productModel);
+                            if(!variants.isEmpty()) {
+                                variants.forEach(variantProductModel -> {
                                     FeedProduct variantSolrDocument = null;
                                     try {
                                         variantSolrDocument = unbxdDocumentFactory.createInputDocument(variantProductModel, indexConfig, indexedType);
                                         Map<String, Object> variant = new HashMap<>();
-                                    /*variantSolrDocument.get_attributes().entrySet().stream().forEach(entry -> {
-                                        variant.put("v" + StringUtils.capitalize(entry.getKey()), entry.getValue());
-                                    });*/
                                         variant.put("variantId", variantSolrDocument.getUniqueId());
-                                        variant.remove("uniqueId");
-                                    /*IdentityProvider<ItemModel> identityProvider = (IdentityProvider) this.beanFactory.getBean(indexedType.getIdentityProvider(), IdentityProvider.class);
-                                    String variantId = identityProvider.getIdentifier(facetSearchConfig.getIndexConfig(), variantProductModel);
-                                    variant.put("variantId" , variantId);*/
-
+                                        variantSolrDocument.get_attributes().remove("uniqueId");
+                                        variantSolrDocument.get_attributes().entrySet().stream().forEach(entry -> {
+                                            variant.put("v" + StringUtils.capitalize(entry.getKey()), entry.getValue());
+                                        });
                                         final List<VariantAttributeDescriptorModel> descriptorModels = variantsService.getVariantAttributesForVariantType(
                                                 variantProductModel.getBaseProduct().getVariantType());
                                         for (final VariantAttributeDescriptorModel descriptorModel : descriptorModels) {
@@ -161,7 +164,7 @@ public class UnbxdIndexer implements BeanFactoryAware {
                                             final String qualifierValue = variantAttributeValue == null ? "" : variantAttributeValue.toString();
                                             variant.put("v" + StringUtils.capitalize(qualifier), qualifierValue);
                                         }
-                                        solrDocument.addVariant(variant);
+                                        finalSolrDocument.addVariant(variant);
                                     } catch (FieldValueProviderException e) {
                                         e.printStackTrace();
                                     }
@@ -202,10 +205,35 @@ public class UnbxdIndexer implements BeanFactoryAware {
                         List<ProductModel> itemsToBeSaved = new ArrayList<>();
                         while (itemIterator.hasNext()) {
                             ItemModel itemModel = (ItemModel) itemIterator.next();
-                            if (itemModel instanceof ProductModel) {
+                            /*if (itemModel instanceof VariantProductModel && ((VariantProductModel)itemModel).getBaseProduct() != null) {
+                                VariantProductModel variantProductModel = ((VariantProductModel) itemModel);
+                                ProductModel parentProduct = variantProductModel.getBaseProduct();
+                                parentProduct.setUnbxdSyncDate(response.get_timestamp());
+                                itemsToBeSaved.add(variantProductModel.getBaseProduct());
+                                if (parentProduct.getVariantType() != null && CollectionUtils.isNotEmpty(parentProduct.getVariants())) {
+                                    parentProduct.getVariants().forEach(variant -> {
+                                        variant.setUnbxdSyncDate(response.get_timestamp());
+                                        itemsToBeSaved.add(variant);
+                                    });
+                                }
+                            }
+                            else if (itemModel instanceof ProductModel) {
                                 ProductModel productModel = ((ProductModel) itemModel);
                                 productModel.setUnbxdSyncDate(response.get_timestamp());
                                 itemsToBeSaved.add(productModel);
+                            }*/
+                            ProductModel productModel = (ProductModel) itemModel;
+                            if(itemModel instanceof VariantProductModel && ((VariantProductModel)itemModel).getBaseProduct() != null) {
+                                productModel = getParentProductModel((ProductModel) itemModel);
+                            }
+                            productModel.setUnbxdSyncDate(response.get_timestamp());
+                            itemsToBeSaved.add(productModel);
+                            List<VariantProductModel> variants = getAllProductVariantsWithIntermediatories(productModel);
+                            if(!variants.isEmpty()) {
+                                variants.forEach(variantProductModel -> {
+                                    variantProductModel.setUnbxdSyncDate(response.get_timestamp());
+                                    itemsToBeSaved.add(variantProductModel);
+                                });
                             }
                         }
                         modelService.saveAll(itemsToBeSaved);
@@ -395,5 +423,38 @@ public class UnbxdIndexer implements BeanFactoryAware {
     protected Exporter getExporter(SolrServerMode serverMode) throws IndexerException {
         String beanName = "solr.exporter." + serverMode.toString().toLowerCase();
         return (Exporter)this.beanFactory.getBean(beanName, Exporter.class);
+    }
+
+    ProductModel getParentProductModel(ProductModel productModel) {
+        if(productModel instanceof VariantProductModel && ((VariantProductModel)productModel).getBaseProduct() != null)
+            return getParentProductModel(((VariantProductModel)productModel).getBaseProduct());
+        return productModel;
+    }
+
+    List<VariantProductModel> getAllProductVariants(ProductModel productModel){
+        List<VariantProductModel> productVariants = new ArrayList<>();
+        if (productModel.getVariantType() != null && CollectionUtils.isNotEmpty(productModel.getVariants())) {
+            productModel.getVariants().forEach(variantProductModel -> {
+                productVariants.addAll(getAllProductVariants(variantProductModel));
+            });
+        } else if(productModel instanceof VariantProductModel){
+            productVariants.add((VariantProductModel)productModel);
+        }
+
+        return productVariants;
+    }
+
+    List<VariantProductModel> getAllProductVariantsWithIntermediatories(ProductModel productModel){
+        List<VariantProductModel> productVariants = new ArrayList<>();
+        if (productModel.getVariantType() != null && CollectionUtils.isNotEmpty(productModel.getVariants())) {
+            productModel.getVariants().forEach(variantProductModel -> {
+                productVariants.add(variantProductModel);
+                productVariants.addAll(getAllProductVariants(variantProductModel));
+            });
+        } else if(productModel instanceof VariantProductModel){
+            productVariants.add((VariantProductModel)productModel);
+        }
+
+        return productVariants;
     }
 }
