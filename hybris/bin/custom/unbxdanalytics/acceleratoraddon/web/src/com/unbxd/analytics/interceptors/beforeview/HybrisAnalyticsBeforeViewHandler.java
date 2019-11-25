@@ -10,7 +10,6 @@
  */
 package com.unbxd.analytics.interceptors.beforeview;
 
-import com.unbxd.analytics.constants.UnbxdAnalyticsConstants;
 import de.hybris.platform.acceleratorservices.config.SiteConfigService;
 import de.hybris.platform.acceleratorservices.storefront.data.JavaScriptVariableData;
 import de.hybris.platform.addonsupport.config.javascript.BeforeViewJsPropsHandlerAdaptee;

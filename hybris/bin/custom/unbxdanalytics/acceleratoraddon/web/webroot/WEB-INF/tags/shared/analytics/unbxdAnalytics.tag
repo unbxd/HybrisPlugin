@@ -16,15 +16,15 @@ UnbxdAnalyticsConf = window.UnbxdAnalyticsConf || {};
 
 <c:choose>
 	<c:when test="${pageType == 'PRODUCT'}">
-		UnbxdAnalyticsConf [ 'pid' ] = '${fn:escapeXml(product.code)}';
+		UnbxdAnalyticsConf [ 'pid' ] = '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(product.code)}';
 
-		/*window.onbeforeunload = sendDwellTime;
+		window.onbeforeunload = sendDwellTime;
 		var start = new Date();
     	function sendDwellTime(){
     		var end = new Date();
     		if(window.Unbxd) Unbxd.track('dwellTime', {pid : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(product.code)}', dwellTime : (end - start)})
     	}
-    	//Unbxd.track("product_view", {"pid": '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(product.code)}'});*/
+    	/*Unbxd.track("product_view", {"pid": '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(product.code)}'});*/
 	</c:when>
 	<c:when test="${pageType == 'CATEGORY'}">
 		<c:if test="${not empty breadcrumbs}">
@@ -48,15 +48,15 @@ UnbxdAnalyticsConf = window.UnbxdAnalyticsConf || {};
 			facets['${ycommerce:encodeJavaScript(breadcrumb.facetName)}'] = ['${ycommerce:encodeJavaScript(breadcrumb.facetValueName)}'];
 		</c:forEach>
 		UnbxdAnalyticsConf["query"] = '${searchPageData.freeTextSearch}';
-		Unbxd.track("search", {"query": '${searchPageData.freeTextSearch}'});
+		/*Unbxd.track("search", {"query": '${searchPageData.freeTextSearch}'});
 		Unbxd.track('search_impression', {query : '${searchPageData.freeTextSearch}', pids_list : []]});
-		Unbxd.track('facets', {query : <query>, facets : facets});
+		Unbxd.track('facets', {query : <query>, facets : facets});*/
 
 	</c:when>
 	<c:when test="${pageType == 'ORDERCONFIRMATION'}">
 		<c:forEach items="${orderData.entries}" var="entry">
-			Unbxd.track ( "order" ,{ "pid" : '${ycommerce:encodeJavaScript(entry.product.code)}' , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' });
-			//Unbxd.track ( "order" , { "pid" : '${ycommerce:encodeJavaScript(entry.product.code)}' , "variantId" : 'VID' , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' })
+			Unbxd.track ( "order" ,{ "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(entry.product.code)}'} , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' });
+			//Unbxd.track ( "order" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(entry.product.code)}'} , "variantId" : 'VID' , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' })
 		</c:forEach>
 	</c:when>
 </c:choose>
@@ -67,38 +67,30 @@ ubx.src = UnbxdSiteUrl;
 ( document . getElementsByTagName ( 'head' )[ 0 ] || document . getElementsByTagName ( 'body' )[ 0 ]). appendChild ( ubx );
         // added search tracking
         // NOTE: in case, if magento default functionality related to search has been changed, change the selector names
-        var searchInput = document.getElementById("search"),
-            searchHitButton = document.getElementsByClassName("action search"),
-            unbxdAttributeName = 'unbxdattr';
-        if (searchInput) {
-            searchInput.setAttribute(unbxdAttributeName, 'sq');
-        }
-        if (searchHitButton && searchHitButton.length) {
-            searchHitButton[0].setAttribute(unbxdAttributeName, 'sq_bt');
-        }
+
 })();
 
 function trackAddToCartWithVariant_unbxd(productCode, quantityAdded, variant) {
-	Unbxd.track( "addToCart" , { "pid" : productCode , "variantId" : variant, "qty" : quantityAdded })
+	Unbxd.track( "addToCart" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(productCode)}' , "variantId" : variant, "qty" : quantityAdded })
 }
 
 function trackAddToCart_unbxd(productCode, quantityAdded) {
-	Unbxd.track( "addToCart" , { "pid" : productCode , "qty" : quantityAdded })
+	Unbxd.track( "addToCart" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(productCode)}' , "qty" : quantityAdded })
 }
 
 function trackAddToCartWithVariantRequestId_unbxd(productCode, quantityAdded, variant) {
-	Unbxd.track( "addToCart" , { "pid" : productCode , "variantId" : variant, "qty" : quantityAdded , "requestId" : requestId })
+	Unbxd.track( "addToCart" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(productCode)}' , "variantId" : variant, "qty" : quantityAdded , "requestId" : requestId })
 }
 
 function trackAddToCartRequestId_unbxd(productCode, quantityAdded,requestId) {
-	Unbxd.track( "addToCart" , { "pid" : productCode , "qty" : quantityAdded , "requestId" : requestId })
+	Unbxd.track( "addToCart" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(productCode)}' , "qty" : quantityAdded , "requestId" : requestId })
 }
 
 function trackUpdateCart_unbxd(productCode, initialQuantity, newQuantity) {
 }
 
 function trackRemoveFromCart_unbxd(productCode, initialQuantity) {
-	Unbxd.track ( "cartRemoval" , { "pid" : " S0012 " , "qty" : initialQuantity })
+	Unbxd.track ( "cartRemoval" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(productCode)}' , "qty" : initialQuantity })
 }
 
 window.mediator.subscribe('trackAddToCart', function(data) {
@@ -124,5 +116,17 @@ window.mediator.subscribe('trackRemoveFromCart', function(data) {
 		trackRemoveFromCart_unbxd(data.productCode, data.initialCartQuantity);
 	}
 });
+
+window.onload = function() {
+            var searchInput = document.getElementById("js-site-search-input"),
+                searchHitButton = document.getElementsByClassName("js_search_button"),
+                unbxdAttributeName = 'unbxdattr';
+            if (searchInput) {
+                searchInput.setAttribute(unbxdAttributeName, 'sq');
+            }
+            if (searchHitButton && searchHitButton.length) {
+                searchHitButton[0].setAttribute(unbxdAttributeName, 'sq_bt');
+            }
+        };
 </script>
 </c:if>
