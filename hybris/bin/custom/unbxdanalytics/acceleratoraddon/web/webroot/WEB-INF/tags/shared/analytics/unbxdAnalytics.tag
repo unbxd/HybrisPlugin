@@ -16,15 +16,15 @@ UnbxdAnalyticsConf = window.UnbxdAnalyticsConf || {};
 
 <c:choose>
 	<c:when test="${pageType == 'PRODUCT'}">
-		UnbxdAnalyticsConf [ 'pid' ] = '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(product.code)}';
+		UnbxdAnalyticsConf [ 'pid' ] = getPid(product.code);
 
 		window.onbeforeunload = sendDwellTime;
 		var start = new Date();
     	function sendDwellTime(){
     		var end = new Date();
-    		if(window.Unbxd) Unbxd.track('dwellTime', {pid : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(product.code)}', dwellTime : (end - start)})
+    		if(window.Unbxd) Unbxd.track('dwellTime', {pid : getPid(product.code), dwellTime : (end - start)})
     	}
-    	/*Unbxd.track("product_view", {"pid": '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(product.code)}'});*/
+    	/*Unbxd.track("product_view", {"pid": getPid(product.code)});*/
 	</c:when>
 	<c:when test="${pageType == 'CATEGORY'}">
 		<c:if test="${not empty breadcrumbs}">
@@ -55,8 +55,8 @@ UnbxdAnalyticsConf = window.UnbxdAnalyticsConf || {};
 	</c:when>
 	<c:when test="${pageType == 'ORDERCONFIRMATION'}">
 		<c:forEach items="${orderData.entries}" var="entry">
-			Unbxd.track ( "order" ,{ "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(entry.product.code)}'} , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' });
-			//Unbxd.track ( "order" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(entry.product.code)}'} , "variantId" : 'VID' , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' })
+			Unbxd.track ( "order" ,{ "pid" : getPid(entry.product.code)} , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' });
+			//Unbxd.track ( "order" , { "pid" : getPid(entry.product.code)} , "variantId" : 'VID' , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' })
 		</c:forEach>
 	</c:when>
 </c:choose>
@@ -70,27 +70,30 @@ ubx.src = UnbxdSiteUrl;
 
 })();
 
+function getPid(productCode) {
+    return '${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${fn:escapeXml(productCode)}';
+}
 function trackAddToCartWithVariant_unbxd(productCode, quantityAdded, variant) {
-	Unbxd.track( "addToCart" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(productCode)}' , "variantId" : variant, "qty" : quantityAdded })
+	Unbxd.track( "addToCart" , { "pid" : getPid(productCode) , "variantId" : variant, "qty" : quantityAdded })
 }
 
 function trackAddToCart_unbxd(productCode, quantityAdded) {
-	Unbxd.track( "addToCart" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(productCode)}' , "qty" : quantityAdded })
+	Unbxd.track( "addToCart" , { "pid" : getPid(productCode) , "qty" : quantityAdded })
 }
 
 function trackAddToCartWithVariantRequestId_unbxd(productCode, quantityAdded, variant) {
-	Unbxd.track( "addToCart" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(productCode)}' , "variantId" : variant, "qty" : quantityAdded , "requestId" : requestId })
+	Unbxd.track( "addToCart" , { "pid" : getPid(productCode) , "variantId" : variant, "qty" : quantityAdded , "requestId" : requestId })
 }
 
 function trackAddToCartRequestId_unbxd(productCode, quantityAdded,requestId) {
-	Unbxd.track( "addToCart" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(productCode)}' , "qty" : quantityAdded , "requestId" : requestId })
+	Unbxd.track( "addToCart" , { "pid" : getPid(productCode) , "qty" : quantityAdded , "requestId" : requestId })
 }
 
 function trackUpdateCart_unbxd(productCode, initialQuantity, newQuantity) {
 }
 
 function trackRemoveFromCart_unbxd(productCode, initialQuantity) {
-	Unbxd.track ( "cartRemoval" , { "pid" : '${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${fn:escapeXml(productCode)}' , "qty" : initialQuantity })
+	Unbxd.track ( "cartRemoval" , { "pid" : getPid(productCode) , "qty" : initialQuantity })
 }
 
 window.mediator.subscribe('trackAddToCart', function(data) {
