@@ -1,24 +1,15 @@
 package com.unbxd.backoffice.widgets.actions;
 
 import com.google.common.collect.Lists;
-import com.hybris.backoffice.widgets.notificationarea.event.NotificationEvent;
-import com.hybris.backoffice.widgets.notificationarea.event.NotificationEventTypes;
-import com.hybris.backoffice.widgets.notificationarea.event.NotificationUtils;
 import com.hybris.cockpitng.actions.ActionContext;
 import com.hybris.cockpitng.actions.ActionResult;
 import com.hybris.cockpitng.actions.CockpitAction;
 import com.hybris.cockpitng.dataaccess.facades.object.ObjectFacade;
 import com.hybris.cockpitng.engine.impl.AbstractComponentWidgetAdapterAware;
-import com.unbxd.client.ConfigException;
-import com.unbxd.client.Unbxd;
-import com.unbxd.client.feed.FeedClient;
-import com.unbxd.client.feed.exceptions.FeedStatusException;
-import com.unbxd.client.feed.exceptions.FeedUploadException;
-import com.unbxd.client.feed.response.FeedStatusResponse;
-import com.unbxd.constants.UnbxdConstants;
+import com.unbxd.backoffice.notificationarea.event.NotificationEvent;
+import com.unbxd.backoffice.notificationarea.event.NotificationUtils;
 import com.unbxd.model.UnbxdUploadTaskModel;
 import com.unbxd.service.impl.CatalogSyncService;
-import de.hybris.platform.util.Config;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
