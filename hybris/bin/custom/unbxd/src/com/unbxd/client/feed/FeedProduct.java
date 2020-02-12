@@ -159,6 +159,14 @@ public class FeedProduct implements InputDocument {
         return _attributes.get(key);
     }
 
+    public Object getFieldValue(String var1) {
+        return _attributes.get(var1);
+    }
+
+    Collection<String> getFieldNames() {
+        return _attributes.keySet();
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("FeedProduct{");
