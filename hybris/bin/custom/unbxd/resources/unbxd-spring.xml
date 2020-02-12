@@ -132,7 +132,7 @@
     <bean id="unbxdIndexedTypePopulator" class="com.unbxd.populator.UnbxdIndexedTypePopulator">
     </bean>
     <alias name="unbxdIndexedTypeConverter" alias="solrIndexedTypeConverter" />
-    <bean id="unbxdIndexedTypeConverter" parent="commerceIndexedTypeConverter">
+    <bean id="unbxdIndexedTypeConverter" parent="defaultSolrIndexedTypeConverter">
         <property name="populators">
             <list merge="true">
                 <ref bean="unbxdIndexedTypePopulator" />
@@ -149,34 +149,6 @@
                 <ref bean="unbxdIndexedPropertyPopulator" />
             </list>
         </property>
-    </bean>
-
-    <alias name="commerceIndexedTypeConverter" alias="solrIndexedTypeConverter" />
-    <bean id="commerceIndexedTypeConverter" parent="defaultSolrIndexedTypeConverter">
-        <property name="populators">
-            <list merge="true">
-                <ref bean="commerceIndexedTypePopulator" />
-            </list>
-        </property>
-    </bean>
-
-    <alias name="defaultCommerceIndexedTypePopulator" alias="commerceIndexedTypePopulator" />
-    <bean id="defaultCommerceIndexedTypePopulator" class="com.unbxd.populator.CommerceIndexedTypePopulator">
-        <property name="indexedTypeSortConverter" ref="indexedTypeSortConverter" />
-    </bean>
-
-    <alias name="defaultIndexedTypeSortConverter" alias="indexedTypeSortConverter" />
-    <bean id="defaultIndexedTypeSortConverter" parent="abstractPopulatingConverter">
-        <property name="targetClass" value="de.hybris.platform.commerceservices.search.solrfacetsearch.config.IndexedTypeSort" />
-        <property name="populators">
-            <list>
-                <ref bean="indexedTypeSortPopulator" />
-            </list>
-        </property>
-    </bean>
-
-    <alias name="defaultIndexedTypeSortPopulator" alias="indexedTypeSortPopulator" />
-    <bean id="defaultIndexedTypeSortPopulator" class="com.unbxd.populator.IndexedTypeSortPopulator">
     </bean>
 
 </beans>
