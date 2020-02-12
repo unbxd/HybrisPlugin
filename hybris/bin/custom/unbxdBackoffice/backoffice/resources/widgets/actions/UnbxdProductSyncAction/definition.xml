@@ -1,0 +1,17 @@
+<action-definition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				   id="com.unbxd.backoffice.widgets.actions.sync"
+				   xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/action-definition.xsd">
+	<sockets>
+		<output id="currentObjects" type="java.util.List"/>
+	</sockets>
+
+	<name>UnBxd Synchronize</name>
+	<description>Action launching synchronization popup.</description>
+	<author>unxd</author>
+	<version>1.0</version>
+
+	<iconUri>icons/unbxd_logo_badge.png</iconUri>
+	<iconHoverUri>icons/unbxd_logo_badge.png</iconHoverUri>
+	<iconDisabledUri>icons/unbxd_logo_badge_disabled.png</iconDisabledUri>
+	<actionClassName>com.unbxd.backoffice.widgets.actions.UnbxdProductSyncAction</actionClassName>
+</action-definition>

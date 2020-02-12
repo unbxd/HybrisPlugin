@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/widgets.xsd">
+
+    <widget-extension widgetId="backofficeMainSlot">
+        <widget id="unbxdBackoffice-perspective" widgetDefinitionId="com.unbxd.backoffice.widgets.unbxdBackofficewidget"
+            template="false" slotId="perspectives" title="Hello unbxdBackoffice">
+            <setting key="perspectiveImageUrl" value="/cng/images/perspective.png"
+                type="String" />
+        </widget>
+        <widget id="unbxdSynchronizationPopup" widgetDefinitionId="com.unbxd.backoffice.widgets.syncpopup" slotId="cockpitWidgetChildrenInvisible" template="true">
+            <instance-settings socketEventRoutingMode="LAST_USED">
+                <create onInit="false" reuseExisting="true">
+                    <all-incoming-events/>
+                </create>
+                <close>
+                    <outgoing-events>
+                        <socket-event id="cancel"/>
+                        <socket-event id="syncJob"/>
+                    </outgoing-events>
+                    <all-outgoing-events/>
+                </close>
+                <select onInit="false">
+                    <all-incoming-events/>
+                </select>
+            </instance-settings>
+            <setting key="widgetStyleClass" type="String"></setting>
+            <setting key="widgetStyleAttribute" type="String"></setting>
+            <setting key="searchVisibilityThreshold" type="Integer">4</setting>
+            <setting key="_width" type="String">500px</setting>
+            <setting key="_height" type="String">auto</setting>
+            <setting key="listitemRenderer" type="String"></setting>
+            <virtual-sockets/>
+            <widget id="unbxdSyncPopupNotificationarea" widgetDefinitionId="com.hybris.backoffice.notificationarea" slotId="syncPopupNotificationarea" template="false">
+                <setting key="notificationId" type="String">syncPopup</setting>
+                <setting key="widgetStyleAttribute" type="String"></setting>
+                <setting key="debugLog" type="Boolean">false</setting>
+                <setting key="widgetStyleClass" type="String"></setting>
+                <setting key="stackSize" type="Integer">3</setting>
+                <setting key="useDynamicNotificationId" type="Boolean">true</setting>
+                <virtual-sockets/>
+            </widget>
+        </widget>
+    </widget-extension>
+    <widget-connection sourceWidgetId="STUB_com.unbxd.backoffice.widgets.actions.sync" outputId="currentObjects" targetWidgetId="unbxdSynchronizationPopup" inputId="inputObjects"/>
+    <widget-connection sourceWidgetId="unbxdSynchronizationPopup" outputId="startedSyncCronJob" targetWidgetId="processes" inputId="updateCronJob"/>
+</widgets>

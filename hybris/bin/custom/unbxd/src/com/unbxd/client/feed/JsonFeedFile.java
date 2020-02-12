@@ -58,7 +58,8 @@ public class JsonFeedFile {
     }
 
     private void writeAttribute(JSONObject item, String field, Object o, boolean associated) {
-        Collection<Object> values;
+        item.put(field, o);
+        /*Collection<Object> values;
         if (o instanceof Collection) {
             values = (Collection<Object>) o;
         } else {
@@ -72,7 +73,7 @@ public class JsonFeedFile {
             str = str.replaceAll("[\u0000-\u001f]", "");
             str = StringEscapeUtils.escapeXml(str);
             item.put(field, str);
-        }
+        }*/
     }
 
     private JSONObject writeAdd(Collection<FeedProduct> addedDocs) {
@@ -109,6 +110,17 @@ public class JsonFeedFile {
             JSONObject item = new JSONObject();
             for (String field : product.getAttributes().keySet()) {
                 writeAttribute(item, field, product.get(field), false);
+            }
+            if (product.getVariants() != null && product.getVariants().size() > 0) {
+                JSONArray variants = new JSONArray();
+                for (Map<String, Object> productVariant : product.getVariants()) {
+                    JSONObject variant = new JSONObject();
+                    for (String field : productVariant.keySet()) {
+                        writeAttribute(variant, field, productVariant.get(field), true);
+                    }
+                    variants.appendElement(variant);
+                }
+                item.put("variants", variants);
             }
 
             items.appendElement(item);

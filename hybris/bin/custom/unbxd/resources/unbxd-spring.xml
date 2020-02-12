@@ -93,5 +93,62 @@
     <bean id="catalogSyncService" class="com.unbxd.service.impl.CatalogSyncService">
 
     </bean>
-			
+
+    <alias name="unbxdDefaultDocumentFactory" alias="unbxdDocumentFactory" />
+    <bean id="unbxdDefaultDocumentFactory" class="com.unbxd.service.impl.UnbxdDefaultDocumentFactory">
+        <property name="modelService" ref="modelService" />
+        <property name="typeService" ref="typeService" />
+        <property name="solrSearchProviderFactory" ref="solrSearchProviderFactory" />
+        <property name="indexerBatchContextFactory" ref="indexerBatchContextFactory" />
+        <property name="fieldNameProvider" ref="solrFieldNameProvider" />
+        <property name="rangeNameProvider" ref="rangeNameProvider" />
+        <property name="valueProviderSelectionStrategy" ref="valueProviderSelectionStrategy" />
+    </bean>
+
+    <alias name="unbxdIndexer" alias="unbxdIndexer" />
+    <bean id="unbxdIndexer" class="com.unbxd.service.UnbxdIndexer">
+        <property name="unbxdDocumentFactory" ref="unbxdDocumentFactory" />
+        <property name="solrSearchProviderFactory" ref="solrSearchProviderFactory" />
+    </bean>
+
+    <alias name="unbxdIndexerBatchStrategy" alias="indexerBatchStrategy" />
+    <bean id="unbxdIndexerBatchStrategy" class="com.unbxd.strategy.UnbxdIndexerBatchStrategy"
+          scope="prototype">
+        <property name="indexerQueriesExecutor" ref="indexerQueriesExecutor" />
+        <property name="indexerBatchContextFactory" ref="indexerBatchContextFactory" />
+        <property name="indexer" ref="unbxdIndexer" />
+    </bean>
+
+    <alias name="unbxdIndexerBatchStrategyFactory" alias="indexerBatchStrategyFactory" />
+    <bean id="unbxdIndexerBatchStrategyFactory" class="com.unbxd.service.impl.UnbxdIndexerBatchStrategyFactory" parent="defaultIndexerBatchStrategyFactory">
+        <property name="unbxdIndexerBatchStrategyBeanId" value="unbxdIndexerBatchStrategy" />
+        <property name="defaultIndexerBatchStrategyBeanId" value="defaultIndexerBatchStrategy" />
+    </bean>
+
+    <alias alias="facetSearchConfigService" name="defaultUnbxdFacetSearchConfigService" />
+    <bean id="defaultUnbxdFacetSearchConfigService" class="com.unbxd.service.impl.DefaultUnbxdFacetSearchConfigService" parent="defaultFacetSearchConfigService">
+    </bean>
+
+    <bean id="unbxdIndexedTypePopulator" class="com.unbxd.populator.UnbxdIndexedTypePopulator">
+    </bean>
+    <alias name="unbxdIndexedTypeConverter" alias="solrIndexedTypeConverter" />
+    <bean id="unbxdIndexedTypeConverter" parent="commerceIndexedTypeConverter">
+        <property name="populators">
+            <list merge="true">
+                <ref bean="unbxdIndexedTypePopulator" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="unbxdIndexedPropertyPopulator" class="com.unbxd.populator.UnbxdIndexedPropertyPopulator">
+    </bean>
+    <alias name="unbxdIndexedPropertyConverter" alias="indexedPropertyConverter" />
+    <bean id="unbxdIndexedPropertyConverter" parent="commerceIndexedPropertyConverter">
+        <property name="populators">
+            <list merge="true">
+                <ref bean="unbxdIndexedPropertyPopulator" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

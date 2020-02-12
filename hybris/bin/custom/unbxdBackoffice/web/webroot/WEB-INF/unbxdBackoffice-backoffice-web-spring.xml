@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cng="http://www.hybris.com/cockpitng/spring"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.hybris.com/cockpitng/spring http://www.hybris.com/cockpitng/spring/cng-spring.xsd">
+
+    <context:annotation-config/>
+
+<!--    <alias name="unbxdSyncStatusCellRenderer" alias="syncStatusCellRenderer"/>-->
+<!--    <bean id="unbxdSyncStatusCellRenderer"-->
+<!--          class="com.unbxd.backoffice.renderers.UnbxdSyncStatusCellRenderer">-->
+<!--        <property name="lazyTasksExecutorFactory" ref="tasksExecutorFactory"/>-->
+<!--        <property name="synchronizationFacade" ref="synchronizationFacade"/>-->
+<!--        <property name="partialSyncInfoRenderer" ref="partialSyncInfoRenderer"/>-->
+<!--        <property name="lazyRender" value="false"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="unbxdProductStatusRenderer" parent="defaultProductStatusRenderer">-->
+<!--        <property name="renderers">-->
+<!--            <list merge="true">-->
+<!--                <ref bean="unbxdSyncStatusCellRenderer"/>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+</beans>

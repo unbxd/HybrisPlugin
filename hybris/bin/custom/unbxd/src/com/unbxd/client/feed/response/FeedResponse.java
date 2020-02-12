@@ -1,25 +1,30 @@
 package com.unbxd.client.feed.response;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class FeedResponse {
 
-    private int _status;
+    private int _statusCode;
+    private Integer _status;
     private String _message;
     private String _uploadID;
     private String _fileName;
+    private Date _timestamp;
     private List<String> _unknownSchemaFields;
     private List<FeedFieldError> _fieldErrors;
     private int _rowNum;
     private int _colNum;
 
     public FeedResponse(Map<String, Object> response){
+        _statusCode = (Integer) response.get("statusCode");
         _status = (Integer) response.get("status");
         _message = (String) response.get("message");
         _uploadID = (String) response.get("uploadId");
         _fileName = (String) response.get("fileName");
+        _timestamp = new Date((Long)response.get("timeStamp"));
         if(response.containsKey("unknownSchemaFields")) {
             _unknownSchemaFields = (List<String>) response.get("unknownSchemaFields");
         }
@@ -38,7 +43,11 @@ public class FeedResponse {
             this._colNum = Integer.parseInt((String) response.get("colNum"));
     }
 
-    public int getStatus(){
+    public int getStatusCode(){
+        return _statusCode;
+    }
+
+    public Integer getStatus(){
         return _status;
     }
 
@@ -51,6 +60,8 @@ public class FeedResponse {
     }
 
     public String get_fileName() { return _fileName; }
+
+    public Date get_timestamp() { return _timestamp; }
 
     public List<FeedFieldError> getFieldErrors(){
         return _fieldErrors;
@@ -71,9 +82,11 @@ public class FeedResponse {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("FeedResponse{");
+        sb.append("_statusCode=").append(_statusCode);
         sb.append("_status=").append(_status);
         sb.append(", _message='").append(_message).append('\'');
         sb.append(", _uploadID='").append(_uploadID).append('\'');
+        sb.append(", _timestamp='").append(_timestamp).append('\'');
         sb.append(", _unknownSchemaFields=").append(_unknownSchemaFields);
         sb.append(", _fieldErrors=").append(_fieldErrors);
         sb.append(", _rowNum=").append(_rowNum);
