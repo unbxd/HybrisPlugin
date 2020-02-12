@@ -163,7 +163,7 @@ public class FeedProduct implements InputDocument {
         return _attributes.get(var1);
     }
 
-    Collection<String> getFieldNames() {
+    public Collection<String> getFieldNames() {
         return _attributes.keySet();
     }
 
