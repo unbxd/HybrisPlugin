@@ -8,7 +8,6 @@ import com.unbxd.client.feed.FeedField;
 import com.unbxd.client.feed.FeedProduct;
 import com.unbxd.client.feed.exceptions.FeedUploadException;
 import com.unbxd.client.feed.response.FeedResponse;
-import com.unbxd.client.feed.response.FeedStatusResponse;
 import com.unbxd.constants.UnbxdConstants;
 import com.unbxd.model.UnbxdUploadTaskModel;
 import de.hybris.platform.core.PK;
@@ -21,9 +20,6 @@ import de.hybris.platform.solrfacetsearch.config.exceptions.FieldValueProviderEx
 import de.hybris.platform.solrfacetsearch.enums.SolrPropertiesTypes;
 import de.hybris.platform.solrfacetsearch.indexer.exceptions.IndexerException;
 import de.hybris.platform.solrfacetsearch.indexer.spi.Exporter;
-import de.hybris.platform.solrfacetsearch.model.SolrIndexModel;
-import de.hybris.platform.solrfacetsearch.model.config.SolrIndexedPropertyModel;
-import de.hybris.platform.solrfacetsearch.model.config.SolrIndexedTypeModel;
 import de.hybris.platform.solrfacetsearch.provider.IdentityProvider;
 import de.hybris.platform.solrfacetsearch.solr.Index;
 import de.hybris.platform.solrfacetsearch.solr.SolrIndexService;
@@ -96,7 +92,9 @@ public class UnbxdIndexer implements BeanFactoryAware {
             return Collections.emptyList();
         } else {
             try {
-                Unbxd.configure(Config.getParameter(UnbxdConstants.SITE_KEY), Config.getParameter(UnbxdConstants.API_KEY), Config.getParameter(UnbxdConstants.SECRET_KEY));
+                Unbxd.configure(Config.getParameter(UnbxdConstants.SITE_KEY + indexedType.getIndexNameFromConfig()),
+                        Config.getParameter(UnbxdConstants.API_KEY + indexedType.getIndexNameFromConfig()),
+                        Config.getParameter(UnbxdConstants.SECRET_KEY + indexedType.getIndexNameFromConfig()));
 
                 FeedClient feedClient = Unbxd.getFeedClient();
                 indexedType.getIndexedProperties().entrySet().stream().filter(entry -> entry.getValue().isUnbxd()).forEach(entry -> {
@@ -238,7 +236,7 @@ public class UnbxdIndexer implements BeanFactoryAware {
                         }
                         modelService.saveAll(itemsToBeSaved);
                     }
-                    createUnbxdUploadTask(response, isFull);
+                    createUnbxdUploadTask(response, isFull, indexedType.getIndexNameFromConfig());
                     System.out.println(response.toString());
                 } catch (FeedUploadException e) {
                     e.printStackTrace();
@@ -268,10 +266,11 @@ public class UnbxdIndexer implements BeanFactoryAware {
         return DataType.TEXT;
     }
 
-    private void createUnbxdUploadTask(FeedResponse response, boolean isFull) {
+    private void createUnbxdUploadTask(FeedResponse response, boolean isFull, String indexName) {
         final UnbxdUploadTaskModel unbxdUploadTask = modelService.create(UnbxdUploadTaskModel.class);
         unbxdUploadTask.setFileName(response.get_fileName());
         unbxdUploadTask.setUploadId(response.getUploadID());
+        unbxdUploadTask.setIndexName(indexName);
         unbxdUploadTask.setStatus("UPLOADED");
         unbxdUploadTask.setIsDelta(!isFull);
         unbxdUploadTask.setTimeStamp(response.get_timestamp());
