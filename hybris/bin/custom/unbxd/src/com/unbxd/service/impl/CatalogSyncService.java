@@ -38,7 +38,7 @@ public class CatalogSyncService {
     @Resource(name = "modelService")
     private ModelService modelService;
 
-    public void syncCatalogProduct(){
+    /*public void syncCatalogProduct(){
 
         Unbxd.configure(Config.getParameter(UnbxdConstants.SITE_KEY), Config.getParameter(UnbxdConstants.API_KEY), Config.getParameter(UnbxdConstants.SECRET_KEY));
         FeedClient feedClient = null;
@@ -83,12 +83,12 @@ public class CatalogSyncService {
 
 
             System.out.println(response.toString());
-        } /*catch (FeedUploadException e) {
+        } *//*catch (FeedUploadException e) {
             e.printStackTrace();
-        } */catch (Exception e){
+        } *//*catch (Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
 
     //comment1
 
@@ -96,7 +96,10 @@ public class CatalogSyncService {
         try{
             String uploadId = uploadTaskObj.getUploadId();
             boolean isDelta = uploadTaskObj.getIsDelta();
-            Unbxd.configure(Config.getParameter(UnbxdConstants.SITE_KEY), Config.getParameter(UnbxdConstants.API_KEY), Config.getParameter(UnbxdConstants.SECRET_KEY));
+            String indexName = uploadTaskObj.getIndexName();
+            Unbxd.configure(Config.getParameter(UnbxdConstants.SITE_KEY + indexName),
+                            Config.getParameter(UnbxdConstants.API_KEY + indexName),
+                            Config.getParameter(UnbxdConstants.SECRET_KEY + indexName));
             FeedClient feedClient = Unbxd.getFeedClient();
             FeedStatusResponse feedStatusResponse = null;
             if(isDelta) {

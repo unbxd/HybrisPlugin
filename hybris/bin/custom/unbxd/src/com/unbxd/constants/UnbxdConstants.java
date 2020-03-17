@@ -25,8 +25,8 @@ public final class UnbxdConstants extends GeneratedUnbxdConstants
 	// implement here constants used by this extension
 
     public static final String PLATFORM_LOGO_CODE = "sap-hybris-platform.png";
-	public static final String SITE_KEY = "unbxd.sitekey";
-    public static final String SECRET_KEY = "unbxd.secretkey";
-    public static final String API_KEY = "unbxd.apikey";
+	public static final String SITE_KEY = "unbxd.sitekey.";
+    public static final String SECRET_KEY = "unbxd.secretkey.";
+    public static final String API_KEY = "unbxd.apikey.";
 
 }

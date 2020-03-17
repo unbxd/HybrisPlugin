@@ -28,7 +28,6 @@
 			<n:navigation-node id="Unbxd">
 				<n:type-node id="hmc.unbxd.products" code="Product"/>
 				<n:type-node id="hmc.unbxd.uploads" code="UnbxdUploadTask"/>
-				<n:type-node id="hmc.unbxd.analytics"/>
 			</n:navigation-node>
 		</n:explorer-tree>
 	</context>

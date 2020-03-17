@@ -34,7 +34,7 @@ public class UnbxdHelloController
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String printWelcome(final ModelMap model)
 	{
-	    catalogSyncService.syncCatalogProduct();
+	    //catalogSyncService.syncCatalogProduct();
 		//model.addAttribute("logoUrl", unbxdService.getHybrisLogoUrl(PLATFORM_LOGO_CODE));
 		return "welcome";
 	}
