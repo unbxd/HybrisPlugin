@@ -48,7 +48,7 @@ public class JsonFeedFile {
         for (FeedField field : fields) {
             JSONObject jsonField = new JSONObject();
             jsonField.put("fieldName", field.getName());
-            jsonField.put("dataType", field.getDataType().getValue());
+            jsonField.put("dataType", field.getDataType());
             jsonField.put("multiValued", Boolean.toString(field.isMultiValued()));
             jsonField.put("autoSuggest", Boolean.toString(field.isMultiValued()));
 

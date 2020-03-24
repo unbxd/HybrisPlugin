@@ -23,6 +23,19 @@
             <value code="INDEXED" />
             <value code="FAILED" />
         </enumtype>
+        <enumtype generate="true" code="UnbxdDataType" autocreate="true" dynamic="true">
+            <value code="text"/>
+            <value code="decimal"/>
+            <value code="number"/>
+            <value code="descriptiontext"/>
+            <value code="link"/>
+            <value code="date"/>
+            <value code="bool"/>
+            <value code="nsku"/>
+            <value code="facet"/>
+            <value code="sku"/>
+            <value code="path"/>
+        </enumtype>
     </enumtypes>
     <itemtypes>
         <!--
@@ -69,6 +82,11 @@
                     <persistence type="property"/>
                     <modifiers read="true" write="true" optional="false"/>
                     <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+                </attribute>
+                <attribute qualifier="unbxdType" type="UnbxdDataType">
+                    <description>Index property type Unbxd</description>
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" optional="true"/>
                 </attribute>
             </attributes>
         </itemtype>

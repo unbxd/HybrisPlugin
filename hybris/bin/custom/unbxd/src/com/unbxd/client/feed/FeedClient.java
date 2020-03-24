@@ -87,12 +87,12 @@ public class FeedClient {
      *                    <li>Can not start and end with -- or __</li>
      *                    <li>Can not start with numbers</li>
      *                    </ul>
-     * @param datatype    Datatype of the field. Refer {@link DataType}
+     * @param datatype    Datatype of the field. Refer {@link String}
      * @param multivalued True for allowing multiple values for each document
      * @param autosuggest True to include field in autosuggest response
      * @return this
      */
-    public FeedClient addSchema(String fieldName, DataType datatype, boolean multivalued, boolean autosuggest) {
+    public FeedClient addSchema(String fieldName, String datatype, boolean multivalued, boolean autosuggest) {
         _fields.add(new FeedField(fieldName, datatype, multivalued, autosuggest));
         return this;
     }
@@ -107,10 +107,10 @@ public class FeedClient {
      *                  <li>Can not start and end with -- or __</li>
      *                  <li>Can not start with numbers</li>
      *                  </ul>
-     * @param datatype  Datatype of the field. Refer {@link DataType}
+     * @param datatype  Datatype of the field. Refer {@link String}
      * @return this
      */
-    public FeedClient addSchema(String fieldName, DataType datatype) {
+    public FeedClient addSchema(String fieldName, String datatype) {
         _fields.add(new FeedField(fieldName, datatype, false, false));
         return this;
     }
