@@ -132,7 +132,7 @@
     <bean id="unbxdIndexedTypePopulator" class="com.unbxd.populator.UnbxdIndexedTypePopulator">
     </bean>
     <alias name="unbxdIndexedTypeConverter" alias="solrIndexedTypeConverter" />
-    <bean id="unbxdIndexedTypeConverter" parent="commerceIndexedTypeConverter">
+    <bean id="unbxdIndexedTypeConverter" parent="defaultSolrIndexedTypeConverter">
         <property name="populators">
             <list merge="true">
                 <ref bean="unbxdIndexedTypePopulator" />
