@@ -1,36 +1,17 @@
 package com.unbxd.service.impl;
 
 import com.unbxd.client.ConfigException;
-import com.unbxd.client.ConnectionManager;
 import com.unbxd.client.Unbxd;
-import com.unbxd.client.feed.DataType;
 import com.unbxd.client.feed.FeedClient;
 import com.unbxd.client.feed.FeedClientFactory;
-import com.unbxd.client.feed.FeedProduct;
 import com.unbxd.client.feed.exceptions.FeedStatusException;
-import com.unbxd.client.feed.exceptions.FeedUploadException;
-import com.unbxd.client.feed.response.FeedResponse;
 import com.unbxd.client.feed.response.FeedStatusResponse;
 import com.unbxd.constants.UnbxdConstants;
 import com.unbxd.model.UnbxdUploadTaskModel;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.util.Config;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.FileEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class CatalogSyncService {
 
@@ -47,8 +28,8 @@ public class CatalogSyncService {
 
         //getFeedClientFactory().getFeedClient(Config.getParameter(UnbxdConstants.SITE_KEY), Config.getParameter(UnbxdConstants.SECRET_KEY), true);
 
-        feedClient.addSchema("code", DataType.TEXT);
-        feedClient.addSchema("name", DataType.TEXT);
+        feedClient.addSchema("code", UnbxdDataType.TEXT.getCode());
+        feedClient.addSchema("name", UnbxdDataType.TEXT.getCode());
 
         Map<String, Object> pid1 = new HashMap<String, Object>();
         pid1.put("code", "new");
