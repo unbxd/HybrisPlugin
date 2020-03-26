@@ -2,13 +2,13 @@ package com.unbxd.service;
 
 import com.unbxd.client.ConfigException;
 import com.unbxd.client.Unbxd;
-import com.unbxd.client.feed.DataType;
 import com.unbxd.client.feed.FeedClient;
 import com.unbxd.client.feed.FeedField;
 import com.unbxd.client.feed.FeedProduct;
 import com.unbxd.client.feed.exceptions.FeedUploadException;
 import com.unbxd.client.feed.response.FeedResponse;
 import com.unbxd.constants.UnbxdConstants;
+import com.unbxd.enums.UnbxdDataType;
 import com.unbxd.model.UnbxdUploadTaskModel;
 import de.hybris.platform.core.PK;
 import de.hybris.platform.core.model.ItemModel;
@@ -98,11 +98,11 @@ public class UnbxdIndexer implements BeanFactoryAware {
 
                 FeedClient feedClient = Unbxd.getFeedClient();
                 indexedType.getIndexedProperties().entrySet().stream().filter(entry -> entry.getValue().isUnbxd()).forEach(entry -> {
-                    feedClient.addSchema(entry.getKey(), map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest());
-                    feedClient.addSchema("v" + StringUtils.capitalize(entry.getKey()), map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest());
+                    feedClient.addSchema(entry.getKey(), entry.getValue().getUnbxdType() != null ? entry.getValue().getUnbxdType() : map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest());
+                    feedClient.addSchema("v" + StringUtils.capitalize(entry.getKey()), entry.getValue().getUnbxdType() != null ? entry.getValue().getUnbxdType() : map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest());
                 });
-                if(!(feedClient.get_fields().stream().anyMatch(f->( f.getName().equals("variantId") && f.getDataType().equals(DataType.TEXT))))) {
-                    feedClient.addSchema("variantId", DataType.TEXT, false, false);
+                if(!(feedClient.get_fields().stream().anyMatch(f->( f.getName().equals("variantId") && f.getDataType().equals(UnbxdDataType.TEXT.getCode()))))) {
+                    feedClient.addSchema("variantId", UnbxdDataType.TEXT.getCode(), false, false);
                 }
                 IndexConfig indexConfig = facetSearchConfig.getIndexConfig();
                 SolrConfig solrConfig = facetSearchConfig.getSolrConfig();
@@ -146,16 +146,16 @@ public class UnbxdIndexer implements BeanFactoryAware {
                                         for (final VariantAttributeDescriptorModel descriptorModel : descriptorModels) {
                                             final String qualifier = descriptorModel.getQualifier();
                                             String vQualifier = "v" + StringUtils.capitalize(qualifier);
-                                            if(!(feedClient.get_fields().stream().anyMatch(f->( f.getName().equals(vQualifier) && f.getDataType().equals(DataType.TEXT))))) {
+                                            if(!(feedClient.get_fields().stream().anyMatch(f->( f.getName().equals(vQualifier) && f.getDataType().equals(UnbxdDataType.TEXT.getCode()))))) {
                                                 if(feedClient.get_fields().stream().anyMatch(f->( f.getName().equals(qualifier)))) {
                                                     Optional<FeedField> field = feedClient.get_fields().stream().filter(f->( f.getName().equals(qualifier))).findFirst();
                                                     if(field.isPresent()) {
                                                         feedClient.addSchema(vQualifier,field.get().getDataType(),field.get().isMultiValued(),field.get().isAutoSuggest());
                                                     } else {
-                                                        feedClient.addSchema(vQualifier, DataType.TEXT, true, false);
+                                                        feedClient.addSchema(vQualifier, UnbxdDataType.TEXT.getCode(), true, false);
                                                     }
                                                 } else {
-                                                    feedClient.addSchema(vQualifier, DataType.TEXT, true, false);
+                                                    feedClient.addSchema(vQualifier, UnbxdDataType.TEXT.getCode(), true, false);
                                                 }
                                             }
                                             final Object variantAttributeValue = lookupVariantAttributeName(variantProductModel, qualifier);
@@ -256,14 +256,18 @@ public class UnbxdIndexer implements BeanFactoryAware {
         }
     }
 
-    private DataType map(String type){
+    private String map(String type){
         if (type.equalsIgnoreCase(SolrPropertiesTypes.STRING.getCode()) || type.equalsIgnoreCase(SolrPropertiesTypes.TEXT.getCode()))
-        { return DataType.TEXT;}
-        if (type.equalsIgnoreCase(SolrPropertiesTypes.DOUBLE.getCode()))
-        { return DataType.DECIMAL;}
+        { return UnbxdDataType.TEXT.getCode();}
+        if (type.equalsIgnoreCase(SolrPropertiesTypes.DOUBLE.getCode()) || type.equalsIgnoreCase(SolrPropertiesTypes.FLOAT.getCode()))
+        { return UnbxdDataType.DECIMAL.getCode();}
         if (type.equalsIgnoreCase(SolrPropertiesTypes.BOOLEAN.getCode()))
-        { return DataType.BOOL;}
-        return DataType.TEXT;
+        { return UnbxdDataType.BOOL.getCode();}
+        if (type.equalsIgnoreCase(SolrPropertiesTypes.DATE.getCode()))
+        { return UnbxdDataType.DATE.getCode();}
+        if (type.equalsIgnoreCase(SolrPropertiesTypes.INT.getCode()) || type.equalsIgnoreCase(SolrPropertiesTypes.LONG.getCode()))
+        { return UnbxdDataType.NUMBER.getCode();}
+        return UnbxdDataType.TEXT.getCode();
     }
 
     private void createUnbxdUploadTask(FeedResponse response, boolean isFull, String indexName) {

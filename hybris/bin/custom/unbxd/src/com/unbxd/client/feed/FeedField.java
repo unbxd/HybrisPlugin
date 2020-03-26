@@ -8,9 +8,9 @@ public class FeedField implements Serializable {
     private Object value = null;
     private boolean multiValued;
     private boolean autoSuggest;
-    private DataType dataType;
+    private String dataType;
 
-    public FeedField(String name, DataType dataType, boolean multiValued, boolean autoSuggest)
+    public FeedField(String name, String dataType, boolean multiValued, boolean autoSuggest)
     {
         this.name = name;
         this.multiValued = multiValued;
@@ -44,7 +44,7 @@ public class FeedField implements Serializable {
         return multiValued;
     }
 
-    public DataType getDataType() {
+    public String getDataType() {
         return dataType;
     }
 

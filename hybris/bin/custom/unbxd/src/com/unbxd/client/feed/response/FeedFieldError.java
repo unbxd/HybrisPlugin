@@ -1,6 +1,5 @@
 package com.unbxd.client.feed.response;
 
-import com.unbxd.client.feed.DataType;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,7 @@ public class FeedFieldError {
 
     private String _fieldName;
     private Object _fieldValue;
-    private DataType _dataType;
+    private String _dataType;
     private boolean _multivalued;
     private int _errorCode;
     private String _message;
@@ -19,7 +18,7 @@ public class FeedFieldError {
     protected FeedFieldError(Map<String, Object> params) {
         this._fieldName = (String) params.get("fieldName");
         this._fieldValue = params.get("fieldValue");
-        this._dataType = DataType.fromString((String) params.get("dataType"));
+        this._dataType = (String) params.get("dataType");
         this._multivalued = Boolean.parseBoolean((String) params.get("multiValue"));
         this._errorCode = (Integer) params.get("errorCode");
         this._message = (String) params.get("message");
@@ -39,7 +38,7 @@ public class FeedFieldError {
         return _fieldValue;
     }
 
-    public DataType getDataType() {
+    public String getDataType() {
         return _dataType;
     }
 
