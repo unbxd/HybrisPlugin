@@ -173,8 +173,8 @@ public class UnbxdDefaultDocumentFactory implements UnbxdDocumentFactory, BeanFa
         if (Objects.equals(composedType.getCatalogItemType(), Boolean.TRUE)) {
             AttributeDescriptorModel catalogAttDesc = composedType.getCatalogVersionAttribute();
             CatalogVersionModel catalogVersion = (CatalogVersionModel)this.modelService.getAttributeValue(model, catalogAttDesc.getQualifier());
-            //document.addField("catalogId", catalogVersion.getCatalog().getId());
-            //document.addField("catalogVersion", catalogVersion.getVersion());
+            document.addField("catalogId", catalogVersion.getCatalog().getId());
+            document.addField("catalogVersion", catalogVersion.getVersion());
         }
 
     }

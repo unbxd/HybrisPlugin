@@ -151,4 +151,12 @@
         </property>
     </bean>
 
+    <alias name="UnbxdCategoryPathValueProvider" alias="categoryPathValueProvider"/>
+    <bean id="UnbxdCategoryPathValueProvider" class="com.unbxd.search.provider.UnbxdCategoryPathValueProvider"
+          parent="abstractPropertyFieldValueProvider">
+        <property name="fieldNameProvider" ref="solrFieldNameProvider" />
+        <property name="categoryService" ref="categoryService" />
+        <property name="categorySource" ref="allCategoriesSource" />
+    </bean>
+
 </beans>
