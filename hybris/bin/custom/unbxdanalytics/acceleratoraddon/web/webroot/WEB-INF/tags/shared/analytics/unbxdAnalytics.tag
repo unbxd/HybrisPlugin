@@ -204,6 +204,99 @@ if($("#"+unbxdAutoSuggestSearchInputId)) {
         ,filtered : false
         ,platform: "io"
     });
+
+    window.searchobj = new Unbxd.setSearch({
+                siteName: unbxdAutoSuggestSiteKey,
+                APIKey: unbxdAutoSuggestApiKey,
+                type: 'search',
+                getCategoryId: '',
+                inputSelector: '#'+unbxdAutoSuggestSearchInputId,
+                searchButtonSelector: '#js_search_button',
+                spellCheck: '#did_you_mean',
+                spellCheckTemp: 'Did you mean : {{suggestion}} ?',
+                searchQueryDisplay: '#search_title',
+                searchQueryDisplayTemp: 'Showing results for {{query}} - {{start}}-{{end}} of {{numberOfProducts}} Results',
+                pageSize: 24,
+                noEncoding: true,
+                platform:"io",
+                fields : [ "vPriceValue", "priceValue", "uniqueId", "name", "brandName", "url", "img-300Wx300H","allCategories","gender","categoryName"],
+                searchResultSetTemp: {
+                    "grid": ['{{#products}}<li><a href="{{url}}" id="pdt-{{uniqueId}}" class="result-item" unbxdParam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product">', '<div class="result-image-container">', '<span class="result-image-horizontal-holder">', '<img src="https://34.226.87.236:9002/yacceleratorstorefront{{{[img-300Wx300H]}}}" alt="{{{name}}}">', '</span>', '</div>', '<div class="result-brand">{{{brandName}}}</div>', '<div class="result-title">{{{name}}}</div>', '<div class="result-price">', '${{priceValue}}', '</div>', '</a></li>{{/products}}'].join(''),
+
+                    "list": ['{{#products}}<li><a href="{{url}}" id="pdt-{{uniqueId}}" class="result-item" unbxdParam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product">', '<div class="result-image-container">', '<span class="result-image-horizontal-holder">', '<img src="https://34.226.87.236:9002/yacceleratorstorefront{{{[img-300Wx300H]}}}" alt="{{{name}}}">', '</span>', '</div>', '<div class="result-brand">{{{brandName}}}</div>', '<div class="result-title">{{{name}}}</div>', '<div class="result-price">', '${{priceValue}}', '</div>', '</a></li>{{/products}}'].join('')
+                },
+                searchResultContainer: '.search-grid-page-result-grid-component',
+                isClickNScroll: false,
+                clickNScrollSelector: '',
+                isAutoScroll: true,
+                isPagination: false,
+                paginationContainerSelector: '.result-pagination',
+                viewTypes: ['grid'],
+                viewTypeContainerSelector: '',
+                facetTemp: ['<div class="facet-block">', '<div class="facet-title">PRICE</div>', '<div class="facet-values">', '<div id="slider-range-max">', '</div>', '<div id="amount" class="clearfix"><div class="lt"></div><div class="rt"></div></div>', '</div>', '</div>', '{{#facets}}', '<div class="facet-block">', '<div class="facet-title">{{name}}</div>', '<div class="facet-values">', '<ul>', '{{#selected}}', '<li unbxdParam_facetName="{{../facet_name}}" unbxdParam_facetValue="{{value}}">', '<input type="checkbox" checked class="filter-checkbox" unbxdParam_facetName="{{../facet_name}}" unbxdParam_facetValue="{{value}}" id="{{../facet_name}}_{{value}}">', '<label for="{{../facet_name}}_{{value}}">', '{{prepareFacetValue value}} ({{count}})', '</label>', '</li>', '{{/selected}}', '{{#unselected}}', '<li unbxdParam_facetName="{{../facet_name}}" unbxdParam_facetValue="{{value}}">', '<input type="checkbox" class="filter-checkbox" unbxdParam_facetName="{{../facet_name}}" unbxdParam_facetValue="{{value}}" id="{{../facet_name}}_{{value}}">', '<label for="{{../facet_name}}_{{value}}">', '{{prepareFacetValue value}} ({{count}})', '</label>', '</li>', '{{/unselected}}', '</ul>', '</div>', '</div>{{/facets}}', '{{#rangefacets}}<div class="facet-block">', '<div class="facet-title">{{name}}</div>', '<div class="facet-values">', '<ul>', '{{#selected}}', '<li unbxdParam_facetName="{{../facet_name}}" unbxdParam_facetValue="{{value}}" unbxdParam_facetType="{{../type}}">', '<input type="checkbox" checked class="filter-checkbox" unbxdParam_facetName="{{../facet_name}}" ', ' unbxdParam_facetType="{{../type}}" unbxdParam_facetValue="{{value}}" id="{{../facet_name}}_{{value}}">', '<label for="{{../facet_name}}_{{value}}">', '{{prepareFacetValue begin}} - {{prepareFacetValue end}} ({{count}})</label></li>', '{{/selected}}', ' {{#unselected}}', '<li unbxdParam_facetName="{{../facet_name}}" unbxdParam_facetValue="{{value}}" unbxdParam_facetType="{{../type}}">', '<input type="checkbox" class="filter-checkbox" unbxdParam_facetName="{{../facet_name}}" ', ' unbxdParam_facetType="{{../type}}" unbxdParam_facetValue="{{value}}" id="{{../facet_name}}_{{value}}">', '<label for="{{../facet_name}}_{{value}}">', '{{prepareFacetValue begin}} - {{prepareFacetValue end}} ({{count}})</label></li>', '{{/unselected}}', '</ul>', '</div>', '</div>', '{{/rangefacets}}'].join(''),
+                facetContainerSelector: "#facets_container",
+                facetCheckBoxSelector: "input[type='checkbox']",
+                facetElementSelector: "label",
+                facetOnSelect: function(el) {},
+                facetOnDeselect: function(el) {},
+                facetMultiSelect: true,
+                selectedFacetTemp: [
+                    'Selected:', '{{#each filters}}', '{{#each this}}', '<div class="selected-facet clearfix">', '<div class="selected-facet-name lt">{{{prepareFacetValue @key}}}</div>', '<div class="selected-facet-delete rt" unbxdParam_facetName="{{this}}" unbxdParam_facetValue="{{@key}}">&times;</div>', '</div>', '{{/each}}', '{{/each}}', '{{#each ranges}}', '{{#each this}}', '<div class="selected-facet clearfix">', '<div class="selected-facet-name lt">{{{prepareFacetValue @key}}}</div>', '<div class="selected-facet-delete rt" unbxdParam_facetName="{{this}}" unbxdParam_facetValue="{{@key}}">&times;</div>', '</div>', '{{/each}}', '{{/each}}'
+                ].join(''),
+                selectedFacetContainerSelector: "#selected_facets",
+                clearSelectedFacetsSelector: "#clear_all_selected_facets",
+                removeSelectedFacetSelector: ".selected-facet-delete",
+                selectedFacetHolderSelector: "",
+                loaderSelector: "" //".result-loader"
+                    ,
+                onFacetLoad: function() {
+                    console.log('onFacetLoad', arguments, this);
+                },
+                sanitizeQueryString: function(q) {
+                    return q;
+                },
+                loaderSelector: ".result-loader",
+                getFacetStats: "price",
+                processFacetStats: function(obj) {
+                    var divs = $("#amount div");
+
+                    jQuery("#slider-range-max").slider({
+                        range: !0,
+                        animate: !0,
+                        min: obj.price.min,
+                        max: obj.price.max,
+                        values: [obj.price.values.min, obj.price.values.max],
+                        create: function() {
+                            jQuery("#amount").val("$" + obj.price.values.min + '  -  ' + "$" + obj.price.values.max);
+                            divs.eq(0).html("$" + obj.price.values.min);
+                            divs.eq(1).html("$" + obj.price.values.max);
+                        },
+                        slide: function(b, c) {
+                            jQuery("#amount").val("$" + c.values[0] + '  -  ' + "$" + c.values[1]);
+                            divs.eq(0).html("$" + c.values[0]);
+                            divs.eq(1).html("$" + c.values[1]);
+                        },
+                        change: function(b, c) {
+                            searchobj
+                                .clearRangeFiltes()
+                                .addRangeFilter("price", c.values[0], c.values[1])
+                                .setPage(1)
+                                .callResults(searchobj.paintResultSet, true);
+                        }
+                    });
+                },
+                setDefaultFilters: function() {},
+                onIntialResultLoad: function() {
+                    console.log('onIntialResultLoad', arguments, this);
+                },
+                onPageLoad: function() {
+                    console.log('onPageLoad', arguments, this);
+                },
+                deferInitRender: [],
+                bannerSelector: '.banner',
+                sortContainerSelector: '.result-sort-options',
+                pageSizeContainerSelector: '.result-page-size-options'
+            });
 }
 </script>
 </c:if>
