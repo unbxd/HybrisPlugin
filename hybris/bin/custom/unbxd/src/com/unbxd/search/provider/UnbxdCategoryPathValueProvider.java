@@ -145,7 +145,6 @@ public class UnbxdCategoryPathValueProvider extends AbstractPropertyFieldValuePr
                 accumulator.append(categoryPathSeparator);
             }
 			accumulator.append(category.getCode());
-			System.out.println(accumulator.toString());
 			output.add(accumulator.toString());
 		}
 	}
