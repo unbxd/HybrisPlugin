@@ -142,11 +142,21 @@ var unbxdAutoSuggestSearchInputId = '${ycommerce:encodeJavaScript(unbxdAutoSugge
 </script>
 <c:choose>
     <c:when  test="${pageType == 'PRODUCTSEARCH'}">
+            <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/jquery.ui.mouse.js"></script>
+            <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/jquery.ui.slider.js"></script>
+            <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/jquery.ui.widget.js"></script>
+            <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-search.js"></script>
+            <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-trigger-search.js"></script>
+    </c:when>
+    <c:when  test="${pageType == 'CATEGORY'}">
+        <script type="text/javascript">
+            var unbxdCategoryId = '${ycommerce:encodeJavaScript(searchPageData.categoryCode)}';
+        </script>
         <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/jquery.ui.mouse.js"></script>
         <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/jquery.ui.slider.js"></script>
         <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/jquery.ui.widget.js"></script>
         <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-search.js"></script>
-        <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-trigger-search.js"></script>
+        <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-trigger-category-browse.js"></script>
     </c:when>
 </c:choose>
 </c:if>

@@ -157,8 +157,8 @@ $(".main__inner-wrapper").html("<div class=\"row\">\n" +
 window.searchobj = new window.Unbxd.setSearch({
     siteName: unbxdAutoSuggestSiteKey,
     APIKey: unbxdAutoSuggestApiKey,
-    type: 'search',
-    getCategoryId: '',
+    type: 'category',
+    getCategoryId: function() { return unbxdCategoryId },
     inputSelector: '#'+unbxdAutoSuggestSearchInputId,
     searchButtonSelector: '#search_button',
     spellCheck: '.pagination-bar-results',
@@ -173,7 +173,6 @@ window.searchobj = new window.Unbxd.setSearch({
     swatchesSelector: ".swatch-box",
     variants: true,
     variantsCount: 10,
-    searchQueryParam: "text",
     searchResultSetTemp: {
         "grid": ['{{#each (productVariant products)}}<li class="product-item"><a href="{{url}}" title="{{{name.[0]}}}" id="{{sku}}" class="thumb" unbxdParam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product">',
         '<img id="img-{{uniqueId}}" src="/yacceleratorstorefront{{{[img-300Wx300H]}}}" alt="{{{name.[0]}}}" title="{{{name.[0]}}}"></a>',
