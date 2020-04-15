@@ -142,7 +142,7 @@
     </script>
     <c:choose>
         <c:when  test="${pageType == 'PRODUCTSEARCH'}">
-            <style>..main__inner-wrapper { display:none; }</style>
+            <style>.main__inner-wrapper { display:none; }</style>
             <script type="text/javascript">
                 window.onload = function() {
                     (function () {
