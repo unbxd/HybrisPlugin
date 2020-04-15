@@ -138,6 +138,8 @@ public class UnbxdIndexer implements BeanFactoryAware {
                                         Map<String, Object> variant = new HashMap<>();
                                         variant.put("variantId", variantSolrDocument.getUniqueId());
                                         variantSolrDocument.get_attributes().remove("uniqueId");
+                                        variantSolrDocument.get_attributes().remove("catalogId");
+                                        variantSolrDocument.get_attributes().remove("catalogVersion");
                                         variantSolrDocument.get_attributes().entrySet().stream().forEach(entry -> {
                                             variant.put("v" + StringUtils.capitalize(entry.getKey()), entry.getValue());
                                         });
