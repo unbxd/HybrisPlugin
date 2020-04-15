@@ -2107,3 +2107,15 @@ var unbxdAutoSuggestFunction = function ($, Handlebars, params) {
 		});
 	};
 };
+if (!window.jQuery || !window.Handlebars) {
+    console.error(
+        'Please include jQuery & Handlebars libraries before loading unbxdAutoSuggest.js or You can pass custom jQuery & Handlebars by calling unbxdAutoSuggestFunction(jQuery, Handlebars) '
+    );
+} else if (!Unbxd.isJqueryRequiredVersion(jQuery.fn.jquery)) {
+    console.error(
+        'jQuery version needs to be greater than 1.7 to use unbxdAutoSuggest.js. You can pass custom jQuery & Handlebars by calling unbxdAutoSuggestFunction(jQuery, Handlebars)'
+    );
+} else {
+    unbxdAutoSuggestFunction(jQuery, Handlebars, {"platform" : "io"});
+}
+
