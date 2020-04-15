@@ -153,7 +153,7 @@ $(".main__inner-wrapper").html("<div class=\"row\">\n" +
     "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +
-    "    </div>");
+    "    </div>").hide();
 window.searchobj = new window.Unbxd.setSearch({
     siteName: unbxdAutoSuggestSiteKey,
     APIKey: unbxdAutoSuggestApiKey,
@@ -354,11 +354,13 @@ window.searchobj = new window.Unbxd.setSearch({
         var selectedView = jQuery(this.options.viewTypeContainerSelector).find(".active").attr("unbxdviewtype");
         console.log("selectedView",selectedView);
         jQuery(this.options.searchResultContainer).removeClass("product__list").removeClass("product__grid").addClass("product__"+selectedView);
+        jQuery(".main__inner-wrapper").show();
     },
     onPageLoad: function () {
         var selectedView = jQuery(this.options.viewTypeContainerSelector).find(".active").attr("unbxdviewtype");
         console.log("selectedView",selectedView);
         jQuery(this.options.searchResultContainer).removeClass("product__list").removeClass("product__grid").addClass("product__"+selectedView);
+        jQuery(".main__inner-wrapper").show();
     },
     deferInitRender: [],
     bannerSelector: '.banner',
@@ -393,7 +395,19 @@ window.searchobj = new window.Unbxd.setSearch({
             }
         }
     },
-        searchEndPoint: "https://search.unbxd.io"
+        searchEndPoint: "https://search.unbxd.io",
+    onNoResult: function(){
+        jQuery(".main__inner-wrapper").html("\t\t\t\t<div class=\"yCmsContentSlot side-content-slot cms_disp-img_slot searchEmptyPageTop\">\n" +
+            "</div><div class=\"search-empty\">\n" +
+            "\t\t<div class=\"headline\">\n" +
+            "\t\t\t0 items found for keyword <strong>"+ $(this.options.inputSelector).val() +"</strong></div>\n" +
+            "\t\t<a class=\"btn btn-default  js-shopping-button\" href=\"/yacceleratorstorefront/en/\">\n" +
+            "\t\t\tContinue Shopping</a>\n" +
+            "\t</div>\n" +
+            "\t\n" +
+            "\t<div class=\"yCmsContentSlot searchEmptyPageMiddle\">\n" +
+            "</div>").show();
+    }
 });
 }
 });
