@@ -1,7 +1,159 @@
 Handlebars.registerHelper('isdefined', function (value) {
     return value !== undefined;
 });
+$(document).ready(function(){
 if(unbxdAutoSuggestSiteKey && unbxdAutoSuggestApiKey && $("#"+unbxdAutoSuggestSearchInputId)) {
+$(".main__inner-wrapper").html("<div class=\"row\">\n" +
+    "        <div class=\"col-xs-3\">\n" +
+    "            <div class=\"yCmsContentSlot search-list-page-left-refinements-slot\">\n" +
+    "                <div class=\"yCmsComponent search-list-page-left-refinements-component\">\n" +
+    "                    <div id=\"selected-product-facet\" class=\"hidden-sm hidden-xs product__facet js-product-facet\">\n" +
+    "                    </div>\n" +
+    "                    <div id=\"product-facet\" class=\"hidden-sm hidden-xs product__facet js-product-facet\">\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-sm-12 col-md-9\">\n" +
+    "            <div class=\"yCmsContentSlot search-list-page-right-result-list-slot\">\n" +
+    "                <div class=\"yCmsComponent search-list-page-right-result-list-component\">\n" +
+    "                    <div class=\"product__list--wrapper\">\n" +
+    "                        <div class=\"header-container clearfix display-none\">\n" +
+    "                            <div class=\"header row clearfix\">\n" +
+    "                                <div class=\"header-search\">\n" +
+    "                                    <div class=\"search-input-button-holder clearfix\">\n" +
+    "                                        <form method=\"GET\" action=\"\">\n" +
+    "                                            <input type=\"text\" class=\"search-input lt\" id=\"search_input\" unbxdattr=\"sq\" name=\"q\" autoComplete=\"off\" placeholder=\"Search...\" />\n" +
+    "                                            <button type=\"submit\" class=\"search-button lt\" id=\"search_button\" unbxdattr=\"sq_bt\"></button>\n" +
+    "                                        </form>\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                        <div  class=\"results\">\n" +
+    "                            <h1 id=\"search_title\"></h1>\n" +
+    "                        </div>\n" +
+    "                        <div class=\"pagination-bar top\">\n" +
+    "                            <div class=\"pagination-toolbar\">\n" +
+    "                                <div class=\"helper clearfix hidden-md hidden-lg\"></div>\n" +
+    "                                <div class=\"sort-refine-bar\">\n" +
+    "                                    <div class=\"row\">\n" +
+    "                                        <div class=\"col-xs-12 col-sm-2   col-md-2\">\n" +
+    "                                            <div class=\"form-group\">\n" +
+    "                                                <label class=\"control-label \" for=\"sortForm1\">Sort by:</label>\n" +
+    "                                                <form class=\"sortForm\" id=\"sortForm1\" name=\"sortForm1\" method=\"get\" action=\"#\">\n" +
+    "\n" +
+    "                                                </form>\n" +
+    "                                            </div>\n" +
+    "                                        </div>\n" +
+    "                                        <div class=\"col-xs-12 col-sm-2 col-md-2\">\n" +
+    "                                            <div class=\"form-group\">\n" +
+    "                                                <label class=\"control-label \" for=\"limitForm1\">Results per page:</label>\n" +
+    "                                                <form class=\"limitForm\" id=\"limitForm1\" name=\"limitForm1\" method=\"get\" action=\"#\">\n" +
+    "\n" +
+    "                                                </form>\n" +
+    "                                            </div>\n" +
+    "                                        </div>\n" +
+    "                                        <div class=\"col-xs-12 col-sm-2 col-md-2\">\n" +
+    "                                            <div class=\"search-header-options\">\n" +
+    "                                                <div class=\"change-view\">\n" +
+    "                                                    <label class=\"control-label \" >View by:</label>\n" +
+    "                                                    <div class=\"view-types\">\n" +
+    "                                                        <span class=\"list-view\">\n" +
+    "                                                            List View\n" +
+    "                                                        </span>\n" +
+    "                                                        <span class=\"grid-view\">\n" +
+    "                                                            Grid View\n" +
+    "                                                        </span>\n" +
+    "                                                    </div>\n" +
+    "                                                </div>\n" +
+    "                                            </div>\n" +
+    "                                        </div>\n" +
+    "\n" +
+    "                                        <div class=\"col-xs-12 col-sm-6 col-md-5 pagination-wrap\">\n" +
+    "                                            <ul class=\"pagination\">\n" +
+    "\n" +
+    "                                            </ul>\n" +
+    "                                        </div>\n" +
+    "\n" +
+    "                                        <div class=\"col-xs-12 col-sm-2 col-md-4 hidden-md hidden-lg\">\n" +
+    "                                            <button class=\"btn btn-default js-show-facets\" data-select-refinements-title=\"Select Refinements\">\n" +
+    "                                                Refine</button>\n" +
+    "                                        </div>\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                            <div class=\"row\">\n" +
+    "                                <div class=\"col-xs-12\">\n" +
+    "                                    <div class=\"pagination-bar-results\"></div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                        <ul class=\"product__listing product__list\"></ul>\n" +
+    "                        <div id=\"addToCartTitle\" class=\"display-none\">\n" +
+    "                            <div class=\"add-to-cart-header\">\n" +
+    "                                <div class=\"headline\">\n" +
+    "                                    <span class=\"headline-text\">Added to Your Shopping Cart</span>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                        <div class=\"pagination-bar bottom\">\n" +
+    "                            <div class=\"pagination-toolbar\">\n" +
+    "                                <div class=\"helper clearfix hidden-md hidden-lg\"></div>\n" +
+    "                                <div class=\"sort-refine-bar\">\n" +
+    "                                    <div class=\"row\">\n" +
+    "                                        <div class=\"col-xs-12 col-sm-4 col-md-4\">\n" +
+    "                                            <div class=\"form-group\">\n" +
+    "                                                <label class=\"control-label \" for=\"sortForm2\">Sort by:</label>\n" +
+    "                                                <form  class=\"sortForm\" id=\"sortForm2\" name=\"sortForm2\" method=\"get\" action=\"#\">\n" +
+    "\n" +
+    "                                                </form>\n" +
+    "                                            </div>\n" +
+    "                                            <div class=\"form-group\">\n" +
+    "                                                <label class=\"control-label \" for=\"limitForm2\">Results per page:</label>\n" +
+    "                                                <form class=\"limitForm\" id=\"limitForm2\" name=\"limitForm2\" method=\"get\" action=\"#\">\n" +
+    "\n" +
+    "                                                </form>\n" +
+    "                                            </div>\n" +
+    "                                            <div class=\"search-header-options\">\n" +
+    "                                                <div class=\"change-view\">\n" +
+    "                                                    <label class=\"control-label \" >View by:</label>\n" +
+    "                                                    <div class=\"view-types\">\n" +
+    "                                                        <span class=\"list-view\">\n" +
+    "                                                            List View\n" +
+    "                                                        </span>\n" +
+    "                                                        <span class=\"grid-view\">\n" +
+    "                                                            Grid View\n" +
+    "                                                        </span>\n" +
+    "                                                    </div>\n" +
+    "                                                </div>\n" +
+    "                                            </div>\n" +
+    "                                        </div>\n" +
+    "\n" +
+    "                                        <div class=\"col-xs-12 col-sm-6 col-md-5 pagination-wrap\">\n" +
+    "                                            <ul class=\"pagination\">\n" +
+    "\n" +
+    "                                            </ul>\n" +
+    "                                        </div>\n" +
+    "\n" +
+    "                                        <div class=\"col-xs-12 col-sm-2 col-md-4 hidden-md hidden-lg\">\n" +
+    "                                            <button class=\"btn btn-default js-show-facets\" data-select-refinements-title=\"Select Refinements\">\n" +
+    "                                                Refine</button>\n" +
+    "                                        </div>\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                            <div class=\"row\">\n" +
+    "                                <div class=\"col-xs-12\">\n" +
+    "                                    <div class=\"pagination-bar-results\"></div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>");
 window.searchobj = new window.Unbxd.setSearch({
     siteName: unbxdAutoSuggestSiteKey,
     APIKey: unbxdAutoSuggestApiKey,
@@ -244,6 +396,7 @@ window.searchobj = new window.Unbxd.setSearch({
         searchEndPoint: "https://search.unbxd.io"
 });
 }
+});
 
 
 

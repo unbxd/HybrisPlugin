@@ -1,4 +1,6 @@
+$(document).ready(function(){
 if(unbxdAutoSuggestSiteKey && unbxdAutoSuggestApiKey && $("#"+unbxdAutoSuggestSearchInputId)) {
+    unbxdAutoSuggestFunction(jQuery, Handlebars, {"platform" : "io"});
     $("#"+unbxdAutoSuggestSearchInputId).unbxdautocomplete({
         siteName : unbxdAutoSuggestSiteKey //your site key which can be found on dashboard
         ,APIKey : unbxdAutoSuggestApiKey //your api key which is mailed to during account creation or can be found on account section on the dashboard
@@ -62,3 +64,4 @@ if(unbxdAutoSuggestSiteKey && unbxdAutoSuggestApiKey && $("#"+unbxdAutoSuggestSe
         ,platform: "io"
     });
 }
+});
