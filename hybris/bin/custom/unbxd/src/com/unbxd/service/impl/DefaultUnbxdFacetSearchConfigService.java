@@ -27,9 +27,9 @@ public class DefaultUnbxdFacetSearchConfigService extends DefaultFacetSearchConf
         List<IndexedProperty> indexedProperties = super.resolveIndexedProperties(facetSearchConfig, indexedType, indexedPropertiesIds);
 
         //indexedProperties = indexedProperties.stream().filter(indexedProperty -> indexedProperty.isUnbxd()).collect(Collectors.toList());
-
-        indexedProperties.removeIf(indexedProperty -> !indexedProperty.isUnbxd());
-
+        if (indexedType.isUnbxd()) {
+            indexedProperties.removeIf(indexedProperty -> !indexedProperty.isUnbxd());
+        }
         return indexedProperties;
     }
 }

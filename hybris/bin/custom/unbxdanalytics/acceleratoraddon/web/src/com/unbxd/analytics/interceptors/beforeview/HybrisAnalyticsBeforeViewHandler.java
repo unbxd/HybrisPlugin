@@ -42,6 +42,15 @@ public class HybrisAnalyticsBeforeViewHandler extends BeforeViewJsPropsHandlerAd
 	private static final String UNBXD_ANALYTICS_SITE_KEY = "unbxd.analytics.sitekey.";
 	private static final String UNBXD_ANALYTICS_DEFAULT_SITE_KEY = "unbxd.analytics.sitekey.default";
 	private static final String UNBXD_ANALYTICS_SITEKEY = "unbxdAnalyticsSiteKey";
+	private static final String UNBXD_AUTOSUGGEST_SITE_KEY = "unbxd.autosuggest.sitekey.";
+	private static final String UNBXD_AUTOSUGGEST_DEFAULT_SITE_KEY = "unbxd.autosuggest.sitekey.default";
+	private static final String UNBXD_AUTOSUGGEST_SITEKEY = "unbxdAutoSuggestSiteKey";
+	private static final String UNBXD_AUTOSUGGEST_API_KEY = "unbxd.autosuggest.apikey.";
+	private static final String UNBXD_AUTOSUGGEST_DEFAULT_API_KEY = "unbxd.autosuggest.apikey.default";
+	private static final String UNBXD_AUTOSUGGEST_APIKEY = "unbxdAutoSuggestApiKey";
+	private static final String UNBXD_AUTOSUGGEST_SEARCHINPUT_ID = "unbxd.autosuggest.searchinputid.";
+	private static final String UNBXD_AUTOSUGGEST_DEFAULT_SEARCHINPUT_ID = "unbxd.autosuggest.searchinputid.default";
+	private static final String UNBXD_AUTOSUGGEST_SEARCHINPUTIDKEY = "unbxdAutoSuggestSearchInputId";
 
 	@Resource(name = "siteConfigService")
 	private SiteConfigService siteConfigService;
@@ -101,6 +110,12 @@ public class HybrisAnalyticsBeforeViewHandler extends BeforeViewJsPropsHandlerAd
 			model.addAttribute(PIWIK_SITE_ID, piwikSiteId);
 			final String unbxdSiteKey = getCurrentUnbxdSiteKey();
 			model.addAttribute(UNBXD_ANALYTICS_SITEKEY, unbxdSiteKey);
+			final String unbxdAutoSuggestSiteKey = getCurrentUnbxdAutoSuggestSiteKey();
+			model.addAttribute(UNBXD_AUTOSUGGEST_SITEKEY, unbxdAutoSuggestSiteKey);
+			final String unbxdAutoSuggestAPIKey = getCurrentUnbxdAutoSuggestAPIKey();
+			model.addAttribute(UNBXD_AUTOSUGGEST_APIKEY, unbxdAutoSuggestAPIKey);
+			final String unbxdAutoSuggestSearchInputId = getCurrentUnbxdAutoSuggestSearchInputId();
+			model.addAttribute(UNBXD_AUTOSUGGEST_SEARCHINPUTIDKEY, unbxdAutoSuggestSearchInputId);
 			final CatalogModel unbxdCatalog = getCurrentUnbxdCatalog();
 			model.addAttribute(UNBXD_ANALYTICS_CATALOG, unbxdCatalog);
 			//Setting the endpoint url as model attribute rather base.js.properties so that it can be overriden from local.properties
@@ -134,6 +149,36 @@ public class HybrisAnalyticsBeforeViewHandler extends BeforeViewJsPropsHandlerAd
 			unbxdSiteKey = siteConfigService.getProperty(UNBXD_ANALYTICS_DEFAULT_SITE_KEY);
 		}
 		return unbxdSiteKey;
+	}
+
+	protected String getCurrentUnbxdAutoSuggestSiteKey()
+	{
+		String unbxdAutoSuggestSiteKey = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_SITE_KEY + baseStoreService.getCurrentBaseStore().getUid());
+		if (unbxdAutoSuggestSiteKey == null)
+		{
+			unbxdAutoSuggestSiteKey = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_DEFAULT_SITE_KEY);
+		}
+		return unbxdAutoSuggestSiteKey;
+	}
+
+	protected String getCurrentUnbxdAutoSuggestAPIKey()
+	{
+		String unbxdAutoSuggestAPIKey = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_API_KEY + baseStoreService.getCurrentBaseStore().getUid());
+		if (unbxdAutoSuggestAPIKey == null)
+		{
+			unbxdAutoSuggestAPIKey = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_DEFAULT_API_KEY);
+		}
+		return unbxdAutoSuggestAPIKey;
+	}
+
+	protected String getCurrentUnbxdAutoSuggestSearchInputId()
+	{
+		String unbxdAutoSuggestSearchInputId = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_SEARCHINPUT_ID + baseStoreService.getCurrentBaseStore().getUid());
+		if (unbxdAutoSuggestSearchInputId == null)
+		{
+			unbxdAutoSuggestSearchInputId = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_DEFAULT_SEARCHINPUT_ID);
+		}
+		return unbxdAutoSuggestSearchInputId;
 	}
 
 	protected CatalogModel getCurrentUnbxdCatalog()

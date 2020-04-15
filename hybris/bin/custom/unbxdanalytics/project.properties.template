@@ -27,18 +27,29 @@ storefront.supportedUiExperienceLevels.apparel-de=DESKTOP
 storefront.supportedUiExperienceLevels.powertools=DESKTOP
 
 
-unbxdanalytics.javascript.paths.responsive=/responsive/common/js/unbxdanalytics.js;/shared/common/js/piwik-min.js;/shared/common/js/unbxd-autosuggest.js
+unbxdanalytics.javascript.paths.responsive=/responsive/common/js/unbxdanalytics.js;/shared/common/js/piwik-min.js;/shared/common/js/handlebars.min.js;/shared/common/js/unbxd-autosuggest.js;/shared/common/js/unbxd-trigger-autosuggest.js;/shared/common/js/jquery.ui.mouse.js;/shared/common/js/jquery.ui.slider.js;/shared/common/js/jquery.ui.widget.js;/shared/common/js/unbxd-search.js
 
-unbxdanalytics.css.paths.responsive=/responsive/common/css/unbxdanalytics.css
+unbxdanalytics.css.paths.responsive=/responsive/common/css/unbxdanalytics.css;/responsive/common/css/unbxdAutosuggest.css
 
 #Can be overriden in config/local.properties or project.properties
 #two piwik tracker URL needs to be configured, one for http pages and one for https pages.
-#the tracker URL for https pages must also use https protocol. 
-piwik.tracker.url=https://localhost:9002/yacceleratorstorefront/events
-piwik.tracker.https.url=https://localhost:9002/yacceleratorstorefront/events
+#the tracker URL for https pages must also use https protocol.
+piwik.tracker.url=https\://localhost\:9002/yacceleratorstorefront/events
+piwik.tracker.https.url=https\://localhost\:9002/yacceleratorstorefront/events
 
 piwik.tracker.siteid=0
 piwik.tracker.siteid.electronics=1
 piwik.tracker.siteid.apparel-de=2
 piwik.tracker.siteid.apparel-uk=3
 
+unbxd.analytics.sitekey.default=DevHybris801271569422411
+unbxd.analytics.sitekey.apparel-uk=DevHybris801271569422411
+
+unbxd.autosuggest.sitekey.default=DevHybris801271569422411
+unbxd.autosuggest.sitekey.apparel-uk=DevHybris801271569422411
+
+unbxd.autosuggest.apikey.default=06b56a9356d527730b4545047f3f7c3c
+unbxd.autosuggest.apikey.apparel-uk=06b56a9356d527730b4545047f3f7c3c
+
+unbxd.autosuggest.searchinputid.default=js-site-search-input
+unbxd.autosuggest.searchinputid.apparel-uk=js-site-search-input
