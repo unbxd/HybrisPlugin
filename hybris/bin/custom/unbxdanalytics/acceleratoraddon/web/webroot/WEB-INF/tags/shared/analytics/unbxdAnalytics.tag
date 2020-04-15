@@ -37,8 +37,8 @@ UnbxdAnalyticsConf = window.UnbxdAnalyticsConf || {};
 		UnbxdAnalyticsConf["page"] = "${fn:escapeXml(categoryName)}";
 		//UnbxdAnalyticsConf["page"] = "${fn:escapeXml(categories)}";
 		UnbxdAnalyticsConf["page_type"] = "CATEGORY_PATH";
-		/*Unbxd.track('browse_impression', {page : "${fn:escapeXml(categoryName)}", page_type: "CATEGORY_PATH", pids_list : []]})
-		//Unbxd.track('browse_impression', {page : "${fn:escapeXml(categoryName)}", page_type: "CATEGORY_PATH", pids_list : ['a001','a002']})
+		/*Unbxd.track('browse_impression', {page : "${fn:escapeXml(categoryName)}", page_type: "CATEGORY_PATH", pids_list : []})
+		//Unbxd.track('browse_impression', {page : "${fn:escapeXml(categoryName)}", page_type: "CATEGORY_PATH", pids_list : []})
 		Unbxd.track('facets', {page : "${fn:escapeXml(categoryName)}", page_type: "CATEGORY_PATH", facets : '<facets>'});
 		Unbxd.track('categoryPage', {"page":"", "page_type":"CATEGORY_PATH", "page_name":"${fn:escapeXml(categoryName)}"});*/
 	</c:when>
@@ -49,7 +49,7 @@ UnbxdAnalyticsConf = window.UnbxdAnalyticsConf || {};
 		</c:forEach>
 		UnbxdAnalyticsConf["query"] = '${searchPageData.freeTextSearch}';
 		/*Unbxd.track("search", {"query": '${searchPageData.freeTextSearch}'});
-		Unbxd.track('search_impression', {query : '${searchPageData.freeTextSearch}', pids_list : []]});
+		Unbxd.track('search_impression', {query : '${searchPageData.freeTextSearch}', pids_list : []});
 		Unbxd.track('facets', {query : <query>, facets : facets});*/
 
 	</c:when>
@@ -140,14 +140,13 @@ var unbxdAutoSuggestSiteKey = '${ycommerce:encodeJavaScript(unbxdAutoSuggestSite
 var unbxdAutoSuggestApiKey = '${ycommerce:encodeJavaScript(unbxdAutoSuggestApiKey)}';
 var unbxdAutoSuggestSearchInputId = '${ycommerce:encodeJavaScript(unbxdAutoSuggestSearchInputId)}';
 </script>
-</c:if>
-
 <c:choose>
     <c:when  test="${pageType == 'PRODUCTSEARCH'}">
-        <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-search.js"></script>
-        <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-trigger-search.js"></script>
         <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/jquery.ui.mouse.js"></script>
         <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/jquery.ui.slider.js"></script>
         <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/jquery.ui.widget.js"></script>
+        <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-search.js"></script>
+        <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-trigger-search.js"></script>
     </c:when>
-</c:choos>
+</c:choose>
+</c:if>
