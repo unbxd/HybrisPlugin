@@ -29,7 +29,7 @@ storefront.supportedUiExperienceLevels.powertools=DESKTOP
 
 unbxdanalytics.javascript.paths.responsive=/responsive/common/js/unbxdanalytics.js;/shared/common/js/piwik-min.js;/shared/common/js/unbxd-autosuggest.js;/shared/common/js/unbxd-trigger-autosuggest.js;/shared/common/js/handlebars.min.js;
 
-unbxdanalytics.css.paths.responsive=/responsive/common/css/unbxdanalytics.css
+unbxdanalytics.css.paths.responsive=/responsive/common/css/unbxdanalytics.css;/responsive/common/css/unbxdAutosuggest.css
 
 #Can be overriden in config/local.properties or project.properties
 #two piwik tracker URL needs to be configured, one for http pages and one for https pages.
