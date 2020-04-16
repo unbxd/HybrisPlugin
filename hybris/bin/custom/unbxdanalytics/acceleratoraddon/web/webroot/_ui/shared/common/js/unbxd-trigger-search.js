@@ -342,6 +342,8 @@ $(document).ready(function(){
             loaderSelector: ".result-loader",
             getFacetStats: "priceValue",
             setDefaultFilters: function () {
+                //this.addFilter('catalogVersion', catalogVersion);
+                //this.addFilter('catalogId', catalogId);
             },
             'template-features': {
                 "autoScroll": false,

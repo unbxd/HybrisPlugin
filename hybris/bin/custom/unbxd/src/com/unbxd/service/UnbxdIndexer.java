@@ -101,6 +101,11 @@ public class UnbxdIndexer implements BeanFactoryAware {
                     feedClient.addSchema(entry.getKey(), entry.getValue().getUnbxdType() != null ? entry.getValue().getUnbxdType() : map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest());
                     feedClient.addSchema("v" + StringUtils.capitalize(entry.getKey()), entry.getValue().getUnbxdType() != null ? entry.getValue().getUnbxdType() : map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest());
                 });
+                feedClient.addSchema("catalogId", UnbxdDataType.TEXT.getCode());
+                feedClient.addSchema("catalogVersion", UnbxdDataType.TEXT.getCode());
+                feedClient.addSchema("vCatalogId", UnbxdDataType.TEXT.getCode());
+                feedClient.addSchema("vCatalogVersion", UnbxdDataType.TEXT.getCode());
+
                 if(!(feedClient.get_fields().stream().anyMatch(f->( f.getName().equals("variantId") && f.getDataType().equals(UnbxdDataType.TEXT.getCode()))))) {
                     feedClient.addSchema("variantId", UnbxdDataType.TEXT.getCode(), false, false);
                 }
@@ -138,8 +143,6 @@ public class UnbxdIndexer implements BeanFactoryAware {
                                         Map<String, Object> variant = new HashMap<>();
                                         variant.put("variantId", variantSolrDocument.getUniqueId());
                                         variantSolrDocument.get_attributes().remove("uniqueId");
-                                        variantSolrDocument.get_attributes().remove("catalogId");
-                                        variantSolrDocument.get_attributes().remove("catalogVersion");
                                         variantSolrDocument.get_attributes().entrySet().stream().forEach(entry -> {
                                             variant.put("v" + StringUtils.capitalize(entry.getKey()), entry.getValue());
                                         });
