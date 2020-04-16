@@ -61,7 +61,7 @@ public class FeedProduct implements InputDocument {
 
     @Override
     public void addField(String name, Object value){
-        if(!(name.startsWith("autosuggest") || name.startsWith("spellcheck"))) {
+        if(!(name.startsWith("autosuggest") || name.startsWith("spellcheck") || name.contains("sortable"))) {
             String fieldName = StringUtils.substringBefore(name, USED_SEPARATOR);
 
             Object existingValue = this._attributes.get(fieldName);
