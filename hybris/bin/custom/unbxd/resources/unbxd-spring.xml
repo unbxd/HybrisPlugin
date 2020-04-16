@@ -159,4 +159,11 @@
         <property name="categorySource" ref="allCategoriesSource" />
     </bean>
 
+    <alias name="unbxdImageValueProvider" alias="unbxdImageValueProvider"/>
+    <bean id="unbxdImageValueProvider" class="com.unbxd.search.provider.UnbxdImageValueProvider">
+        <property name="mediaFormat" value="30Wx30H"/>
+        <property name="mediaService" ref="mediaService" />
+        <property name="mediaContainerService" ref="mediaContainerService" />
+        <property name="fieldNameProvider" ref="solrFieldNameProvider" />
+    </bean>
 </beans>

@@ -355,12 +355,18 @@ window.searchobj = new window.Unbxd.setSearch({
         console.log("selectedView",selectedView);
         jQuery(this.options.searchResultContainer).removeClass("product__list").removeClass("product__grid").addClass("product__"+selectedView);
         jQuery(".main__inner-wrapper").show();
+        if(unbxdAnalyticsEnabled && !initUnbxdAnalyticsNow) {
+            window.addEventListener("load", initUnbxdAnalytics);
+        }
     },
     onPageLoad: function () {
         var selectedView = jQuery(this.options.viewTypeContainerSelector).find(".active").attr("unbxdviewtype");
         console.log("selectedView",selectedView);
         jQuery(this.options.searchResultContainer).removeClass("product__list").removeClass("product__grid").addClass("product__"+selectedView);
         jQuery(".main__inner-wrapper").show();
+        if(unbxdAnalyticsEnabled && !initUnbxdAnalyticsNow) {
+            window.addEventListener("load", initUnbxdAnalytics);
+        }
     },
     deferInitRender: [],
     bannerSelector: '.banner',
@@ -407,6 +413,9 @@ window.searchobj = new window.Unbxd.setSearch({
             "\t\n" +
             "\t<div class=\"yCmsContentSlot searchEmptyPageMiddle\">\n" +
             "</div>").show();
+        if(unbxdAnalyticsEnabled && !initUnbxdAnalyticsNow) {
+            window.addEventListener("load", initUnbxdAnalytics);
+        }
     }
 });
 }

@@ -2,10 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags" %>
-
+<script type="text/javascript">
+        var initUnbxdAnalyticsNow = false;
+        var unbxdAnalyticsEnabled = false;
+<script>
 <c:if test="${not empty unbxdAnalyticsSiteKey}">
     <script type="text/javascript">
-
+        initUnbxdAnalyticsNow = true;
+        unbxdAnalyticsEnabled = true;
         /* * * UNBXD ANALYTICS CONFIGURATION * * */
         var UnbxdSiteName = "${ycommerce:encodeJavaScript(unbxdAnalyticsSiteKey)}" ; // Replace the value with your Site Key. /* * * DON'T EDIT BELOW THIS LINE * * */
         var UnbxdSiteUrl = '//d21gpk1vhmjuf5.cloudfront.net/unbxdAnalytics.js' ;
@@ -34,6 +38,7 @@
         </c:forEach>
 
         </c:if>
+
         UnbxdAnalyticsConf["page"] = "${fn:escapeXml(categoryName)}";
         //UnbxdAnalyticsConf["page"] = "${fn:escapeXml(categories)}";
         UnbxdAnalyticsConf["page_type"] = "CATEGORY_PATH";
@@ -61,6 +66,7 @@
         </c:when>
         </c:choose>
 
+        function initUnbxdAnalytics() {
         ( function () {
             var ubx = document.createElement ( 'script' ); ubx.type = 'text/javascript' ; ubx.async = true ;
             ubx.src = UnbxdSiteUrl;
@@ -69,6 +75,7 @@
             // NOTE: in case, if magento default functionality related to search has been changed, change the selector names
 
         })();
+        }
 
         function getPid(productCode) {
             return '${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_' + productCode;
@@ -120,7 +127,7 @@
             }
         });
 
-        window.onload = function() {
+        function searchHitTrack() {
             var searchInput = document.getElementById("js-site-search-input"),
                 searchHitButton = document.getElementsByClassName("js_search_button"),
                 unbxdAttributeName = 'unbxdattr';
@@ -130,7 +137,8 @@
             if (searchHitButton && searchHitButton.length) {
                 searchHitButton[0].setAttribute(unbxdAttributeName, 'sq_bt');
             }
-        };
+        }
+        window.addEventListener("load", searchHitTrack);
     </script>
 </c:if>
 
@@ -146,7 +154,8 @@
         <c:when  test="${pageType == 'PRODUCTSEARCH'}">
             <style>.main__inner-wrapper { display:none; }</style>
             <script type="text/javascript">
-                window.onload = function() {
+                initUnbxdAnalyticsNow = false;
+                function triggerSearch() {
                     (function () {
                         var ubx = document.createElement('script');
                         ubx.type = 'text/javascript';
@@ -157,14 +166,15 @@
                         // NOTE: in case, if magento default functionality related to search has been changed, change the selector names
 
                     })();
-                };
+                }
+                window.addEventListener("load", triggerSearch);
             </script>
-            <%--            <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-trigger-search.js"></script>--%>
         </c:when>
         <c:when  test="${pageType == 'CATEGORY'}">
-            <style>..main__inner-wrapper { display:none; }</style>
+            <style>.main__inner-wrapper { display:none; }</style>
             <script type="text/javascript">
-                window.onload = function() {
+                initUnbxdAnalyticsNow = false;
+                function triggerCategoryBrowse() {
                     (function () {
                         var ubx = document.createElement('script');
                         ubx.type = 'text/javascript';
@@ -175,11 +185,16 @@
                         // NOTE: in case, if magento default functionality related to search has been changed, change the selector names
 
                     })();
-                };
+                }
+                window.addEventListener("load", triggerCategoryBrowse);
                 var unbxdCategoryId = '${ycommerce:encodeJavaScript(searchPageData.categoryCode)}';
             </script>
-
-            <%--            <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-trigger-category-browse.js"></script>--%>
         </c:when>
     </c:choose>
 </c:if>
+
+<script type="text/javascript">
+    if(initUnbxdAnalyticsNow) {
+        window.addEventListener("load", initUnbxdAnalytics);
+    }
+</script>
