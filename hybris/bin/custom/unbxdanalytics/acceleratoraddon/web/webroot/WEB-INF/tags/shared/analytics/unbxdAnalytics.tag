@@ -5,7 +5,7 @@
 <script type="text/javascript">
         var initUnbxdAnalyticsNow = false;
         var unbxdAnalyticsEnabled = false;
-<script>
+</script>
 <c:if test="${not empty unbxdAnalyticsSiteKey}">
     <script type="text/javascript">
         initUnbxdAnalyticsNow = true;
