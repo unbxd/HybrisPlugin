@@ -139,6 +139,8 @@
         var unbxdAutoSuggestSiteKey = '${ycommerce:encodeJavaScript(unbxdAutoSuggestSiteKey)}';
         var unbxdAutoSuggestApiKey = '${ycommerce:encodeJavaScript(unbxdAutoSuggestApiKey)}';
         var unbxdAutoSuggestSearchInputId = '${ycommerce:encodeJavaScript(unbxdAutoSuggestSearchInputId)}';
+        <%--var catalogVersion = '${ycommerce:encodeJavaScript(unbxdCatalog.version)}';--%>
+        <%--var catalogId = '${ycommerce:encodeJavaScript(unbxdCatalog.id)}';--%>
     </script>
     <c:choose>
         <c:when  test="${pageType == 'PRODUCTSEARCH'}">
@@ -174,7 +176,7 @@
 
                     })();
                 };
-                var unbxdCategoryId = '/${ycommerce:encodeJavaScript(searchPageData.categoryCode)}';
+                var unbxdCategoryId = '${ycommerce:encodeJavaScript(searchPageData.categoryCode)}';
             </script>
 
             <%--            <script src="/yacceleratorstorefront/_ui/addons/unbxdanalytics/shared/common/js/unbxd-trigger-category-browse.js"></script>--%>
