@@ -151,17 +151,16 @@
         </property>
     </bean>
 
-    <alias name="UnbxdCategoryPathValueProvider" alias="categoryPathValueProvider"/>
-    <bean id="UnbxdCategoryPathValueProvider" class="com.unbxd.search.provider.UnbxdCategoryPathValueProvider"
+    <alias name="unbxdCategoryPathValueProvider" alias="unbxdCategoryPathValueProvider"/>
+    <bean id="unbxdCategoryPathValueProvider" class="com.unbxd.search.provider.UnbxdCategoryPathValueProvider"
           parent="abstractPropertyFieldValueProvider">
         <property name="fieldNameProvider" ref="solrFieldNameProvider" />
         <property name="categoryService" ref="categoryService" />
         <property name="categorySource" ref="allCategoriesSource" />
     </bean>
 
-    <alias name="unbxdImageValueProvider" alias="unbxdImageValueProvider"/>
-    <bean id="unbxdImageValueProvider" class="com.unbxd.search.provider.UnbxdImageValueProvider">
-        <property name="mediaFormat" value="30Wx30H"/>
+    <alias name="unbxdImageValueProvider" alias="abstractImageValueProvider"/>
+    <bean id="unbxdImageValueProvider" abstract="true" class="com.unbxd.search.provider.UnbxdImageValueProvider">
         <property name="mediaService" ref="mediaService" />
         <property name="mediaContainerService" ref="mediaContainerService" />
         <property name="fieldNameProvider" ref="solrFieldNameProvider" />
