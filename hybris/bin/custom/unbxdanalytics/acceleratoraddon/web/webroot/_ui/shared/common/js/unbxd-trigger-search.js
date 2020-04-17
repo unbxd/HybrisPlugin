@@ -175,7 +175,7 @@ $(document).ready(function(){
             variantsCount: 10,
             searchQueryParam: "text",
             searchResultSetTemp: {
-                "grid": ['{{#each (productVariant products)}}<li class="product-item"><a href="/yacceleratorstorefront{{url}}" title="{{{name}}}" id="{{sku}}" class="thumb" unbxdParam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product">',
+                "grid": ['{{#each (productVariant products)}}<li class="product-item" unbxdParam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product"><a href="/yacceleratorstorefront{{url}}" title="{{{name}}}" id="{{sku}}" class="thumb">',
                     '<img id="img-{{uniqueId}}" src="{{{imageUrl.[0]}}}" alt="{{{name}}}" title="{{{name}}}"></a>',
                     '<div class="details">',
                     '<a class="name" href="/yacceleratorstorefront{{url}}">{{name}}</a>',
@@ -210,11 +210,11 @@ $(document).ready(function(){
                     '</div>',
                     '<div class="SearchResultsGrid-ListOrderFormAction" data-index="3"></div>',
                     '</li>{{/each}}'].join(''),
-                "list": ['{{#products}}<li class="product__list--item">',
-                    '<a href="/yacceleratorstorefront{{url}}" id="{sku}}" class="product__list--thumb" unbxdParam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product">',
-                    '<img src="{{{imageUrl.[0]}}}" alt="{{{name}}} title="{{{name}}}">',
+                "list": ['{{#products}}<li class="product__list--item" unbxdParam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product">',
+                    '<a href="/yacceleratorstorefront{{url}}" id="{sku}}" class="product__list--thumb">',
+                    '<img src="{{{imageUrl.[0]}}}" alt="{{{name}}}" title="{{{name}}}">',
                     '</a>',
-                    '<a href="/yacceleratorstorefront{{url}}" id="{sku}}" class="product__list--name"  unbxdParam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product">', '{{{name}}}', '</a>',
+                    '<a href="/yacceleratorstorefront{{url}}" id="{sku}}" class="product__list--name">', '{{{name}}}', '</a>',
                     '<div class="product__list--price-panel"><div class="product__listing--price">', '{{#if (isdefined priceValue) }}', '&pound;{{priceValue}}', '{{else}}', '&pound;0.00', '{{/if}}', '</div></div>',
                     '<div class="product__listing--description">', '{{{summary}}}', '</div>',
                     '<div class="addtocart">\n' + '<div id="actions-container-for-SearchResultsList" class="row">',
@@ -358,7 +358,6 @@ $(document).ready(function(){
                 console.log("selectedView",selectedView);
                 jQuery(this.options.searchResultContainer).removeClass("product__list").removeClass("product__grid").addClass("product__"+selectedView);
                 jQuery(".main__inner-wrapper").show();
-                initUnbxdAnalytics();
                 if(unbxdAnalyticsEnabled && !initUnbxdAnalyticsNow) {
                     window.addEventListener("load", initUnbxdAnalytics);
                 }
