@@ -72,4 +72,8 @@
         <property name="unbxd" type="boolean" />
         <property name="unbxdType" type="String" />
     </bean>
+    <bean class="de.hybris.platform.commerceservices.search.facetdata.ProductCategorySearchPageData&lt;STATE, RESULT, CATEGORY>" extends="de.hybris.platform.commerceservices.search.facetdata.ProductSearchPageData&lt;STATE, RESULT>">
+        <description>POJO containing the result page for product or category search.</description>
+        <property name="unbxdCategoryPath" type="String"/>
+    </bean>
 </beans>

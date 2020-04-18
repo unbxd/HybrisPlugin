@@ -175,7 +175,7 @@ $(document).ready(function(){
             variantsCount: 10,
             searchQueryParam: "text",
             searchResultSetTemp: {
-                "grid": ['{{#each (productVariant products)}}<li class="product-item" unbxdParam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product"><a href="/yacceleratorstorefront{{url}}" title="{{{name}}}" id="{{sku}}" class="thumb">',
+                "grid": ['{{#each (productVariant products)}}<li class="product-item" unbxdparam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product"><a href="/yacceleratorstorefront{{url}}" title="{{{name}}}" id="{{sku}}" class="thumb">',
                     '<img id="img-{{uniqueId}}" src="{{{imageUrl.[0]}}}" alt="{{{name}}}" title="{{{name}}}"></a>',
                     '<div class="details">',
                     '<a class="name" href="/yacceleratorstorefront{{url}}">{{name}}</a>',
@@ -194,7 +194,7 @@ $(document).ready(function(){
                     '&pound;0.00',
                     '{{/if}}',
                     '</div>',
-                    '<div class="addtocart">',
+                    '<div class="addtocart display-none">',
                     '<div class="actions-container-for-SearchResultsGrid pickup-in-store-available"><div class="SearchResultsGrid-ListPickUpInStoreAction" data-index="1">',
                     '<button class="btn btn-default btn-block js-pickup-in-store-button glyphicon glyphicon-map-marker" id="product_{{code}}" type="button submit" data-productcart="{{#if (isdefined priceValue) }}&pound;{{priceValue}}{{else}}&pound;0.00{{/if}}" data-productcart-variants="{}" data-img-html="<img src=&quot;{{{imageUrl.[0]}}}&quot;/>" data-productname-html="{{{name}}}"  data-cartpage="false" data-entrynumber="{{@index}}" data-actionurl="/yacceleratorstorefront{{url}}" data-value="1"></button>',
                     '</div>',
@@ -205,19 +205,19 @@ $(document).ready(function(){
                     '<input type="hidden" name="productPostPrice" value="{{#if (isdefined priceValue) }}{{priceValue}}{{else}}0.00{{/if}}">',
                     '<button type="submit" class="btn btn-primary btn-block glyphicon glyphicon-shopping-cart js-enable-btn"></button>',
                     '<div>',
-                    '<input type="hidden" name="CSRFToken" value="82f83bca-d8a3-42ee-8151-6ad25df65c23">',
+                    '<input type="hidden" name="CSRFToken" value="'+CSRFToken+'">',
                     '</div></form>',
                     '</div>',
                     '<div class="SearchResultsGrid-ListOrderFormAction" data-index="3"></div>',
                     '</li>{{/each}}'].join(''),
-                "list": ['{{#products}}<li class="product__list--item" unbxdParam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product">',
+                "list": ['{{#products}}<li class="product__list--item" unbxdparam_sku="{{uniqueId}}" unbxdParam_pRank="{{unbxdprank}}" unbxdAttr="product">',
                     '<a href="/yacceleratorstorefront{{url}}" id="{sku}}" class="product__list--thumb">',
                     '<img src="{{{imageUrl.[0]}}}" alt="{{{name}}}" title="{{{name}}}">',
                     '</a>',
                     '<a href="/yacceleratorstorefront{{url}}" id="{sku}}" class="product__list--name">', '{{{name}}}', '</a>',
                     '<div class="product__list--price-panel"><div class="product__listing--price">', '{{#if (isdefined priceValue) }}', '&pound;{{priceValue}}', '{{else}}', '&pound;0.00', '{{/if}}', '</div></div>',
                     '<div class="product__listing--description">', '{{{summary}}}', '</div>',
-                    '<div class="addtocart">\n' + '<div id="actions-container-for-SearchResultsList" class="row">',
+                    '<div class="addtocart" style="visibility:hidden">\n' + '<div id="actions-container-for-SearchResultsList" class="row">',
                     '<div class="SearchResultsList-ListPickUpInStoreAction" data-index="1">',
                     '<button class="btn btn-default btn-block js-pickup-in-store-button glyphicon glyphicon-map-marker" id="product_{{code}}" type="button submit" data-productcart="{{#if (isdefined priceValue) }}&pound;{{priceValue}}{{else}}&pound;0.00{{/if}}" data-productcart-variants="{}" data-img-html="<img src=&quot;{{{imageUrl.[0]}}}&quot;/>" data-productname-html="{{{name}}}"  data-cartpage="false" data-entrynumber="{{@index}}" data-actionurl="/yacceleratorstorefront{{url}}" data-value="1"></button>',
                     '</div>',
@@ -228,7 +228,7 @@ $(document).ready(function(){
                     '<input type="hidden" name="productPostPrice" value="{{#if (isdefined priceValue) }}{{priceValue}}{{else}}0.00{{/if}}">',
                     '<button type="submit" class="btn btn-primary btn-block glyphicon glyphicon-shopping-cart js-enable-btn"></button>',
                     '<div>',
-                    '<input type="hidden" name="CSRFToken" value="">',
+                    '<input type="hidden" name="CSRFToken" value="'+CSRFToken+'">',
                     '</div></form>',
                     '</div>',
                     '<div class="SearchResultsList-ListOrderFormAction" data-index="3"></div>',
@@ -359,7 +359,8 @@ $(document).ready(function(){
                 jQuery(this.options.searchResultContainer).removeClass("product__list").removeClass("product__grid").addClass("product__"+selectedView);
                 jQuery(".main__inner-wrapper").show();
                 if(unbxdAnalyticsEnabled && !initUnbxdAnalyticsNow) {
-                    window.addEventListener("load", initUnbxdAnalytics);
+                    initUnbxdAnalytics();
+                    ACC.product.bindToAddToCartForm();
                 }
             },
             onPageLoad: function () {
@@ -368,7 +369,8 @@ $(document).ready(function(){
                 jQuery(this.options.searchResultContainer).removeClass("product__list").removeClass("product__grid").addClass("product__"+selectedView);
                 jQuery(".main__inner-wrapper").show();
                 if(unbxdAnalyticsEnabled && !initUnbxdAnalyticsNow) {
-                    window.addEventListener("load", initUnbxdAnalytics);
+                    initUnbxdAnalytics();
+                    ACC.product.bindToAddToCartForm();
                 }
             },
             deferInitRender: [],
@@ -417,7 +419,7 @@ $(document).ready(function(){
                     "\t<div class=\"yCmsContentSlot searchEmptyPageMiddle\">\n" +
                     "</div>").show();
                 if(unbxdAnalyticsEnabled && !initUnbxdAnalyticsNow) {
-                    window.addEventListener("load", initUnbxdAnalytics);
+                    initUnbxdAnalytics();
                 }
             }
         });

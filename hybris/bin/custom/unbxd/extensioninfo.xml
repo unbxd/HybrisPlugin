@@ -14,8 +14,10 @@
       <!-- for more information on maven managed libraries please consult https://wiki.hybris.com/x/Nq8sDQ -->
                
       <!-- you should add all required extensions to this list, except platform extensions which are automatically required -->         
-      <!-- <requires-extension name="cms"/> -->         
+      <!-- <requires-extension name="cms"/> -->
+       <requires-extension name="commercefacades" />
        <requires-extension name="commerceservices" />
+
 
        <requires-extension name="solrfacetsearch"/>
       <coremodule generated="true" manager="com.unbxd.jalo.UnbxdManager" packageroot="com.unbxd"/>
