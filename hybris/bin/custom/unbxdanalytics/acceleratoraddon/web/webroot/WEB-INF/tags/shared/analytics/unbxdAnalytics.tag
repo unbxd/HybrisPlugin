@@ -3,8 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags" %>
 <script type="text/javascript">
-        var initUnbxdAnalyticsNow = false;
-        var unbxdAnalyticsEnabled = false;
+    var initUnbxdAnalyticsNow = false;
+    var unbxdAnalyticsEnabled = false;
 </script>
 <c:if test="${not empty unbxdAnalyticsSiteKey}">
     <script type="text/javascript">
@@ -67,14 +67,14 @@
         </c:choose>
 
         function initUnbxdAnalytics() {
-        ( function () {
-            var ubx = document.createElement ( 'script' ); ubx.type = 'text/javascript' ; ubx.async = true ;
-            ubx.src = UnbxdSiteUrl;
-            ( document . getElementsByTagName ( 'head' )[ 0 ] || document . getElementsByTagName ( 'body' )[ 0 ]). appendChild ( ubx );
-            // added search tracking
-            // NOTE: in case, if magento default functionality related to search has been changed, change the selector names
+            ( function () {
+                var ubx = document.createElement ( 'script' ); ubx.type = 'text/javascript' ; ubx.async = true ;
+                ubx.src = UnbxdSiteUrl;
+                ( document . getElementsByTagName ( 'head' )[ 0 ] || document . getElementsByTagName ( 'body' )[ 0 ]). appendChild ( ubx );
+                // added search tracking
+                // NOTE: in case, if magento default functionality related to search has been changed, change the selector names
 
-        })();
+            })();
         }
 
         function getPid(productCode) {
@@ -168,6 +168,7 @@
                     })();
                 }
                 window.addEventListener("load", triggerSearch);
+                var CSRFToken = '${ycommerce:encodeJavaScript(CSRFToken.token)}';
             </script>
         </c:when>
         <c:when  test="${pageType == 'CATEGORY'}">
@@ -187,7 +188,9 @@
                     })();
                 }
                 window.addEventListener("load", triggerCategoryBrowse);
-                var unbxdCategoryId = '${ycommerce:encodeJavaScript(searchPageData.categoryCode)}';
+                var CSRFToken = '${ycommerce:encodeJavaScript(CSRFToken.token)}';
+                var unbxdCategoryId = '${ycommerce:encodeJavaScript(searchPageData.unbxdCategoryPath)}';
+                var categoryName = '${ycommerce:encodeJavaScript(categoryName)}';
             </script>
         </c:when>
     </c:choose>
