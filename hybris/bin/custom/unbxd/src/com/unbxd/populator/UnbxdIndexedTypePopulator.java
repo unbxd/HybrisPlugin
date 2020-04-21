@@ -1,22 +1,16 @@
 package com.unbxd.populator;
 
-import de.hybris.platform.converters.Populator;
 import de.hybris.platform.servicelayer.dto.converter.ConversionException;
 import de.hybris.platform.solrfacetsearch.config.IndexedType;
+import de.hybris.platform.solrfacetsearch.converters.populator.DefaultIndexedTypePopulator;
 import de.hybris.platform.solrfacetsearch.model.config.SolrIndexedTypeModel;
 
-public class UnbxdIndexedTypePopulator //extends CommerceIndexedTypePopulator
-        implements Populator<SolrIndexedTypeModel, IndexedType>
+public class UnbxdIndexedTypePopulator extends DefaultIndexedTypePopulator
 {
-    /*
-     * (non-Javadoc)
-     *
-     * @see de.hybris.platform.converters.Populator#populate(java.lang.Object, java.lang.Object)
-     */
     @Override
     public void populate(final SolrIndexedTypeModel source, final IndexedType target) throws ConversionException
     {
-        //super.populate(source, target);
+        super.populate(source, target);
         target.setUnbxd(source.getIsUnbxd());
     }
 }
