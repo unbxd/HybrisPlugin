@@ -134,7 +134,7 @@
 <!--    <bean id="defaultCommerceIndexedTypePopulator" class="de.hybris.platform.commerceservices.search.solrfacetsearch.populators.CommerceIndexedTypePopulator">-->
 <!--        <property name="indexedTypeSortConverter" ref="indexedTypeSortConverter" />-->
 <!--    </bean>-->
-    <bean id="unbxdIndexedTypePopulator" class="com.unbxd.populator.UnbxdIndexedTypePopulator" parent="defaultCommerceIndexedTypePopulator">
+    <bean id="unbxdIndexedTypePopulator" class="com.unbxd.populator.UnbxdIndexedTypePopulator">
     </bean>
     <alias name="unbxdIndexedTypeConverter" alias="solrIndexedTypeConverter" />
     <bean id="unbxdIndexedTypeConverter" parent="defaultSolrIndexedTypeConverter">
