@@ -130,7 +130,7 @@
     </bean>
 
     <!-- Converters and Populators -->
-    <alias name="unbxdIndexedTypePopulator" alias="commerceIndexedTypePopulator" />
+<!--    <alias name="unbxdIndexedTypePopulator" alias="commerceIndexedTypePopulator" />-->
 <!--    <bean id="defaultCommerceIndexedTypePopulator" class="de.hybris.platform.commerceservices.search.solrfacetsearch.populators.CommerceIndexedTypePopulator">-->
 <!--        <property name="indexedTypeSortConverter" ref="indexedTypeSortConverter" />-->
 <!--    </bean>-->
