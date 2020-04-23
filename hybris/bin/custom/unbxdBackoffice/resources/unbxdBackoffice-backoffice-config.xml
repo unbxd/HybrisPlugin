@@ -51,6 +51,7 @@
 	<context type="UnbxdUploadTask" component="listviewactions" merge-by="type">
 		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
 			<y:group qualifier="common">
+				<y:action action-id="com.hybris.cockpitng.action.create" merge-mode="REMOVE" />
 				<y:action action-id="com.unbxd.backoffice.widgets.actions.refresh" property="selectedObjects">
 					<y:parameter>
 						<y:name>viewMode</y:name>
@@ -68,6 +69,81 @@
 			</y:group>
 		</y:actions>
 	</context>
+
+	<context component="editor-area" type="UnbxdUploadTask">
+		<editorArea:editorArea
+			xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
+			<editorArea:tab name="General" position="1" merge-mode="">
+				<editorArea:section name="General">
+					<editorArea:attribute label="UnbxdUploadTask.uploadId"
+										  qualifier="uploadId" readonly="true"/>
+					<editorArea:attribute label="UnbxdUploadTask.fileName"
+										  qualifier="fileName" readonly="true"/>
+					<editorArea:attribute label="UnbxdUploadTask.indexName"
+										  qualifier="indexName" readonly="true"/>
+					<editorArea:attribute label="UnbxdUploadTask.isDelta"
+										  qualifier="isDelta" readonly="true"/>
+					<editorArea:attribute label="UnbxdUploadTask.status"
+										  qualifier="status" readonly="true"/>
+					<editorArea:attribute label="UnbxdUploadTask.message"
+										  qualifier="message" readonly="true"/>
+					<editorArea:attribute label="UnbxdUploadTask.code"
+										  qualifier="code" readonly="true"/>
+					<editorArea:attribute label="UnbxdUploadTask.timeStamp"
+										  qualifier="timeStamp" readonly="true"/>
+
+				</editorArea:section>
+			</editorArea:tab>
+			<editorArea:tab name="hmc.administration" position="2" merge-mode="">
+				<editorArea:section initiallyOpened="true" name="hmc.section.metadata">
+					<editorArea:attribute qualifier="pk" />
+					<editorArea:attribute qualifier="creationtime" />
+					<editorArea:attribute qualifier="itemtype" />
+					<editorArea:attribute qualifier="modifiedtime" />
+					<editorArea:attribute qualifier="owner" />
+				</editorArea:section>
+				<editorArea:section initiallyOpened="true"
+									name="hmc.section.saved.values">
+					<editorArea:attribute label="hmc.section.savedvalues.changes"
+										  qualifier="savedValues" />
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<context component="editor-area" type="SolrIndexedType" merge-by="type">
+		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea" xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch" xmlns:list-view="http://www.hybris.com/cockpitng/component/listView" xmlns:na="http://www.hybris.com/cockpitng/config/notifications" xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch" xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config" xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<editorArea:tab name="hmc.administration">
+				<editorArea:section name="hmc.section.unbxd">
+					<editorArea:attribute label="SolrIndexedType.isUnbxd" qualifier="isUnbxd"/>
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<context merge-by="type" type="SolrIndexedProperty" component="editor-area" module="unbxdBackoffice">
+		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea" xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch" xmlns:list-view="http://www.hybris.com/cockpitng/component/listView" xmlns:na="http://www.hybris.com/cockpitng/config/notifications" xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch" xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config" xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<editorArea:tab name="hmc.administration">
+				<editorArea:section name="hmc.section.unbxd">
+					<editorArea:attribute label="SolrIndexedProperty.isUnbxd" qualifier="isUnbxd"/>
+					<editorArea:attribute label="SolrIndexedProperty.unbxdType" qualifier="unbxdType"/>
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<context type="UnbxdUploadTask" component="listview">
+		<list:list-view xmlns:list="http://www.hybris.com/cockpitng/component/listView">
+			<list:column qualifier="uploadId" label="UnbxdUploadTask.uploadId" />
+			<list:column qualifier="timeStamp" label="UnbxdUploadTask.timeStamp" />
+			<list:column qualifier="fileName" label="UnbxdUploadTask.fileName" />
+			<list:column qualifier="indexName" label="UnbxdUploadTask.indexName" />
+			<list:column qualifier="isDelta" label="UnbxdUploadTask.isDelta" />
+			<list:column qualifier="status" label="UnbxdUploadTask.status" />
+			<list:column qualifier="message" label="UnbxdUploadTask.message" />
+		</list:list-view>
+	</context>
+
 
 	<context type="UnbxdUploadTask" component="editorareaactions" merge-by="type" parent="auto">
 		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
