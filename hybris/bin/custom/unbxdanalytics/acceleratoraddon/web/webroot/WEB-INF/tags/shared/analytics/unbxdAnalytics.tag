@@ -150,6 +150,11 @@
         <%--var catalogVersion = '${ycommerce:encodeJavaScript(unbxdCatalog.version)}';--%>
         <%--var catalogId = '${ycommerce:encodeJavaScript(unbxdCatalog.id)}';--%>
     </script>
+    <script type="text/javascript">
+        if(true) { //initUnbxdAnalyticsNow) {
+            window.addEventListener("load", initUnbxdAnalytics);
+        }
+    </script>
     <c:choose>
         <c:when  test="${pageType == 'PRODUCTSEARCH'}">
             <style>.main__inner-wrapper { display:none; }</style>
@@ -196,8 +201,3 @@
     </c:choose>
 </c:if>
 
-<script type="text/javascript">
-    if(initUnbxdAnalyticsNow) {
-        window.addEventListener("load", initUnbxdAnalytics);
-    }
-</script>
