@@ -130,20 +130,9 @@
     </bean>
 
     <!-- Converters and Populators -->
-<!--    <alias name="unbxdIndexedTypePopulator" alias="commerceIndexedTypePopulator" />-->
-<!--    <bean id="defaultCommerceIndexedTypePopulator" class="de.hybris.platform.commerceservices.search.solrfacetsearch.populators.CommerceIndexedTypePopulator">-->
-<!--        <property name="indexedTypeSortConverter" ref="indexedTypeSortConverter" />-->
-<!--    </bean>-->
-    <bean id="unbxdIndexedTypePopulator" class="com.unbxd.populator.UnbxdIndexedTypePopulator">
-    </bean>
-    <alias name="unbxdIndexedTypeConverter" alias="solrIndexedTypeConverter" />
-    <bean id="unbxdIndexedTypeConverter" parent="defaultSolrIndexedTypeConverter">
-        <property name="populators">
-            <list merge="true">
-                <ref bean="unbxdIndexedTypePopulator" />
-            </list>
-        </property>
-    </bean>
+
+    <alias name="unbxdIndexedTypePopulator" alias="solrIndexedTypePopulator"/>
+    <bean id="unbxdIndexedTypePopulator" class="com.unbxd.populator.UnbxdIndexedTypePopulator" parent="defaultSolrIndexedTypePopulator" />
 
     <bean id="unbxdIndexedPropertyPopulator" class="com.unbxd.populator.UnbxdIndexedPropertyPopulator">
     </bean>
@@ -152,7 +141,6 @@
         <property name="populators">
             <list merge="true">
                 <ref bean="unbxdIndexedPropertyPopulator" />
-<!--                <ref bean="commerceIndexedTypePopulator" />-->
             </list>
         </property>
     </bean>
@@ -160,16 +148,6 @@
     <bean id="unbxdProductCategorySearchPagePopulator" class="com.unbxd.populator.UnbxdProductCategorySearchPagePopulator">
         <property name="commerceCategoryService" ref="commerceCategoryService"/>
     </bean>
-
-<!--    <alias name="unbxdProductCategorySearchPageConverter" alias="unbxdProductCategorySearchPageConverter"/>-->
-<!--    <bean id="unbxdProductCategorySearchPageConverter" parent="defaultProductCategorySearchPageConverter">-->
-<!--        <property name="targetClass" value="de.hybris.platform.commerceservices.search.facetdata.ProductCategorySearchPageData"/>-->
-<!--        <property name="populators">-->
-<!--            <list merge="true">-->
-<!--                <ref bean="unbxdProductCategorySearchPagePopulator"/>-->
-<!--            </list>-->
-<!--        </property>-->
-<!--    </bean>-->
 
     <alias name="unbxdProductCategorySearchPageConverter" alias="productCategorySearchPageConverter"/>
     <bean id="unbxdProductCategorySearchPageConverter" parent="defaultProductCategorySearchPageConverter">
