@@ -58,17 +58,12 @@
 		Unbxd.track('facets', {query : <query>, facets : facets});*/
 
         </c:when>
-        <c:when test="${pageType == 'ORDERCONFIRMATION'}">
-        <c:forEach items="${orderData.entries}" var="entry">
-        Unbxd.track ( "order" ,{ "pid" : getPid("${entry.product.code}")} , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' });
-        //Unbxd.track ( "order" , { "pid" : getPid("${entry.product.code}")} , "variantId" : 'VID' , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' })
-        </c:forEach>
-        </c:when>
+
         </c:choose>
 
         function initUnbxdAnalytics() {
             ( function () {
-                var ubx = document.createElement ( 'script' ); ubx.type = 'text/javascript' ; ubx.async = true ;
+                var ubx = document.createElement ( 'script' ); ubx.type = 'text/javascript' ; ubx.async = false ;
                 ubx.src = UnbxdSiteUrl;
                 ( document . getElementsByTagName ( 'head' )[ 0 ] || document . getElementsByTagName ( 'body' )[ 0 ]). appendChild ( ubx );
                 // added search tracking
@@ -132,11 +127,29 @@
                 searchHitButton = document.getElementsByClassName("js_search_button"),
                 unbxdAttributeName = 'unbxdattr';
             if (searchInput) {
+
+                searchInput.addEventListener("keyup", (event) => {
+                    if(event.currentTarget.value.length){
+                        searchInput.setAttribute(unbxdAttributeName, 'sq');
+                        var searchHitButton1 = document.getElementsByClassName("js_search_button");
+                        if (searchHitButton1 && searchHitButton1.length) {
+                            searchHitButton1[0].setAttribute(unbxdAttributeName, 'sq_bt');
+                        }
+                        if (event.keyCode === 13) {
+                            $("form[name=search_form_SearchBox]").submit();
+                            return false;
+                        }
+                    }
+                    event.preventDefault();
+                    return false;
+                });
+            }
+            if (searchHitButton && searchHitButton.length && searchInput.value.length) {
+                searchHitButton[0].setAttribute(unbxdAttributeName, 'sq_bt');
                 searchInput.setAttribute(unbxdAttributeName, 'sq');
             }
-            if (searchHitButton && searchHitButton.length) {
-                searchHitButton[0].setAttribute(unbxdAttributeName, 'sq_bt');
-            }
+            event.preventDefault();
+            return false;
         }
         window.addEventListener("load", searchHitTrack);
     </script>
@@ -196,6 +209,19 @@
                 var CSRFToken = '${ycommerce:encodeJavaScript(CSRFToken.token)}';
                 var unbxdCategoryId = '${ycommerce:encodeJavaScript(searchPageData.unbxdCategoryPath)}';
                 var categoryName = '${ycommerce:encodeJavaScript(categoryName)}';
+            </script>
+        </c:when>
+        <c:when test="${pageType == 'ORDERCONFIRMATION'}">
+            <script type="text/javascript">
+            function triggerOrderTrack(){
+            window.setTimeout(function(){
+            <c:forEach items="${orderData.entries}" var="entry">
+                Unbxd.track ( "order" ,{ "pid" : getPid("${entry.product.code}") , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}'});
+                /*//Unbxd.track ( "order" , { "pid" : getPid("${entry.product.code}")} , "variantId" : 'VID' , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' })*/
+            </c:forEach>
+            }, 5000);
+            }
+            window.addEventListener("load", triggerOrderTrack);
             </script>
         </c:when>
     </c:choose>

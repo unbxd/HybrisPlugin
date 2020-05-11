@@ -4,6 +4,8 @@ if(unbxdAutoSuggestSiteKey && unbxdAutoSuggestApiKey && $("#"+unbxdAutoSuggestSe
     $("#"+unbxdAutoSuggestSearchInputId).unbxdautocomplete({
         siteName : unbxdAutoSuggestSiteKey //your site key which can be found on dashboard
         ,APIKey : unbxdAutoSuggestApiKey //your api key which is mailed to during account creation or can be found on account section on the dashboard
+        ,resultsClass: "unbxd-as-wrapper"
+        ,suggestionsHeader: "Suggestions"
         ,minChars : 2
         ,maxSuggestions: 10
         ,delay : 100
@@ -19,11 +21,19 @@ if(unbxdAutoSuggestSiteKey && unbxdAutoSuggestApiKey && $("#"+unbxdAutoSuggestSe
         ,showCarts : false
         ,cartType : "separate"
         ,onSimpleEnter : function(){
-            console.log("Simple enter :: do a form submit")
-            //this.input.form.submit();
+            console.log("Simple enter :: do a form submit");
+            if(this.input.value.length) {
+                this.input.form.submit();
+            }
         }
         ,onItemSelect : function(data,original){
                 console.log("onItemSelect",arguments);
+            if (data.type === "POPULAR_PRODUCTS" || data.type === "POPULAR_PRODUCTS_FILTERED") {
+                window.location = arguments[1].productUrl;
+            } else {
+                window.location = window.location.origin + '/yacceleratorstorefront/en/search/?text=' + encodeURIComponent(data.value);
+            }
+
         }
         ,onCartClick : function(data,original){
                 console.log("addtocart", arguments);

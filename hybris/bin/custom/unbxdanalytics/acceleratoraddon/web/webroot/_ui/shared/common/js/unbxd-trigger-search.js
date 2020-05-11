@@ -368,7 +368,8 @@ $(document).ready(function(){
                 }
                 if(Unbxd) {
                     Unbxd.track('search_impression', {
-                        query: obj['searchMetaData']['queryParams']['q'],
+                        //query: obj['searchMetaData']['queryParams']['q'],
+                        query: this.input.value,
                         pids_list: pids_list
                     });
                 }
@@ -445,6 +446,13 @@ $(document).ready(function(){
                 // if(unbxdAnalyticsEnabled && !initUnbxdAnalyticsNow) {
                 //     initUnbxdAnalytics();
                 // }
+                if(Unbxd) {
+                    Unbxd.track('search_impression', {
+                        //query: obj['searchMetaData']['queryParams']['q'],
+                        query: this.input.value,
+                        pids_list: []
+                    });
+                }
             }
         });
     }
