@@ -139,6 +139,12 @@
                             $("form[name=search_form_SearchBox]").submit();
                             return false;
                         }
+                    } else {
+                        searchInput.removeAttribute(unbxdAttributeName);
+                        var searchHitButton1 = document.getElementsByClassName("js_search_button");
+                        if (searchHitButton1 && searchHitButton1.length) {
+                            searchHitButton1[0].removeAttribute(unbxdAttributeName);
+                        }
                     }
                     event.preventDefault();
                     return false;
