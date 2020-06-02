@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+           
+    <context:annotation-config/> 
+
+
+	<!-- Expose /acceleratoraddon/web/webroot/WEB-INF/messages/base.js.properties  resource bundle as javascript variables -->
+	<bean id="defaultUnbxdRecommendationsJavaScriptMessageResourceAccessor" parent="abstractJavaScriptMessageResourceAccessor">
+		<property name="addOnName" value="unbxdRecommendations"/>
+	</bean>
+
+	<bean id="defaultUnbxdRecommendationsBeforeViewJsPropsHandlerAdaptee" parent="abstractBeforeViewJsPropsHandlerAdaptee" class="de.hybris.platform.addonsupport.interceptors.ExportJsPropertiesBeforeViewHandler">
+		<property name="messageSource" ref="defaultUnbxdRecommendationsJavaScriptMessageResourceAccessor"/>
+	</bean>
+
+	<bean id="getUnbxdRecommendationsBeforeViewHandler" parent="beforeViewHandlerAdapter">
+		<property name="adaptee">
+			<ref bean="defaultUnbxdRecommendationsBeforeViewJsPropsHandlerAdaptee"/>
+		</property>
+	</bean>
+	<bean id="UnbxdRecommendationsBeforeViewHandlerListMergeDirective" depends-on="beforeViewHandlersList" parent="listMergeDirective">
+		<property name="add" ref="getUnbxdRecommendationsBeforeViewHandler"/>
+	</bean>
+
+<!--	<bean id="UnbxdProductCarouselComponentController" class="com.unbxd.recommendations.controllers.cms.UnbxdProductCarouselComponentController"/>-->
+
+</beans>

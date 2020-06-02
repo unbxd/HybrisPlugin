@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<!--
+	ATTENTION: This is just an example file. You have to edit it according to your needs.
+-->
+
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:noNamespaceSchemaLocation="items.xsd">
+	<enumtypes>
+		<enumtype generate="true" code="UnbxdPageType" autocreate="true" dynamic="true">
+			<value code="HOME"/>
+			<value code="CATEGORY"/>
+			<value code="PRODUCT"/>
+			<value code="CART"/>
+			<value code="BRAND"/>
+		</enumtype>
+		<enumtype generate="true" code="UnbxdWidgetType" autocreate="true" dynamic="true">
+			<value code="WIDGET1"/>
+			<value code="WIDGET2"/>
+			<value code="WIDGET3"/>
+		</enumtype>
+	</enumtypes>
+
+	<itemtypes>
+		<!--		<itemtype code="UnbxdProductCarouselComponent" jaloclass="com.unbxd.analytics.jalo.UnbxdProductCarouselComponent"  autocreate="true" generate="true" extends="SimpleCMSComponent">-->
+		<!--			<attributes>-->
+		<!--				<attribute qualifier="title" type="localized:java.lang.String">-->
+		<!--					<persistence type="property" />-->
+		<!--					<modifiers />-->
+		<!--					<description>Localized title of the component.</description>-->
+		<!--				</attribute>-->
+		<!--				<attribute type="UnbxdBoxType" qualifier="boxType">-->
+		<!--					<persistence type="property" />-->
+		<!--					<modifiers optional="false" />-->
+		<!--					<defaultvalue>-->
+		<!--						em().getEnumerationValue("UnbxdBoxType","RECOMMENDED_FOR_YOU")-->
+		<!--					</defaultvalue>-->
+		<!--				</attribute>-->
+		<!--				<attribute qualifier="searchQuery" type="java.lang.String">-->
+		<!--					<persistence type="property" />-->
+		<!--					<modifiers />-->
+		<!--					<description>A solr query string</description>-->
+		<!--				</attribute>-->
+		<!--				<attribute qualifier="categoryCode" type="java.lang.String">-->
+		<!--					<persistence type="property" />-->
+		<!--					<modifiers />-->
+		<!--					<description>A code for a category for a solr search</description>-->
+		<!--				</attribute>-->
+		<!--				<attribute qualifier="popup" type="boolean">-->
+		<!--					<persistence type="property" />-->
+		<!--					<modifiers optional="false" />-->
+		<!--					<defaultvalue>Boolean.TRUE</defaultvalue>-->
+		<!--					<description>If true shows a popup else redirects to products page</description>-->
+		<!--				</attribute>-->
+		<!--				<attribute type="CarouselScroll" qualifier="scroll">-->
+		<!--					<persistence type="property" />-->
+		<!--					<modifiers optional="false" />-->
+		<!--					<defaultvalue>-->
+		<!--						em().getEnumerationValue("CarouselScroll","one")-->
+		<!--					</defaultvalue>-->
+		<!--				</attribute>-->
+		<!--				<attribute type="CMSStringList" qualifier="productCodes">-->
+		<!--					&lt;!&ndash; since this is Collection(String) we MUST disable pre-fetching explicitly! &ndash;&gt;-->
+		<!--					<custom-properties>-->
+		<!--						<property name="modelPrefetchMode">-->
+		<!--							<value>java.lang.Boolean.FALSE</value>-->
+		<!--						</property>-->
+		<!--					</custom-properties>-->
+		<!--					<persistence type="dynamic" />-->
+		<!--					<modifiers write="false" search="false" />-->
+		<!--				</attribute>-->
+		<!--				<attribute type="CMSStringList" qualifier="categoryCodes">-->
+		<!--					&lt;!&ndash; since this is Collection(String) we MUST disable pre-fetching explicitly! &ndash;&gt;-->
+		<!--					<custom-properties>-->
+		<!--						<property name="modelPrefetchMode">-->
+		<!--							<value>java.lang.Boolean.FALSE</value>-->
+		<!--						</property>-->
+		<!--					</custom-properties>-->
+		<!--					<persistence type="dynamic" />-->
+		<!--					<modifiers write="false" search="false" />-->
+		<!--				</attribute>-->
+		<!--			</attributes>-->
+		<!--		</itemtype>-->
+		<itemtype code="UnbxdProductCarouselComponent" jaloclass="com.unbxd.recommendations.jalo.UnbxdProductCarouselComponent"  autocreate="true" generate="true" extends="SimpleCMSComponent">
+			<attributes>
+				<attribute qualifier="title" type="localized:java.lang.String">
+					<persistence type="property" />
+					<modifiers />
+					<description>Localized title of the component.</description>
+				</attribute>
+				<attribute type="UnbxdPageType" qualifier="pageType">
+					<persistence type="property" />
+					<modifiers optional="false" />
+					<defaultvalue>
+						em().getEnumerationValue("UnbxdPageType","HOME")
+					</defaultvalue>
+				</attribute>
+				<attribute type="UnbxdWidgetType" qualifier="widget">
+					<persistence type="property" />
+					<modifiers optional="false" />
+					<defaultvalue>
+						em().getEnumerationValue("UnbxdWidgetType","WIDGET1")
+					</defaultvalue>
+				</attribute>
+				<attribute qualifier="popup" type="boolean">
+					<persistence type="property" />
+					<modifiers optional="false" />
+					<defaultvalue>Boolean.TRUE</defaultvalue>
+					<description>If true shows a popup else redirects to products page</description>
+				</attribute>
+				<attribute type="CarouselScroll" qualifier="scroll">
+					<persistence type="property" />
+					<modifiers optional="false" />
+					<defaultvalue>
+						em().getEnumerationValue("CarouselScroll","one")
+					</defaultvalue>
+				</attribute>
+			</attributes>
+		</itemtype>
+		<!--		<itemtype code="ProductCarouselComponent" autocreate="false" generate="false">-->
+		<!--			<attributes>-->
+		<!--				<attribute qualifier="isUnbxd" type="java.lang.Boolean">-->
+		<!--					<description>If index is for Unbxd</description>-->
+		<!--					<persistence type="property"/>-->
+		<!--					<modifiers read="true" write="true" optional="false"/>-->
+		<!--					<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>-->
+		<!--				</attribute>-->
+		<!--				<attribute type="UnbxdBoxType" qualifier="boxType">-->
+		<!--					<persistence type="property" />-->
+		<!--					<modifiers optional="false" />-->
+		<!--					<defaultvalue>-->
+		<!--						em().getEnumerationValue("UnbxdBoxType","RECOMMENDED_FOR_YOU")-->
+		<!--					</defaultvalue>-->
+		<!--				</attribute>-->
+		<!--			</attributes>-->
+		<!--		</itemtype>-->
+	</itemtypes>
+</items>
