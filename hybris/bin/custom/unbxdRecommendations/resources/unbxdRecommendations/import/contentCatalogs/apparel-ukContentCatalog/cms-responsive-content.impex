@@ -27,8 +27,11 @@ $storefrontContextRoot=$config-storefrontContextRoot
 #
 ###### Homepage Start ######
 INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
-;;Section3Slot-Homepage;Section3 Slot for ApparelUKHomepage;true;ApparelUKHomepageProductCarouselComponent,NewApparelUKHomepageProductCarouselComponent,UnbxdApparelUKHomepageProductCarouselComponent
+#;;Section3Slot-Homepage;Section3 Slot for ApparelUKHomepage;true;ApparelUKHomepageProductCarouselComponent,NewApparelUKHomepageProductCarouselComponent,UnbxdApparelUKHomepageProductCarouselComponent
+;;Section3Slot-Homepage;Section3 Slot for ApparelUKHomepage;true;UnbxdApparelUKHomepageProductCarouselComponent
 
 # components in section3
-INSERT_UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;products(code,$productCV);scroll(code);popup;&componentRef;boxType;
-;;UnbxdApparelUKHomepageProductCarouselComponent;Unbxd Best Selling Products;29533,45572,M33477_B,300310300,300045375,300022356,300047513;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent;HOMEPAGE_TOP_SELLERS
+#INSERT_UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;products(code,$productCV);scroll(code);popup;&componentRef;boxType;
+#;;UnbxdApparelUKHomepageProductCarouselComponent;Unbxd Best Selling Products;29533,45572,M33477_B,300310300,300045375,300022356,300047513;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent;HOMEPAGE_TOP_SELLERS
+INSERT_UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;scroll(code);popup;&componentRef;
+;;UnbxdApparelUKHomepageProductCarouselComponent;Unbxd Best Selling Products;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent
