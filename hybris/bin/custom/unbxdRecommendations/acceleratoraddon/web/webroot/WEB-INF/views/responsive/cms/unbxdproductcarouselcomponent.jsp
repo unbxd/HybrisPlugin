@@ -73,8 +73,8 @@
                 },
                 userInfo: {
                     userId: 'uidValue',
-                    siteKey: 'siteKeyValue',
-                    apiKey: 'apiKeyValue''
+                    siteKey: 'DevHybris801271569422411',
+                    apiKey: '06b56a9356d527730b4545047f3f7c3c'
                 },
                 pageInfo: {
                     pageType: 'HOME'
