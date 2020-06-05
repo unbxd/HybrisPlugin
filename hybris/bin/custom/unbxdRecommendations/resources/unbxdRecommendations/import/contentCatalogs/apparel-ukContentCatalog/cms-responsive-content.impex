@@ -1,0 +1,37 @@
+# -----------------------------------------------------------------------
+# [y] hybris Platform
+#
+# Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
+#
+# This software is the confidential and proprietary information of SAP
+# ("Confidential Information"). You shall not disclose such Confidential
+# Information and shall use it only in accordance with the terms of the
+# license agreement you entered into with SAP.
+# -----------------------------------------------------------------------
+# 
+# ImpEx for Responsive Apparel UK Site CMS Content 
+# 
+$contentCatalog=apparel-ukContentCatalog 
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged] 
+ 
+$productCatalog=apparelProductCatalog 
+$productCatalogName=Apparel Product Catalog 
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged] 
+$picture=media(code, $contentCV) ;
+$siteResource=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/contentCatalogs/$contentCatalog
+$jarResourceCms=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/cockpits/cmscockpit
+
+# Load the storefront context root config param
+$storefrontContextRoot=$config-storefrontContextRoot
+
+#
+###### Homepage Start ######
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+#;;Section3Slot-Homepage;Section3 Slot for ApparelUKHomepage;true;ApparelUKHomepageProductCarouselComponent,NewApparelUKHomepageProductCarouselComponent,UnbxdApparelUKHomepageProductCarouselComponent
+;;Section3Slot-Homepage;Section3 Slot for ApparelUKHomepage;true;UnbxdApparelUKHomepageProductCarouselComponent
+
+# components in section3
+#INSERT_UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;products(code,$productCV);scroll(code);popup;&componentRef;boxType;
+#;;UnbxdApparelUKHomepageProductCarouselComponent;Unbxd Best Selling Products;29533,45572,M33477_B,300310300,300045375,300022356,300047513;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent;HOMEPAGE_TOP_SELLERS
+INSERT_UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;scroll(code);popup;&componentRef;
+;;UnbxdApparelUKHomepageProductCarouselComponent;Unbxd Best Selling Products;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent

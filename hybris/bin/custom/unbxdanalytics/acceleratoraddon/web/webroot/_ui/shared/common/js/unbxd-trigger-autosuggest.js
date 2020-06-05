@@ -45,6 +45,7 @@ if(unbxdAutoSuggestSiteKey && unbxdAutoSuggestApiKey && $("#"+unbxdAutoSuggestSe
                         'brand':3
                         ,'category':3
                         ,'color':3
+                        , 'vStyle':3
                 }
                 ,header: ''
                 ,tpl: ''

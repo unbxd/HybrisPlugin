@@ -1,0 +1,33 @@
+# -----------------------------------------------------------------------
+# [y] hybris Platform
+#
+# Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+# All rights reserved.
+#
+# This software is the confidential and proprietary information of SAP
+# ("Confidential Information"). You shall not disclose such Confidential
+# Information and shall use it only in accordance with the terms of the
+# license agreement you entered into with SAP.
+# -----------------------------------------------------------------------
+#******************************This file is generated - please do not edit it. It will be regenerated after every build.********************************#
+#
+#	ImpEx for Apparel UK Site CMS Content, en localisations
+#
+
+$contentCatalog=apparel-ukContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$productCatalog=apparelProductCatalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)
+$medias=medias(code, $contentCV);
+$mediaContainer=media(qualifier, $contentCV)[lang=$lang];
+$siteResource=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/contentCatalogs/$contentCatalog
+$jarResourceCms=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/cockpits/cmscockpit
+
+# Language
+$lang=en
+
+# Apparel UK Homepage
+UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=true];title[lang=en]
+ ;;UnbxdApparelUKHomepageProductCarouselComponent;"Unbxd Best Selling Products"
+
