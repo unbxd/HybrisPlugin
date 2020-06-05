@@ -173,4 +173,16 @@
         <property name="mediaContainerService" ref="mediaContainerService" />
         <property name="fieldNameProvider" ref="solrFieldNameProvider" />
     </bean>
+
+
+
+
+    <!--   SOLR Search thru JSP  -->
+    <alias name="UnbxdSolrSearchRequestResponsePopulator" alias="solrSearchRequestResponsePopulator" />
+    <bean id="UnbxdSolrSearchRequestResponsePopulator"
+          class="com.unbxd.populator.UnbxdSolrSearchRequestResponsePopulator">
+        <property name="solrFacetSearchService" ref="solrFacetSearchService" />
+        <property name="solrKeywordRedirectService" ref="solrKeywordRedirectService" />
+    </bean>
+
 </beans>

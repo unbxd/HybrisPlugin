@@ -2,7 +2,14 @@ package com.unbxd.client;
 
 import com.unbxd.client.feed.FeedClient;
 import com.unbxd.client.feed.FeedClientFactory;
+import com.unbxd.client.search.SearchClient;
+import com.unbxd.client.search.SearchClientFactory;
+import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+
+import java.util.concurrent.TimeUnit;
 
 public class Unbxd {
 
@@ -56,5 +63,14 @@ public class Unbxd {
         if(!_configured)
             throw new ConfigException("Please configure first with Unbxd.configure()");
         return FeedClientFactory.getFeedClient(siteKey, secretKey, secure);
+    }
+
+    public static SearchClient getSearchClient() throws ConfigException {
+        if(!_configured)
+            throw new ConfigException("Please configure first with Unbxd.configure()");
+        CloseableHttpClient httpClient = HttpClients.custom().setConnectionTimeToLive(1, TimeUnit.MINUTES).setConnectionManager(ConnectionManager.getConnectionManager()).build();
+        HttpClientBuilder builder = HttpClientBuilder.create();
+        HttpClient httpClient1 = builder.build();
+        return SearchClientFactory.getSearchClient(siteKey, apiKey, secure, httpClient);
     }
 }
