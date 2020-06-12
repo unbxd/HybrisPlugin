@@ -20,8 +20,9 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context.xsd">
            
-    <context:annotation-config/> 
+    <context:annotation-config/>
 
+	<context:component-scan base-package="com.unbxd.recommendations.controllers"/>
 
 	<!-- Expose /acceleratoraddon/web/webroot/WEB-INF/messages/base.js.properties  resource bundle as javascript variables -->
 	<bean id="defaultUnbxdRecommendationsJavaScriptMessageResourceAccessor" parent="abstractJavaScriptMessageResourceAccessor">

@@ -24,14 +24,23 @@ $jarResourceCms=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConsta
 # Load the storefront context root config param
 $storefrontContextRoot=$config-storefrontContextRoot
 
-#
-###### Homepage Start ######
-INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
-#;;Section3Slot-Homepage;Section3 Slot for ApparelUKHomepage;true;ApparelUKHomepageProductCarouselComponent,NewApparelUKHomepageProductCarouselComponent,UnbxdApparelUKHomepageProductCarouselComponent
-;;Section3Slot-Homepage;Section3 Slot for ApparelUKHomepage;true;UnbxdApparelUKHomepageProductCarouselComponent
+# Allow unbxd component in Up selling slot
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='ProductDetailsPageTemplate'];validComponentTypes(code);compTypeGroup(code)
+;UpSelling;;ProductReferencesComponent,UnbxdProductCarouselComponent;wide
 
-# components in section3
-#INSERT_UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;products(code,$productCV);scroll(code);popup;&componentRef;boxType;
-#;;UnbxdApparelUKHomepageProductCarouselComponent;Unbxd Best Selling Products;29533,45572,M33477_B,300310300,300045375,300022356,300047513;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent;HOMEPAGE_TOP_SELLERS
+# Unbxd component
 INSERT_UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;scroll(code);popup;&componentRef;
 ;;UnbxdApparelUKHomepageProductCarouselComponent;Unbxd Best Selling Products;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent
+;;UnbxdApparelUKProductpageProductCarouselComponent;Unbxd Related Products;allVisible;false;UnbxdApparelUKProductpageProductCarouselComponent
+
+###### HomePage ######
+
+#Add Unbxd components to Existing slots
+#First remove the instance if exists and then append it. This is required to avoid duplicating components in Content Slot
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)[mode=remove]
+;;Section3Slot-Homepage;UnbxdApparelUKHomepageProductCarouselComponent
+;;UpSellingSlot;UnbxdApparelUKProductpageProductCarouselComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)[mode=append]
+;;Section3Slot-Homepage;UnbxdApparelUKHomepageProductCarouselComponent
+;;UpSellingSlot;UnbxdApparelUKProductpageProductCarouselComponent

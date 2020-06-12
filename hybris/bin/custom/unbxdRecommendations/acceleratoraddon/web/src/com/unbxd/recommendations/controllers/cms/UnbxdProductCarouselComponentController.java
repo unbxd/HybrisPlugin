@@ -13,13 +13,12 @@ package com.unbxd.recommendations.controllers.cms;
 import com.unbxd.recommendations.model.UnbxdProductCarouselComponentModel;
 import com.unbxd.recommendations.controllers.UnbxdRecommendationsControllerConstants;
 import de.hybris.platform.acceleratorfacades.productcarousel.ProductCarouselFacade;
+import de.hybris.platform.acceleratorservices.config.SiteConfigService;
 import de.hybris.platform.addonsupport.controllers.cms.AbstractCMSAddOnComponentController;
 import de.hybris.platform.commercefacades.product.ProductOption;
 import de.hybris.platform.commercefacades.product.data.ProductData;
 import de.hybris.platform.commercefacades.search.ProductSearchFacade;
-import de.hybris.platform.commercefacades.search.data.SearchQueryData;
-import de.hybris.platform.commercefacades.search.data.SearchStateData;
-import de.hybris.platform.commerceservices.search.pagedata.PageableData;
+import de.hybris.platform.store.services.BaseStoreService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,11 +40,23 @@ public class UnbxdProductCarouselComponentController extends AbstractCMSAddOnCom
 {
 	protected static final List<ProductOption> PRODUCT_OPTIONS = Arrays.asList(ProductOption.BASIC, ProductOption.PRICE);
 
+	private static final String UNBXD_SITE_KEY = "unbxd.sitekey.";
+	private static final String UNBXD_API_KEY = "unbxd.apikey.";
+
+	private static final String UNBXD_SITEKEY_MODEL = "unbxdSiteKey";
+	private static final String UNBXD_APIKEY_MODEL = "unbxdApiKey";
+
 	@Resource(name = "productSearchFacade")
 	private ProductSearchFacade<ProductData> productSearchFacade;
 
 	@Resource(name = "productCarouselFacade")
 	private ProductCarouselFacade productCarouselFacade;
+
+	@Resource(name = "siteConfigService")
+	private SiteConfigService siteConfigService;
+
+	@Resource(name = "baseStoreService")
+	private BaseStoreService baseStoreService;
 
 	@Override
 	protected void fillModel(final HttpServletRequest request, final Model model, final UnbxdProductCarouselComponentModel component)
@@ -56,6 +67,21 @@ public class UnbxdProductCarouselComponentController extends AbstractCMSAddOnCom
 
 		model.addAttribute("title", component.getTitle());
 		model.addAttribute("productData", products);
+
+		model.addAttribute(UNBXD_SITEKEY_MODEL, getCurrentUnbxdAutoSuggestSiteKey());
+		model.addAttribute(UNBXD_APIKEY_MODEL, getCurrentUnbxdAutoSuggestAPIKey());
+
+
+	}
+
+	protected String getCurrentUnbxdAutoSuggestSiteKey()
+	{
+		return siteConfigService.getProperty(UNBXD_SITE_KEY + baseStoreService.getCurrentBaseStore().getUid());
+	}
+
+	protected String getCurrentUnbxdAutoSuggestAPIKey()
+	{
+		return siteConfigService.getProperty(UNBXD_API_KEY + baseStoreService.getCurrentBaseStore().getUid());
 	}
 
 	protected List<ProductData> collectRecommendedProducts(final UnbxdProductCarouselComponentModel component)

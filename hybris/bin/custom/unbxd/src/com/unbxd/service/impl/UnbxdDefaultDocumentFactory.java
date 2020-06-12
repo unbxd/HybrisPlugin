@@ -161,7 +161,7 @@ public class UnbxdDefaultDocumentFactory implements UnbxdDocumentFactory, BeanFa
         IndexedType indexedType = batchContext.getIndexedType();
         IdentityProvider<ItemModel> identityProvider = this.getIdentityProvider(indexedType);
         String id = identityProvider.getIdentifier(facetSearchConfig.getIndexConfig(), model);
-        id.replace("/","_");
+        id = id.replace("/","_");
         if (LOG.isDebugEnabled()) {
             LOG.debug("Using FeedProduct id [" + id + "]");
         }
