@@ -64,7 +64,9 @@
                         },
                         itemClickHandler: function (product) {
                             //do what you want to do with product that has been clicked here
-                            alert(JSON.stringify(product));
+                            console.log(JSON.stringify(product));
+                            console.log(product.url);
+                            window.location = 'https://34.226.87.236:9002/yacceleratorstorefront/en' + product.url;
                         },
                         dataParser: function (templateData) {
                             // modify the data received from recommendation API in case required.
