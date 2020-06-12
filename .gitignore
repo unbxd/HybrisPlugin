@@ -10,8 +10,8 @@ junk/
 !/env/common/hybris/bin/platform/build.xml
 !/hybris/config/
 /hybris/config/*
-!hybris/config/localextensions.xml
-!hybris/config/local.properties
+#!hybris/config/localextensions.xml
+#!hybris/config/local.properties
 
 /installer/
 
@@ -101,3 +101,5 @@ hybris-ems/
 hybris-sbg/
 licenses/
 
+**/unbxdRecommendations/project.properties
+**/unbxdanalytics/project.properties
