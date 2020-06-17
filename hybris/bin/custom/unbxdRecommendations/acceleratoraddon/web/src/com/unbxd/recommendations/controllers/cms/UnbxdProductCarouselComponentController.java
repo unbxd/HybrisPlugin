@@ -10,19 +10,22 @@
  */
 package com.unbxd.recommendations.controllers.cms;
 
+import com.unbxd.recommendations.enums.UnbxdPageType;
 import com.unbxd.recommendations.model.UnbxdProductCarouselComponentModel;
 import com.unbxd.recommendations.controllers.UnbxdRecommendationsControllerConstants;
 import de.hybris.platform.acceleratorfacades.productcarousel.ProductCarouselFacade;
 import de.hybris.platform.acceleratorservices.config.SiteConfigService;
 import de.hybris.platform.addonsupport.controllers.cms.AbstractCMSAddOnComponentController;
+import de.hybris.platform.commercefacades.order.CartFacade;
 import de.hybris.platform.commercefacades.product.ProductOption;
 import de.hybris.platform.commercefacades.product.data.ProductData;
 import de.hybris.platform.commercefacades.search.ProductSearchFacade;
 import de.hybris.platform.store.services.BaseStoreService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import de.hybris.platform.commercefacades.order.data.CartData;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -58,6 +61,9 @@ public class UnbxdProductCarouselComponentController extends AbstractCMSAddOnCom
 	@Resource(name = "baseStoreService")
 	private BaseStoreService baseStoreService;
 
+	@Resource(name = "cartFacade")
+	private CartFacade cartFacade;
+
 	@Override
 	protected void fillModel(final HttpServletRequest request, final Model model, final UnbxdProductCarouselComponentModel component)
 	{
@@ -67,6 +73,15 @@ public class UnbxdProductCarouselComponentController extends AbstractCMSAddOnCom
 
 		model.addAttribute("title", component.getTitle());
 		model.addAttribute("productData", products);
+		model.addAttribute("pageType", component.getPageType().getCode());
+
+		if(getCartFacade().hasEntries()){
+			CartData cartData = getCartFacade().getSessionCart();
+			model.addAttribute("cartentries",cartData.getEntries());
+			List<String> productcodes = new ArrayList<>();
+			cartData.getEntries().forEach(entry -> productcodes.add(entry.getProduct().getCode()));
+			model.addAttribute("productcodes",productcodes);
+		}
 
 		model.addAttribute(UNBXD_SITEKEY_MODEL, getCurrentUnbxdAutoSuggestSiteKey());
 		model.addAttribute(UNBXD_APIKEY_MODEL, getCurrentUnbxdAutoSuggestAPIKey());
@@ -102,5 +117,10 @@ public class UnbxdProductCarouselComponentController extends AbstractCMSAddOnCom
 //		}
 
 		return Collections.emptyList();
+	}
+
+	protected CartFacade getCartFacade()
+	{
+		return cartFacade;
 	}
 }

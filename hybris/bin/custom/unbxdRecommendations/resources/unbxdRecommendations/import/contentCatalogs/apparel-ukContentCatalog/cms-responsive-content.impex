@@ -12,11 +12,11 @@
 # ImpEx for Responsive Apparel UK Site CMS Content 
 # 
 $contentCatalog=apparel-ukContentCatalog 
-$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged] 
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
  
 $productCatalog=apparelProductCatalog 
 $productCatalogName=Apparel Product Catalog 
-$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged] 
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
 $picture=media(code, $contentCV) ;
 $siteResource=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/contentCatalogs/$contentCatalog
 $jarResourceCms=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/cockpits/cmscockpit
@@ -32,6 +32,7 @@ INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=
 INSERT_UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;scroll(code);popup;&componentRef;
 ;;UnbxdApparelUKHomepageProductCarouselComponent;Unbxd Best Selling Products;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent
 ;;UnbxdApparelUKProductpageProductCarouselComponent;Unbxd Related Products;allVisible;false;UnbxdApparelUKProductpageProductCarouselComponent
+;;UnbxdApparelUKCategorypageProductCarouselComponent;Unbxd Category Products;allVisible;false;UnbxdApparelUKCategorypageProductCarouselComponent
 
 ###### HomePage ######
 
@@ -40,7 +41,12 @@ INSERT_UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=t
 INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)[mode=remove]
 ;;Section3Slot-Homepage;UnbxdApparelUKHomepageProductCarouselComponent
 ;;UpSellingSlot;UnbxdApparelUKProductpageProductCarouselComponent
+#;;SearchResultsGridSlot;UnbxdApparelUKCategorypageProductCarouselComponent
+;;FooterSlot;UnbxdApparelUKCategorypageProductCarouselComponent
 
 INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)[mode=append]
 ;;Section3Slot-Homepage;UnbxdApparelUKHomepageProductCarouselComponent
 ;;UpSellingSlot;UnbxdApparelUKProductpageProductCarouselComponent
+#;;SearchResultsGridSlot;UnbxdApparelUKCategorypageProductCarouselComponent
+#;;SearchResultsListSlot;UnbxdApparelUKCategorypageProductCarouselComponent
+;;FooterSlot;UnbxdApparelUKCategorypageProductCarouselComponent

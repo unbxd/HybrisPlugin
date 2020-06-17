@@ -7,12 +7,32 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags" %>
 
+
 <spring:htmlEscape defaultHtmlEscape="true"/>
 
 <c:if test="${not empty unbxdSiteKey && not empty unbxdApiKey}">
     <script type="text/javascript">
         var unbxdSiteKey = '${ycommerce:encodeJavaScript(unbxdSiteKey)}';
         var unbxdApiKey = '${ycommerce:encodeJavaScript(unbxdApiKey)}';
+
+        console.log("Recommendation widget type : ", '${pageType}');
+        console.log("CMS Page Id : ", '${cmsPage.uid}');
+        console.log("CMS Page Name : ", '${cmsPage.name}');
+
+        var scheme = '${request.secure}' ? 'https:' : 'http:';
+        var host = '${header['host']}';
+        var contextPath = '${encodedContextPath}';
+        var baseUrl = scheme+host+contextPath;
+
+        var categoryPathfull = '${searchPageData.unbxdCategoryPath}';
+        if(categoryPathfull) {
+            var categoryarray = categoryPathfull.split(">", 4);
+            console.log("Category 1", categoryarray[0]);
+            console.log("Category 2", categoryarray[1]);
+            console.log("Category 3", categoryarray[2]);
+            console.log("Category 4", categoryarray[3]);
+        }
+
     </script>
 
 </c:if>
@@ -38,8 +58,7 @@
 </script>
 
 <c:choose>
-    <c:when test="${pageType == 'PRODUCT'}">
-
+    <c:when test="${pageType == 'PRODUCT' && cmsPage.uid == 'productDetails'}">
         <div id="product_recommendations1"></div>
 
         <script type="text/javascript">
@@ -66,7 +85,7 @@
                             //do what you want to do with product that has been clicked here
                             console.log(JSON.stringify(product));
                             console.log(product.url);
-                            window.location = 'https://34.226.87.236:9002/yacceleratorstorefront/en' + product.url;
+                            window.location = baseUrl + product.url;
                         },
                         dataParser: function (templateData) {
                             // modify the data received from recommendation API in case required.
@@ -76,7 +95,7 @@
                             return templateData;
                         }
                     });
-                }, 3000);
+                }, 1000);
             }
 
             function getPid(productCode) {
@@ -89,7 +108,97 @@
         </script>
     </c:when>
 
-    <c:otherwise>
+    <c:when test="${pageType == 'CATEGORY' && cmsPage.uid == 'productGrid'}">
+
+        <div id="category_recommendations1"></div>
+
+        <script type="text/javascript">
+            function getRecommendations() {
+                if(categoryarray[0] === 'categories'){
+                    window.setTimeout(function () {
+                        _unbxd_getRecommendations({
+                            widgets: {
+                                widget1: {
+                                    name: "category_recommendations1"
+                                }
+                            },
+                            userInfo: {
+                                userId: Unbxd.getUserId(),
+                                siteKey: unbxdSiteKey,
+                                apiKey: unbxdApiKey
+                            },
+                            pageInfo: {
+                                pageType: 'CATEGORY',
+                                <%--productIds: [getPid("${product.code}")]--%>
+                                //productIds: ['${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${product.code}']
+                                //productIds: ['${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${product.code}']
+                                catlevel1Name: categoryarray[0],
+                                catlevel2Name: categoryarray[1],
+                                catlevel3Name: categoryarray[2]
+                            },
+                            itemClickHandler: function (product) {
+                                //do what you want to do with product that has been clicked here
+                                console.log(JSON.stringify(product));
+                                console.log(product.url);
+                                window.location = baseUrl + product.url;
+                            },
+                            dataParser: function (templateData) {
+                                // modify the data received from recommendation API in case required.
+                                for (i = 0; i < templateData.recommendations.length; i++) {
+                                    templateData.recommendations[i]['imageUrl'] = templateData.recommendations[i]['img-300Wx300H'];
+                                }
+                                return templateData;
+                            }
+                        });
+                    }, 1000);}
+                if(categoryarray[0] === 'brands'){
+                    window.setTimeout(function () {
+                        _unbxd_getRecommendations({
+                            widgets: {
+                                widget1: {
+                                    name: "category_recommendations1"
+                                }
+                            },
+                            userInfo: {
+                                userId: Unbxd.getUserId(),
+                                siteKey: unbxdSiteKey,
+                                apiKey: unbxdApiKey
+                            },
+                            pageInfo: {
+                                pageType: 'BRAND',
+                                <%--productIds: [getPid("${product.code}")]--%>
+                                //productIds: ['${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${product.code}']
+                                //productIds: ['${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${product.code}']
+                                brand: categoryarray[1]
+                            },
+                            itemClickHandler: function (product) {
+                                //do what you want to do with product that has been clicked here
+                                console.log(JSON.stringify(product));
+                                console.log(product.url);
+                                window.location = baseUrl + product.url;
+                            },
+                            dataParser: function (templateData) {
+                                // modify the data received from recommendation API in case required.
+                                for (i = 0; i < templateData.recommendations.length; i++) {
+                                    templateData.recommendations[i]['imageUrl'] = templateData.recommendations[i]['img-300Wx300H'];
+                                }
+                                return templateData;
+                            }
+                        });
+                    }, 1000);}
+            }
+
+            function getPid(productCode) {
+                return '${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_' + productCode;
+            }
+
+            if (unbxdSiteKey && unbxdApiKey) {
+                window.addEventListener("load", getRecommendations);
+            }
+        </script>
+    </c:when>
+
+    <c:when test="${pageType == 'HOME' && cmsPage.uid == 'homepage'}">
 
         <div id="home_recommendations1"></div>
 
@@ -112,7 +221,9 @@
                         },
                         itemClickHandler: function (product) {
                             //do what you want to do with product that has been clicked here
-                            alert(JSON.stringify(product));
+                            console.log(JSON.stringify(product));
+                            console.log(product.url);
+                            window.location = baseUrl + product.url;
                         },
                         dataParser: function (templateData) {
                             // modify the data received from recommendation API in case required.
@@ -122,7 +233,7 @@
                             return templateData;
                         }
                     });
-                }, 3000);
+                }, 1000);
             }
 
             function getPid(productCode) {
@@ -133,5 +244,60 @@
                 window.addEventListener("load", getRecommendations);
             }
         </script>
-    </c:otherwise>
+    </c:when>
+
+    <c:when test="${pageType == 'CATEGORY' && cmsPage.uid == 'cartPage'}">
+
+        <div id="cart_recommendations1"></div>
+
+        <script type="text/javascript">
+            console.log('Products in Cart : ','${productcodes}');
+            var productcodes = new Array();
+            <c:forEach items="${productcodes}" var="productcode">
+            productcodes.push('${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${productcode}');
+            </c:forEach>
+
+            function getRecommendations() {
+                window.setTimeout(function () {
+                    _unbxd_getRecommendations({
+                        widgets: {
+                            widget1: {
+                                name: "cart_recommendations1"
+                            }
+                        },
+                        userInfo: {
+                            userId: Unbxd.getUserId(),
+                            siteKey: unbxdSiteKey,
+                            apiKey: unbxdApiKey
+                        },
+                        pageInfo: {
+                            pageType: 'CART',
+                            productIds: productcodes
+                        },
+                        itemClickHandler: function (product) {
+                            //do what you want to do with product that has been clicked here
+                            console.log(JSON.stringify(product));
+                            console.log(product.url);
+                            window.location = baseUrl + product.url;
+                        },
+                        dataParser: function (templateData) {
+                            // modify the data received from recommendation API in case required.
+                            for (i = 0; i < templateData.recommendations.length; i++) {
+                                templateData.recommendations[i]['imageUrl'] = templateData.recommendations[i]['img-300Wx300H'];
+                            }
+                            return templateData;
+                        }
+                    });
+                }, 1000);
+            }
+
+            function getPid(productCode) {
+                return '${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_' + productCode;
+            }
+
+            if (unbxdSiteKey && unbxdApiKey) {
+                window.addEventListener("load", getRecommendations);
+            }
+        </script>
+    </c:when>
 </c:choose>
