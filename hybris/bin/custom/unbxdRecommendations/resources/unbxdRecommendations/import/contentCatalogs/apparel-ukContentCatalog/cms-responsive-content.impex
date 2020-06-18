@@ -1,22 +1,12 @@
-# -----------------------------------------------------------------------
-# [y] hybris Platform
 #
-# Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
-#
-# This software is the confidential and proprietary information of SAP
-# ("Confidential Information"). You shall not disclose such Confidential
-# Information and shall use it only in accordance with the terms of the
-# license agreement you entered into with SAP.
-# -----------------------------------------------------------------------
-# 
-# ImpEx for Responsive Apparel UK Site CMS Content 
+# ImpEx for Unbxd CMS Content
 # 
 $contentCatalog=apparel-ukContentCatalog 
-$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Online])[default=$contentCatalog:Online]
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
  
 $productCatalog=apparelProductCatalog 
 $productCatalogName=Apparel Product Catalog 
-$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
 $picture=media(code, $contentCV) ;
 $siteResource=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/contentCatalogs/$contentCatalog
 $jarResourceCms=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/cockpits/cmscockpit
@@ -46,42 +36,41 @@ INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=
 ;UpSelling;;ProductReferencesComponent,UnbxdProductCarouselComponent;wide
 
 
-# Unbxd component
+# Unbxd Recommendations Component
 INSERT_UPDATE UnbxdProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;pageType(code);widget(code);scroll(code);popup;&componentRef;
 
-;;UnbxdApparelUKHomepageProductCarouselComponent1;Unbxd Best Selling Products;HOME;WIDGET1;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent1
-;;UnbxdApparelUKHomepageProductCarouselComponent2;Unbxd Best Selling Products;HOME;WIDGET2;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent2
-;;UnbxdApparelUKHomepageProductCarouselComponent3;Unbxd Best Selling Products;HOME;WIDGET3;allVisible;false;UnbxdApparelUKHomepageProductCarouselComponent3
+;;UnbxdRecommendationsHomepageComponent1;Recommendations Homepage Widget1;HOME;WIDGET1;allVisible;false;UnbxdRecommendationsHomepageComponent1
+;;UnbxdRecommendationsHomepageComponent2;Recommendations Homepage Widget2;HOME;WIDGET2;allVisible;false;UnbxdRecommendationsHomepageComponent2
+;;UnbxdRecommendationsHomepageComponent3;Recommendations Homepage Widget3;HOME;WIDGET3;allVisible;false;UnbxdRecommendationsHomepageComponent3
 
-;;UnbxdApparelUKCartpageProductCarouselComponent1;Unbxd Best Selling Products;CART;WIDGET1;allVisible;false;UnbxdApparelUKCartpageProductCarouselComponent1
-;;UnbxdApparelUKCartpageProductCarouselComponent2;Unbxd Best Selling Products;CART;WIDGET2;allVisible;false;UnbxdApparelUKCartpageProductCarouselComponent2
-;;UnbxdApparelUKCartpageProductCarouselComponent3;Unbxd Best Selling Products;CART;WIDGET3;allVisible;false;UnbxdApparelUKCartpageProductCarouselComponent3
+;;UnbxdRecommendationsCartpageComponent1;Recommendations Cartpage Widget1;CART;WIDGET1;allVisible;false;UnbxdRecommendationsCartpageComponent1
+;;UnbxdRecommendationsCartpageComponent2;Recommendations Cartpage Widget2;CART;WIDGET2;allVisible;false;UnbxdRecommendationsCartpageComponent2
+;;UnbxdRecommendationsCartpageComponent3;Recommendations Cartpage Widget3;CART;WIDGET3;allVisible;false;UnbxdRecommendationsCartpageComponent3
 
-;;UnbxdApparelUKProductpageProductCarouselComponent1;Unbxd Related Products;PRODUCT;WIDGET1;allVisible;false;UnbxdApparelUKProductpageProductCarouselComponent1
-;;UnbxdApparelUKProductpageProductCarouselComponent2;Unbxd Related Products;PRODUCT;WIDGET2;allVisible;false;UnbxdApparelUKProductpageProductCarouselComponent2
-;;UnbxdApparelUKProductpageProductCarouselComponent3;Unbxd Related Products;PRODUCT;WIDGET3;allVisible;false;UnbxdApparelUKProductpageProductCarouselComponent3
+;;UnbxdApparelUKProductpageProductCarouselComponent1;Recommendations Productpage Widget1;PRODUCT;WIDGET1;allVisible;false;UnbxdApparelUKProductpageProductCarouselComponent1
+;;UnbxdApparelUKProductpageProductCarouselComponent2;Recommendations Productpage Widget2;PRODUCT;WIDGET2;allVisible;false;UnbxdApparelUKProductpageProductCarouselComponent2
+;;UnbxdApparelUKProductpageProductCarouselComponent3;Recommendations Productpage Widget3;PRODUCT;WIDGET3;allVisible;false;UnbxdApparelUKProductpageProductCarouselComponent3
 
-;;UnbxdApparelUKCategorypageProductCarouselComponent1;Unbxd Category Products;CATEGORY;WIDGET1;allVisible;false;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;UnbxdApparelUKCategorypageProductCarouselComponent2;Unbxd Category Products;CATEGORY;WIDGET2;allVisible;false;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;UnbxdApparelUKCategorypageProductCarouselComponent3;Unbxd Category Products;CATEGORY;WIDGET3;allVisible;false;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;UnbxdRecommendationsCategorypageComponent1;Recommendations Categorypage Widget1;CATEGORY;WIDGET1;allVisible;false;UnbxdRecommendationsCategorypageComponent1
+;;UnbxdRecommendationsCategorypageComponent2;Recommendations Categorypage Widget2;CATEGORY;WIDGET2;allVisible;false;UnbxdRecommendationsCategorypageComponent2
+;;UnbxdRecommendationsCategorypageComponent3;Recommendations Categorypage Widget3;CATEGORY;WIDGET3;allVisible;false;UnbxdRecommendationsCategorypageComponent3
 
-###### HomePage ######
 
 #Add Unbxd components to Existing slots
 #First remove the instance if exists and then append it. This is required to avoid duplicating components in Content Slot
 INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)[mode=remove]
 
-;;Section2CSlot-Homepage;UnbxdApparelUKHomepageProductCarouselComponent1
-;;Section3Slot-Homepage;UnbxdApparelUKHomepageProductCarouselComponent2
-;;Section3Slot-Homepage;UnbxdApparelUKHomepageProductCarouselComponent3
+;;Section2CSlot-Homepage;UnbxdRecommendationsHomepageComponent1
+;;Section3Slot-Homepage;UnbxdRecommendationsHomepageComponent2
+;;Section3Slot-Homepage;UnbxdRecommendationsHomepageComponent3
 
 ;;UpSellingSlot;UnbxdApparelUKProductpageProductCarouselComponent1
 ;;UpSellingSlot;UnbxdApparelUKProductpageProductCarouselComponent2
 ;;UpSellingSlot;UnbxdApparelUKProductpageProductCarouselComponent3
 
-#;;ProductGridSlot;UnbxdApparelUKCategorypageProductCarouselComponent1
-#;;ProductGridSlot;UnbxdApparelUKCategorypageProductCarouselComponent2
-#;;ProductGridSlot;UnbxdApparelUKCategorypageProductCarouselComponent3
+#;;ProductGridSlot;UnbxdRecommendationsCategorypageComponent1
+#;;ProductGridSlot;UnbxdRecommendationsCategorypageComponent2
+#;;ProductGridSlot;UnbxdRecommendationsCategorypageComponent3
 
 #;;ProductGridSlot;UnbxdCategoryBrowseComponent
 
@@ -95,56 +84,56 @@ INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents
 ;;Section1Slot-Shirts;UnbxdCategoryBrowseComponent
 ;;Section2Slot-Sunglasses;UnbxdCategoryBrowseComponent
 
-;;Section1Slot-ProductGridPage;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-ProductGridPage;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-ProductGridPage;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-ProductGridPage;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-ProductGridPage;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-ProductGridPage;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-UnbxdCategory;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-UnbxdCategory;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-UnbxdCategory;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-UnbxdCategory;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-UnbxdCategory;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-UnbxdCategory;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-Snow;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-Snow;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-Snow;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-Snow;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-Snow;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-Snow;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-Surf;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-Surf;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-Surf;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-Surf;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-Surf;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-Surf;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-Brands;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-Brands;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-Brands;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-Brands;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-Brands;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-Brands;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-Street;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-Street;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-Street;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-Street;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-Street;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-Street;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-Shirts;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-Shirts;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-Shirts;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-Shirts;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-Shirts;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-Shirts;UnbxdRecommendationsCategorypageComponent3
 
-;;Section2Slot-Sunglasses;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section2Slot-Sunglasses;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section2Slot-Sunglasses;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section2Slot-Sunglasses;UnbxdRecommendationsCategorypageComponent1
+;;Section2Slot-Sunglasses;UnbxdRecommendationsCategorypageComponent2
+;;Section2Slot-Sunglasses;UnbxdRecommendationsCategorypageComponent3
 
-;;TopContentSlot-cartPage;UnbxdApparelUKCartpageProductCarouselComponent1
-;;BottomContentSlot-cartPage;UnbxdApparelUKCartpageProductCarouselComponent2
-;;BottomContentSlot-cartPage;UnbxdApparelUKCartpageProductCarouselComponent3
+;;TopContentSlot-cartPage;UnbxdRecommendationsCartpageComponent1
+;;BottomContentSlot-cartPage;UnbxdRecommendationsCartpageComponent2
+;;BottomContentSlot-cartPage;UnbxdRecommendationsCartpageComponent3
 
 
 INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)[mode=append]
 
-;;Section2CSlot-Homepage;UnbxdApparelUKHomepageProductCarouselComponent1
-;;Section3Slot-Homepage;UnbxdApparelUKHomepageProductCarouselComponent2
-;;Section3Slot-Homepage;UnbxdApparelUKHomepageProductCarouselComponent3
+;;Section2CSlot-Homepage;UnbxdRecommendationsHomepageComponent1
+;;Section3Slot-Homepage;UnbxdRecommendationsHomepageComponent2
+;;Section3Slot-Homepage;UnbxdRecommendationsHomepageComponent3
 
 ;;UpSellingSlot;UnbxdApparelUKProductpageProductCarouselComponent1
 ;;UpSellingSlot;UnbxdApparelUKProductpageProductCarouselComponent2
 ;;UpSellingSlot;UnbxdApparelUKProductpageProductCarouselComponent3
 
-#;;ProductGridSlot;UnbxdApparelUKCategorypageProductCarouselComponent1
-#;;ProductGridSlot;UnbxdApparelUKCategorypageProductCarouselComponent2
-#;;ProductGridSlot;UnbxdApparelUKCategorypageProductCarouselComponent3
+#;;ProductGridSlot;UnbxdRecommendationsCategorypageComponent1
+#;;ProductGridSlot;UnbxdRecommendationsCategorypageComponent2
+#;;ProductGridSlot;UnbxdRecommendationsCategorypageComponent3
 
 #;;ProductGridSlot;UnbxdCategoryBrowseComponent
 
@@ -158,38 +147,38 @@ INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents
 ;;Section1Slot-Shirts;UnbxdCategoryBrowseComponent
 ;;Section2Slot-Sunglasses;UnbxdCategoryBrowseComponent
 
-;;Section1Slot-ProductGridPage;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-ProductGridPage;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-ProductGridPage;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-ProductGridPage;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-ProductGridPage;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-ProductGridPage;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-UnbxdCategory;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-UnbxdCategory;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-UnbxdCategory;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-UnbxdCategory;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-UnbxdCategory;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-UnbxdCategory;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-Snow;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-Snow;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-Snow;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-Snow;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-Snow;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-Snow;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-Surf;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-Surf;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-Surf;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-Surf;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-Surf;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-Surf;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-Brands;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-Brands;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-Brands;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-Brands;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-Brands;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-Brands;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-Street;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-Street;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-Street;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-Street;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-Street;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-Street;UnbxdRecommendationsCategorypageComponent3
 
-;;Section1Slot-Shirts;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section1Slot-Shirts;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section1Slot-Shirts;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section1Slot-Shirts;UnbxdRecommendationsCategorypageComponent1
+;;Section1Slot-Shirts;UnbxdRecommendationsCategorypageComponent2
+;;Section1Slot-Shirts;UnbxdRecommendationsCategorypageComponent3
 
-;;Section2Slot-Sunglasses;UnbxdApparelUKCategorypageProductCarouselComponent1
-;;Section2Slot-Sunglasses;UnbxdApparelUKCategorypageProductCarouselComponent2
-;;Section2Slot-Sunglasses;UnbxdApparelUKCategorypageProductCarouselComponent3
+;;Section2Slot-Sunglasses;UnbxdRecommendationsCategorypageComponent1
+;;Section2Slot-Sunglasses;UnbxdRecommendationsCategorypageComponent2
+;;Section2Slot-Sunglasses;UnbxdRecommendationsCategorypageComponent3
 
-;;TopContentSlot-cartPage;UnbxdApparelUKCartpageProductCarouselComponent1
-;;BottomContentSlot-cartPage;UnbxdApparelUKCartpageProductCarouselComponent2
-;;BottomContentSlot-cartPage;UnbxdApparelUKCartpageProductCarouselComponent3
+;;TopContentSlot-cartPage;UnbxdRecommendationsCartpageComponent1
+;;BottomContentSlot-cartPage;UnbxdRecommendationsCartpageComponent2
+;;BottomContentSlot-cartPage;UnbxdRecommendationsCartpageComponent3
