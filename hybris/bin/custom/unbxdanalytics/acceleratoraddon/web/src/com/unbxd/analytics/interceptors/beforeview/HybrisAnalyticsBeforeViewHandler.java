@@ -1,13 +1,3 @@
-/*
- * [y] hybris Platform
- *
- * Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
- *
- * This software is the confidential and proprietary information of SAP
- * ("Confidential Information"). You shall not disclose such Confidential
- * Information and shall use it only in accordance with the terms of the
- * license agreement you entered into with SAP.
- */
 package com.unbxd.analytics.interceptors.beforeview;
 
 import de.hybris.platform.acceleratorservices.config.SiteConfigService;
@@ -39,26 +29,16 @@ public class HybrisAnalyticsBeforeViewHandler extends BeforeViewJsPropsHandlerAd
 	private static final String PIWIK_TRACKER_DEFAULT_SITE_ID = "piwik.tracker.siteid.default";
 	private static final String PIWIK_SITE_ID = "piwikSiteId";
 	private static final String UNBXD_ANALYTICS_CATALOG = "unbxdCatalog";
-	//private static final String UNBXD_ANALYTICS_SITE_KEY = "unbxd.analytics.sitekey.";
-	//private static final String UNBXD_ANALYTICS_DEFAULT_SITE_KEY = "unbxd.analytics.sitekey.default";
-	private static final String UNBXD_ANALYTICS_SITE_KEY = "unbxd.sitekey.";
-	private static final String UNBXD_ANALYTICS_DEFAULT_SITE_KEY = "unbxd.sitekey.default";
-	private static final String UNBXD_ANALYTICS_SITEKEY = "unbxdAnalyticsSiteKey";
-	//private static final String UNBXD_AUTOSUGGEST_SITE_KEY = "unbxd.autosuggest.sitekey.";
-	//private static final String UNBXD_AUTOSUGGEST_DEFAULT_SITE_KEY = "unbxd.autosuggest.sitekey.default";
-	private static final String UNBXD_AUTOSUGGEST_SITE_KEY = "unbxd.sitekey.";
-	private static final String UNBXD_AUTOSUGGEST_DEFAULT_SITE_KEY = "unbxd.sitekey.default";
-	private static final String UNBXD_AUTOSUGGEST_SITEKEY = "unbxdAutoSuggestSiteKey";
-	//private static final String UNBXD_AUTOSUGGEST_API_KEY = "unbxd.autosuggest.apikey.";
-	//private static final String UNBXD_AUTOSUGGEST_DEFAULT_API_KEY = "unbxd.autosuggest.apikey.default";
-	private static final String UNBXD_AUTOSUGGEST_API_KEY = "unbxd.apikey.";
-	private static final String UNBXD_AUTOSUGGEST_DEFAULT_API_KEY = "unbxd.apikey.default";
-	private static final String UNBXD_AUTOSUGGEST_APIKEY = "unbxdAutoSuggestApiKey";
-	//private static final String UNBXD_AUTOSUGGEST_SEARCHINPUT_ID = "unbxd.autosuggest.searchinputid.";
-	//private static final String UNBXD_AUTOSUGGEST_DEFAULT_SEARCHINPUT_ID = "unbxd.autosuggest.searchinputid.default";
-	private static final String UNBXD_AUTOSUGGEST_SEARCHINPUT_ID = "unbxd.searchinputid.";
-	private static final String UNBXD_AUTOSUGGEST_DEFAULT_SEARCHINPUT_ID = "unbxd.searchinputid.default";
-	private static final String UNBXD_AUTOSUGGEST_SEARCHINPUTIDKEY = "unbxdAutoSuggestSearchInputId";
+	private static final String UNBXD_ANALYTICS_SITEKEY_MODEL = "unbxdAnalyticsSiteKey";
+	private static final String UNBXD_SITE_KEY = "unbxd.sitekey.";
+	private static final String UNBXD_DEFAULT_SITE_KEY = "unbxd.sitekey.default";
+	private static final String UNBXD_SITEKEY_MODEL = "unbxdAutoSuggestSiteKey";
+	private static final String UNBXD_API_KEY = "unbxd.apikey.";
+	private static final String UNBXD_DEFAULT_API_KEY = "unbxd.apikey.default";
+	private static final String UNBXD_APIKEY_MODEL = "unbxdAutoSuggestApiKey";
+	private static final String UNBXD_SEARCHINPUT_ID = "unbxd.searchinputid.";
+	private static final String UNBXD_DEFAULT_SEARCHINPUT_ID = "unbxd.searchinputid.default";
+	private static final String UNBXD_SEARCHINPUTIDKEY_MODEL = "unbxdAutoSuggestSearchInputId";
 
 	@Resource(name = "siteConfigService")
 	private SiteConfigService siteConfigService;
@@ -116,14 +96,13 @@ public class HybrisAnalyticsBeforeViewHandler extends BeforeViewJsPropsHandlerAd
 			jsVariables.put(getMessageSource().getAddOnName(), jsVariablesList);
 			final String piwikSiteId = getCurrentPiwikSiteId();
 			model.addAttribute(PIWIK_SITE_ID, piwikSiteId);
-			final String unbxdSiteKey = getCurrentUnbxdSiteKey();
-			model.addAttribute(UNBXD_ANALYTICS_SITEKEY, unbxdSiteKey);
-			final String unbxdAutoSuggestSiteKey = getCurrentUnbxdAutoSuggestSiteKey();
-			model.addAttribute(UNBXD_AUTOSUGGEST_SITEKEY, unbxdAutoSuggestSiteKey);
-			final String unbxdAutoSuggestAPIKey = getCurrentUnbxdAutoSuggestAPIKey();
-			model.addAttribute(UNBXD_AUTOSUGGEST_APIKEY, unbxdAutoSuggestAPIKey);
-			final String unbxdAutoSuggestSearchInputId = getCurrentUnbxdAutoSuggestSearchInputId();
-			model.addAttribute(UNBXD_AUTOSUGGEST_SEARCHINPUTIDKEY, unbxdAutoSuggestSearchInputId);
+			final String unbxdSiteKey = getUnbxdSiteKey();
+			model.addAttribute(UNBXD_ANALYTICS_SITEKEY_MODEL, unbxdSiteKey);
+			model.addAttribute(UNBXD_SITEKEY_MODEL, unbxdSiteKey);
+			final String unbxdAutoSuggestAPIKey = getUnbxdAPIKey();
+			model.addAttribute(UNBXD_APIKEY_MODEL, unbxdAutoSuggestAPIKey);
+			final String unbxdAutoSuggestSearchInputId = getUnbxdSearchInputId();
+			model.addAttribute(UNBXD_SEARCHINPUTIDKEY_MODEL, unbxdAutoSuggestSearchInputId);
 			final CatalogModel unbxdCatalog = getCurrentUnbxdCatalog();
 			model.addAttribute(UNBXD_ANALYTICS_CATALOG, unbxdCatalog);
 			//Setting the endpoint url as model attribute rather base.js.properties so that it can be overriden from local.properties
@@ -149,42 +128,32 @@ public class HybrisAnalyticsBeforeViewHandler extends BeforeViewJsPropsHandlerAd
 		return piwikSiteId;
 	}
 
-	protected String getCurrentUnbxdSiteKey()
+	protected String getUnbxdSiteKey()
 	{
-		String unbxdSiteKey = siteConfigService.getProperty(UNBXD_ANALYTICS_SITE_KEY + baseStoreService.getCurrentBaseStore().getUid());
+		String unbxdSiteKey = siteConfigService.getProperty(UNBXD_SITE_KEY + baseStoreService.getCurrentBaseStore().getUid());
 		if (unbxdSiteKey == null)
 		{
-			unbxdSiteKey = siteConfigService.getProperty(UNBXD_ANALYTICS_DEFAULT_SITE_KEY);
+			unbxdSiteKey = siteConfigService.getProperty(UNBXD_DEFAULT_SITE_KEY);
 		}
 		return unbxdSiteKey;
 	}
 
-	protected String getCurrentUnbxdAutoSuggestSiteKey()
+	protected String getUnbxdAPIKey()
 	{
-		String unbxdAutoSuggestSiteKey = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_SITE_KEY + baseStoreService.getCurrentBaseStore().getUid());
-		if (unbxdAutoSuggestSiteKey == null)
-		{
-			unbxdAutoSuggestSiteKey = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_DEFAULT_SITE_KEY);
-		}
-		return unbxdAutoSuggestSiteKey;
-	}
-
-	protected String getCurrentUnbxdAutoSuggestAPIKey()
-	{
-		String unbxdAutoSuggestAPIKey = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_API_KEY + baseStoreService.getCurrentBaseStore().getUid());
+		String unbxdAutoSuggestAPIKey = siteConfigService.getProperty(UNBXD_API_KEY + baseStoreService.getCurrentBaseStore().getUid());
 		if (unbxdAutoSuggestAPIKey == null)
 		{
-			unbxdAutoSuggestAPIKey = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_DEFAULT_API_KEY);
+			unbxdAutoSuggestAPIKey = siteConfigService.getProperty(UNBXD_DEFAULT_API_KEY);
 		}
 		return unbxdAutoSuggestAPIKey;
 	}
 
-	protected String getCurrentUnbxdAutoSuggestSearchInputId()
+	protected String getUnbxdSearchInputId()
 	{
-		String unbxdAutoSuggestSearchInputId = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_SEARCHINPUT_ID + baseStoreService.getCurrentBaseStore().getUid());
+		String unbxdAutoSuggestSearchInputId = siteConfigService.getProperty(UNBXD_SEARCHINPUT_ID + baseStoreService.getCurrentBaseStore().getUid());
 		if (unbxdAutoSuggestSearchInputId == null)
 		{
-			unbxdAutoSuggestSearchInputId = siteConfigService.getProperty(UNBXD_AUTOSUGGEST_DEFAULT_SEARCHINPUT_ID);
+			unbxdAutoSuggestSearchInputId = siteConfigService.getProperty(UNBXD_DEFAULT_SEARCHINPUT_ID);
 		}
 		return unbxdAutoSuggestSearchInputId;
 	}

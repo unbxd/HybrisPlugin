@@ -24,17 +24,20 @@
 
         window.onbeforeunload = sendDwellTime;
         var start = new Date();
+
         function sendDwellTime(){
             var end = new Date();
             if(window.Unbxd) Unbxd.track('dwellTime', {pid : getPid("${product.code}"), dwellTime : ""+(end - start)})
         }
+
         /*Unbxd.track("product_view", {"pid": getPid("${product.code}")});*/
         </c:when>
         <c:when test="${pageType == 'CATEGORY'}">
         <c:if test="${not empty breadcrumbs}">
         <c:set var="categories" value="" />
         <c:forEach items="${breadcrumbs}" var="breadcrumb">
-        <c:set var="categories">${categories} > '${fn:escapeXml(breadcrumb.name)}'</c:set>
+        <c:set var="categories">${categories} > '${fn:escapeXml(breadcrumb.name)}'
+        </c:set>
         </c:forEach>
 
         </c:if>
@@ -63,7 +66,9 @@
 
         function initUnbxdAnalytics() {
             ( function () {
-                var ubx = document.createElement ( 'script' ); ubx.type = 'text/javascript' ; ubx.async = false ;
+                var ubx = document.createElement('script');
+                ubx.type = 'text/javascript';
+                ubx.async = false;
                 ubx.src = UnbxdSiteUrl;
                 ( document . getElementsByTagName ( 'head' )[ 0 ] || document . getElementsByTagName ( 'body' )[ 0 ]). appendChild ( ubx );
                 // added search tracking
@@ -75,6 +80,7 @@
         function getPid(productCode) {
             return '${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_' + productCode;
         }
+
         function trackAddToCartWithVariant_unbxd(productCode, quantityAdded, variant) {
             Unbxd.track( "addToCart" , { "pid" : getPid(productCode) , "variantId" : variant, "qty" : quantityAdded })
         }
@@ -84,7 +90,12 @@
         }
 
         function trackAddToCartWithVariantRequestId_unbxd(productCode, quantityAdded, variant) {
-            Unbxd.track( "addToCart" , { "pid" : getPid(productCode) , "variantId" : variant, "qty" : quantityAdded , "requestId" : requestId })
+            Unbxd.track("addToCart", {
+                "pid": getPid(productCode),
+                "variantId": variant,
+                "qty": quantityAdded,
+                "requestId": requestId
+            })
         }
 
         function trackAddToCartRequestId_unbxd(productCode, quantityAdded,requestId) {
@@ -99,8 +110,7 @@
         }
 
         window.mediator.subscribe('trackAddToCart', function(data) {
-            if (data.productCode && data.quantity && data.variant)
-            {
+            if (data.productCode && data.quantity && data.variant) {
                 trackAddToCartWithVariant_unbxd(data.productCode, data.initialCartQuantity, data.newCartQuantity);
             }
             if (data.productCode && data.quantity) {
@@ -109,15 +119,13 @@
         });
 
         window.mediator.subscribe('trackUpdateCart', function(data) {
-            if (data.productCode && data.initialCartQuantity && data.newCartQuantity)
-            {
+            if (data.productCode && data.initialCartQuantity && data.newCartQuantity) {
                 trackUpdateCart_unbxd(data.productCode, data.initialCartQuantity, data.newCartQuantity);
             }
         });
 
         window.mediator.subscribe('trackRemoveFromCart', function(data) {
-            if (data.productCode && data.initialCartQuantity)
-            {
+            if (data.productCode && data.initialCartQuantity) {
                 trackRemoveFromCart_unbxd(data.productCode, data.initialCartQuantity);
             }
         });
@@ -157,6 +165,7 @@
             event.preventDefault();
             return false;
         }
+
         window.addEventListener("load", searchHitTrack);
     </script>
 </c:if>
@@ -176,9 +185,12 @@
     </script>
     <c:choose>
         <c:when  test="${pageType == 'PRODUCTSEARCH'}">
-            <style>.main__inner-wrapper { display:none; }</style>
+<%--            <style>.main__inner-wrapper {--%>
+<%--                display: none;--%>
+<%--            }</style>--%>
             <script type="text/javascript">
                 initUnbxdAnalyticsNow = false;
+
                 function triggerSearch() {
                     (function () {
                         var ubx = document.createElement('script');
@@ -191,14 +203,18 @@
 
                     })();
                 }
+
                 window.addEventListener("load", triggerSearch);
                 var CSRFToken = '${ycommerce:encodeJavaScript(CSRFToken.token)}';
             </script>
         </c:when>
         <c:when  test="${pageType == 'CATEGORY'}">
-            <style>.main__inner-wrapper { display:none; }</style>
+<%--            <style>.main__inner-wrapper {--%>
+<%--                display: none;--%>
+<%--            }</style>--%>
             <script type="text/javascript">
                 initUnbxdAnalyticsNow = false;
+
                 function triggerCategoryBrowse() {
                     (function () {
                         var ubx = document.createElement('script');
@@ -211,6 +227,7 @@
 
                     })();
                 }
+
                 window.addEventListener("load", triggerCategoryBrowse);
                 var CSRFToken = '${ycommerce:encodeJavaScript(CSRFToken.token)}';
                 var unbxdCategoryId = '${ycommerce:encodeJavaScript(searchPageData.unbxdCategoryPath)}';
@@ -222,14 +239,56 @@
             function triggerOrderTrack(){
             window.setTimeout(function(){
             <c:forEach items="${orderData.entries}" var="entry">
-                Unbxd.track ( "order" ,{ "pid" : getPid("${entry.product.code}") , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}'});
-                /*//Unbxd.track ( "order" , { "pid" : getPid("${entry.product.code}")} , "variantId" : 'VID' , "qty" : '${entry.quantity}' , "price" : '${entry.product.price.value}' })*/
+                        Unbxd.track("order", {
+                            "pid": getPid("${entry.product.code}"),
+                            "qty": '${entry.quantity}',
+                            "price": '${entry.product.price.value}'
+                        });
+                        /*//Unbxd.track ( "order" , { "pid" : getPid("
+                        ${entry.product.code}")} , "variantId" : 'VID' , "qty" : '
+                        ${entry.quantity}' , "price" : '
+                        ${entry.product.price.value}' })*/
             </c:forEach>
             }, 5000);
             }
+
             window.addEventListener("load", triggerOrderTrack);
             </script>
         </c:when>
     </c:choose>
+</c:if>
+<c:if test="${not empty unbxdAutoSuggestSiteKey && not empty unbxdAutoSuggestApiKey}">
+    <script type="text/javascript">
+        function getRecommendations() {
+            window.setTimeout(function () {
+                if (typeof _unbxd_getRecommendations === "function") {
+                    // safe to use the function
+                    _unbxd_getRecommendations({
+                        widgets: widgets,
+                        userInfo: {
+                            userId: Unbxd.getUserId(),
+                            siteKey: unbxdSiteKey,
+                            apiKey: unbxdApiKey
+                        },
+                        pageInfo: pageInfo,
+                        itemClickHandler: function (product) {
+                            //do what you want to do with product that has been clicked here
+                            console.log(JSON.stringify(product));
+                            console.log(product.url);
+                            window.location = baseUrl + product.url;
+                        },
+                        dataParser: function (templateData) {
+                            // modify the data received from recommendation API in case required.
+                            for (i = 0; i < templateData.recommendations.length; i++) {
+                                templateData.recommendations[i]['imageUrl'] = templateData.recommendations[i]['img-300Wx300H'];
+                            }
+                            return templateData;
+                        }
+                    });
+                }
+            }, 1000);
+        }
+        window.addEventListener("load", getRecommendations);
+    </script>
 </c:if>
 

@@ -26,3 +26,5 @@ yacceleratorstorefront.additionalWebSpringConfigs.unbxdRecommendations=classpath
 
 unbxdRecommendations.javascript.paths.responsive=/responsive/common/js/unbxdRecommendations.js
 unbxdRecommendations.css.paths.responsive=/responsive/common/css/unbxdRecommendations.css
+
+unbxd.recommendation.active=true

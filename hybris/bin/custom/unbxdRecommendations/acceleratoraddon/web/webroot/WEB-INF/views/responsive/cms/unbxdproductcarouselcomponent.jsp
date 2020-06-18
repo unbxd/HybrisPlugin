@@ -11,21 +11,23 @@
 <spring:htmlEscape defaultHtmlEscape="true"/>
 
 <c:if test="${not empty unbxdSiteKey && not empty unbxdApiKey}">
+
     <script type="text/javascript">
+
         var unbxdSiteKey = '${ycommerce:encodeJavaScript(unbxdSiteKey)}';
         var unbxdApiKey = '${ycommerce:encodeJavaScript(unbxdApiKey)}';
-
-        console.log("Recommendation widget type : ", '${pageType}');
+        console.log("Generic page type", '${pageType}');
+        console.log("Recommendation widget type : ", '${UnbxdPageType}');
         console.log("CMS Page Id : ", '${cmsPage.uid}');
         console.log("CMS Page Name : ", '${cmsPage.name}');
 
         var scheme = '${request.secure}' ? 'https:' : 'http:';
         var host = '${header['host']}';
         var contextPath = '${encodedContextPath}';
-        var baseUrl = scheme+host+contextPath;
+        var baseUrl = scheme + host + contextPath;
 
         var categoryPathfull = '${searchPageData.unbxdCategoryPath}';
-        if(categoryPathfull) {
+        if (categoryPathfull) {
             var categoryarray = categoryPathfull.split(">", 4);
             console.log("Category 1", categoryarray[0]);
             console.log("Category 2", categoryarray[1]);
@@ -33,271 +35,163 @@
             console.log("Category 4", categoryarray[3]);
         }
 
+        var UnbxdRecommendationJSUrl = 'https://d3m8huu8gvuyn3.cloudfront.net/rex_template_content/unbxd_rex_template_sdk.js';
+
+        function initUnbxdRecommendations() {
+            (function () {
+                var ubx = document.createElement('script');
+                ubx.type = 'text/javascript';
+                ubx.async = false;
+                ubx.src = UnbxdRecommendationJSUrl;
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ubx);
+            })();
+        }
+
+        window.addEventListener("load", initUnbxdRecommendations);
+
     </script>
 
+    <c:choose>
+        <c:when test="${UnbxdPageType == 'PRODUCT' && pageType == 'PRODUCT'}">
+
+            <script type="text/javascript">
+                widgets = window.widgets || {};
+                var pageInfo = {
+                    pageType: 'PRODUCT',
+                    productIds: ['${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${product.code}']
+                };
+            </script>
+            <c:choose>
+
+                <c:when test="${widgetType == 'WIDGET1'}">
+                    <div id="product_recommendations1"></div>
+                    <script type="text/javascript">
+                        widgets['widget1'] = {name: "product_recommendations1"};
+                    </script>
+                </c:when>
+                <c:when test="${widgetType == 'WIDGET2'}">
+                    <div id="product_recommendations2"></div>
+                    <script type="text/javascript">
+                        widgets['widget2'] = {name: "product_recommendations2"};
+                    </script>
+                </c:when>
+                <c:when test="${widgetType == 'WIDGET3'}">
+                    <div id="product_recommendations3"></div>
+                    <script type="text/javascript">
+                        widgets['widget3'] = {name: "product_recommendations3"};
+                    </script>
+                </c:when>
+            </c:choose>
+
+        </c:when>
+
+        <c:when test="${UnbxdPageType == 'CATEGORY' && pageType == 'CATEGORY'}">
+
+            <script type="text/javascript">
+                widgets = window.widgets || {};
+                if (categoryarray[0] === 'brands') {
+                    var pageInfo = {
+                        pageType: 'BRAND',
+                        brand: categoryarray[1]
+                    }
+                } else {
+                    var pageInfo = {
+                        pageType: 'CATEGORY',
+                        catlevel1Name: categoryarray[0],
+                        catlevel2Name: categoryarray[1],
+                        catlevel3Name: categoryarray[2]
+                    };
+                }
+
+            </script>
+            <c:choose>
+                <c:when test="${widgetType == 'WIDGET1'}">
+                    <div id="category_recommendations1"></div>
+                    <script type="text/javascript">
+                        widgets['widget1'] = {name: "category_recommendations1"};
+                    </script>
+                </c:when>
+                <c:when test="${widgetType == 'WIDGET2'}">
+                    <div id="category_recommendations2"></div>
+                    <script type="text/javascript">
+                        widgets['widget2'] = {name: "category_recommendations2"};
+                    </script>
+                </c:when>
+                <c:when test="${widgetType == 'WIDGET3'}">
+                    <div id="category_recommendations3"></div>
+                    <script type="text/javascript">
+                        widgets['widget3'] = {name: "category_recommendations3"};
+                    </script>
+                </c:when>
+            </c:choose>
+        </c:when>
+
+        <c:when test="${UnbxdPageType == 'HOME' && cmsPage.uid == 'homepage'}">
+            <script type="text/javascript">
+                widgets = window.widgets || {};
+                var pageInfo = {
+                    pageType: 'HOME'
+                };
+            </script>
+            <c:choose>
+
+                <c:when test="${widgetType == 'WIDGET1'}">
+                    <div id="home_recommendations1"></div>
+                    <script type="text/javascript">
+                        widgets['widget1'] = {name: "home_recommendations1"};
+                    </script>
+                </c:when>
+                <c:when test="${widgetType == 'WIDGET2'}">
+                    <div id="home_recommendations2"></div>
+                    <script type="text/javascript">
+                        widgets['widget2'] = {name: "home_recommendations2"};
+                    </script>
+                </c:when>
+                <c:when test="${widgetType == 'WIDGET3'}">
+                    <div id="home_recommendations3"></div>
+                    <script type="text/javascript">
+                        widgets['widget3'] = {name: "home_recommendations3"};
+                    </script>
+                </c:when>
+            </c:choose>
+        </c:when>
+
+        <c:when test="${UnbxdPageType == 'CART' && pageType == 'CART'}">
+
+            <script type="text/javascript">
+                widgets = window.widgets || {};
+                console.log('Products in Cart : ', '${productcodes}');
+                var productcodes = new Array();
+                <c:forEach items="${productcodes}" var="productcode">
+                productcodes.push('${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${productcode}');
+                </c:forEach>
+
+                var pageInfo = {
+                    pageType: 'CART',
+                    productIds: productcodes
+                };
+            </script>
+            <c:choose>
+                <c:when test="${widgetType == 'WIDGET1'}">
+                    <div id="cart_recommendations1"></div>
+                    <script type="text/javascript">
+                        widgets['widget1'] = {name: "cart_recommendations1"};
+                    </script>
+                </c:when>
+                <c:when test="${widgetType == 'WIDGET2'}">
+                    <div id="cart_recommendations2"></div>
+                    <script type="text/javascript">
+                        widgets['widget2'] = {name: "cart_recommendations2"};
+                    </script>
+                </c:when>
+                <c:when test="${widgetType == 'WIDGET3'}">
+                    <div id="cart_recommendations3"></div>
+                    <script type="text/javascript">
+                        widgets['widget3'] = {name: "cart_recommendations3"};
+                    </script>
+                </c:when>
+            </c:choose>
+        </c:when>
+    </c:choose>
+
 </c:if>
-
-<script type="text/javascript">
-
-    var UnbxdRecommendationJSUrl = 'https://d3m8huu8gvuyn3.cloudfront.net/rex_template_content/unbxd_rex_template_sdk.js';
-
-    function initUnbxdRecommendations() {
-        (function () {
-            var ubx = document.createElement('script');
-            ubx.type = 'text/javascript';
-            ubx.async = false;
-            ubx.src = UnbxdRecommendationJSUrl;
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ubx);
-        })();
-    }
-
-    if (unbxdSiteKey && unbxdApiKey) {
-        window.addEventListener("load", initUnbxdRecommendations);
-    }
-
-</script>
-
-<c:choose>
-    <c:when test="${pageType == 'PRODUCT' && cmsPage.uid == 'productDetails'}">
-        <div id="product_recommendations1"></div>
-
-        <script type="text/javascript">
-            function getRecommendations() {
-                window.setTimeout(function () {
-                    _unbxd_getRecommendations({
-                        widgets: {
-                            widget1: {
-                                name: "product_recommendations1"
-                            }
-                        },
-                        userInfo: {
-                            userId: Unbxd.getUserId(),
-                            siteKey: unbxdSiteKey,
-                            apiKey: unbxdApiKey
-                        },
-                        pageInfo: {
-                            pageType: 'PRODUCT',
-                            <%--productIds: [getPid("${product.code}")]--%>
-                            //productIds: ['${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${product.code}']
-                            productIds: ['${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${product.code}']
-                        },
-                        itemClickHandler: function (product) {
-                            //do what you want to do with product that has been clicked here
-                            console.log(JSON.stringify(product));
-                            console.log(product.url);
-                            window.location = baseUrl + product.url;
-                        },
-                        dataParser: function (templateData) {
-                            // modify the data received from recommendation API in case required.
-                            for (i = 0; i < templateData.recommendations.length; i++) {
-                                templateData.recommendations[i]['imageUrl'] = templateData.recommendations[i]['img-300Wx300H'];
-                            }
-                            return templateData;
-                        }
-                    });
-                }, 1000);
-            }
-
-            function getPid(productCode) {
-                return '${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_' + productCode;
-            }
-
-            if (unbxdSiteKey && unbxdApiKey) {
-                window.addEventListener("load", getRecommendations);
-            }
-        </script>
-    </c:when>
-
-    <c:when test="${pageType == 'CATEGORY' && cmsPage.uid == 'productGrid'}">
-
-        <div id="category_recommendations1"></div>
-
-        <script type="text/javascript">
-            function getRecommendations() {
-                if(categoryarray[0] === 'categories'){
-                    window.setTimeout(function () {
-                        _unbxd_getRecommendations({
-                            widgets: {
-                                widget1: {
-                                    name: "category_recommendations1"
-                                }
-                            },
-                            userInfo: {
-                                userId: Unbxd.getUserId(),
-                                siteKey: unbxdSiteKey,
-                                apiKey: unbxdApiKey
-                            },
-                            pageInfo: {
-                                pageType: 'CATEGORY',
-                                <%--productIds: [getPid("${product.code}")]--%>
-                                //productIds: ['${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${product.code}']
-                                //productIds: ['${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${product.code}']
-                                catlevel1Name: categoryarray[0],
-                                catlevel2Name: categoryarray[1],
-                                catlevel3Name: categoryarray[2]
-                            },
-                            itemClickHandler: function (product) {
-                                //do what you want to do with product that has been clicked here
-                                console.log(JSON.stringify(product));
-                                console.log(product.url);
-                                window.location = baseUrl + product.url;
-                            },
-                            dataParser: function (templateData) {
-                                // modify the data received from recommendation API in case required.
-                                for (i = 0; i < templateData.recommendations.length; i++) {
-                                    templateData.recommendations[i]['imageUrl'] = templateData.recommendations[i]['img-300Wx300H'];
-                                }
-                                return templateData;
-                            }
-                        });
-                    }, 1000);}
-                if(categoryarray[0] === 'brands'){
-                    window.setTimeout(function () {
-                        _unbxd_getRecommendations({
-                            widgets: {
-                                widget1: {
-                                    name: "category_recommendations1"
-                                }
-                            },
-                            userInfo: {
-                                userId: Unbxd.getUserId(),
-                                siteKey: unbxdSiteKey,
-                                apiKey: unbxdApiKey
-                            },
-                            pageInfo: {
-                                pageType: 'BRAND',
-                                <%--productIds: [getPid("${product.code}")]--%>
-                                //productIds: ['${fn:escapeXml(unbxdCatalog.id)}/${fn:escapeXml(unbxdCatalog.version)}/${product.code}']
-                                //productIds: ['${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${product.code}']
-                                brand: categoryarray[1]
-                            },
-                            itemClickHandler: function (product) {
-                                //do what you want to do with product that has been clicked here
-                                console.log(JSON.stringify(product));
-                                console.log(product.url);
-                                window.location = baseUrl + product.url;
-                            },
-                            dataParser: function (templateData) {
-                                // modify the data received from recommendation API in case required.
-                                for (i = 0; i < templateData.recommendations.length; i++) {
-                                    templateData.recommendations[i]['imageUrl'] = templateData.recommendations[i]['img-300Wx300H'];
-                                }
-                                return templateData;
-                            }
-                        });
-                    }, 1000);}
-            }
-
-            function getPid(productCode) {
-                return '${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_' + productCode;
-            }
-
-            if (unbxdSiteKey && unbxdApiKey) {
-                window.addEventListener("load", getRecommendations);
-            }
-        </script>
-    </c:when>
-
-    <c:when test="${pageType == 'HOME' && cmsPage.uid == 'homepage'}">
-
-        <div id="home_recommendations1"></div>
-
-        <script type="text/javascript">
-            function getRecommendations() {
-                window.setTimeout(function () {
-                    _unbxd_getRecommendations({
-                        widgets: {
-                            widget1: {
-                                name: "home_recommendations1"
-                            }
-                        },
-                        userInfo: {
-                            userId: Unbxd.getUserId(),
-                            siteKey: unbxdSiteKey,
-                            apiKey: unbxdApiKey
-                        },
-                        pageInfo: {
-                            pageType: 'HOME'
-                        },
-                        itemClickHandler: function (product) {
-                            //do what you want to do with product that has been clicked here
-                            console.log(JSON.stringify(product));
-                            console.log(product.url);
-                            window.location = baseUrl + product.url;
-                        },
-                        dataParser: function (templateData) {
-                            // modify the data received from recommendation API in case required.
-                            for (i = 0; i < templateData.recommendations.length; i++) {
-                                templateData.recommendations[i]['imageUrl'] = templateData.recommendations[i]['img-300Wx300H'];
-                            }
-                            return templateData;
-                        }
-                    });
-                }, 1000);
-            }
-
-            function getPid(productCode) {
-                return '${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_' + productCode;
-            }
-
-            if (unbxdSiteKey && unbxdApiKey) {
-                window.addEventListener("load", getRecommendations);
-            }
-        </script>
-    </c:when>
-
-    <c:when test="${pageType == 'CATEGORY' && cmsPage.uid == 'cartPage'}">
-
-        <div id="cart_recommendations1"></div>
-
-        <script type="text/javascript">
-            console.log('Products in Cart : ','${productcodes}');
-            var productcodes = new Array();
-            <c:forEach items="${productcodes}" var="productcode">
-            productcodes.push('${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${productcode}');
-            </c:forEach>
-
-            function getRecommendations() {
-                window.setTimeout(function () {
-                    _unbxd_getRecommendations({
-                        widgets: {
-                            widget1: {
-                                name: "cart_recommendations1"
-                            }
-                        },
-                        userInfo: {
-                            userId: Unbxd.getUserId(),
-                            siteKey: unbxdSiteKey,
-                            apiKey: unbxdApiKey
-                        },
-                        pageInfo: {
-                            pageType: 'CART',
-                            productIds: productcodes
-                        },
-                        itemClickHandler: function (product) {
-                            //do what you want to do with product that has been clicked here
-                            console.log(JSON.stringify(product));
-                            console.log(product.url);
-                            window.location = baseUrl + product.url;
-                        },
-                        dataParser: function (templateData) {
-                            // modify the data received from recommendation API in case required.
-                            for (i = 0; i < templateData.recommendations.length; i++) {
-                                templateData.recommendations[i]['imageUrl'] = templateData.recommendations[i]['img-300Wx300H'];
-                            }
-                            return templateData;
-                        }
-                    });
-                }, 1000);
-            }
-
-            function getPid(productCode) {
-                return '${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_' + productCode;
-            }
-
-            if (unbxdSiteKey && unbxdApiKey) {
-                window.addEventListener("load", getRecommendations);
-            }
-        </script>
-    </c:when>
-</c:choose>
