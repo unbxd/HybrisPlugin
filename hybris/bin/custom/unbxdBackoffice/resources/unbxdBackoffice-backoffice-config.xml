@@ -28,6 +28,7 @@
 			<n:navigation-node id="Unbxd">
 				<n:type-node id="hmc.unbxd.products" code="Product"/>
 				<n:type-node id="hmc.unbxd.uploads" code="UnbxdUploadTask"/>
+				<n:type-node id="hmc.unbxd.indexes" code="SolrFacetSearchConfig"/>
 			</n:navigation-node>
 		</n:explorer-tree>
 	</context>
@@ -113,7 +114,7 @@
 
 	<context component="editor-area" type="SolrIndexedType" merge-by="type">
 		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea" xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch" xmlns:list-view="http://www.hybris.com/cockpitng/component/listView" xmlns:na="http://www.hybris.com/cockpitng/config/notifications" xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch" xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config" xmlns:y="http://www.hybris.com/cockpit/config/hybris">
-			<editorArea:tab name="hmc.administration">
+			<editorArea:tab name="hmc.section.unbxd">
 				<editorArea:section name="hmc.section.unbxd">
 					<editorArea:attribute label="SolrIndexedType.isUnbxd" qualifier="isUnbxd"/>
 				</editorArea:section>
@@ -123,7 +124,7 @@
 
 	<context merge-by="type" type="SolrIndexedProperty" component="editor-area" module="unbxdBackoffice">
 		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea" xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch" xmlns:list-view="http://www.hybris.com/cockpitng/component/listView" xmlns:na="http://www.hybris.com/cockpitng/config/notifications" xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch" xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config" xmlns:y="http://www.hybris.com/cockpit/config/hybris">
-			<editorArea:tab name="hmc.administration">
+			<editorArea:tab name="hmc.section.unbxd">
 				<editorArea:section name="hmc.section.unbxd">
 					<editorArea:attribute label="SolrIndexedProperty.isUnbxd" qualifier="isUnbxd"/>
 					<editorArea:attribute label="SolrIndexedProperty.unbxdType" qualifier="unbxdType"/>
@@ -187,4 +188,65 @@
 <!--		</list-view:list-view>-->
 <!--	</context>-->
 
+  <context merge-by="type" type="SolrFacetSearchConfig" component="editor-area" module="unbxdBackoffice">
+    <editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea" xmlns:na="http://www.hybris.com/cockpitng/config/notifications" xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+      <editorArea:tab name="hmc.section.unbxd" position="0">
+        <editorArea:section name="hmc.sec.configuration.indexedtypes">
+          <editorArea:panel colspan="4" name="solrIndexedTypesPanelNew">
+            <editorArea:attribute editor="com.hybris.cockpitng.editor.extendedmultireferenceeditor" qualifier="solrIndexedTypes">
+              <editorArea:editor-parameter>
+                <editorArea:name>listConfigContext</editorArea:name>
+                <editorArea:value>inLineEditorConfig</editorArea:value>
+              </editorArea:editor-parameter>
+              <editorArea:editor-parameter>
+                <editorArea:name>inlineEditing</editorArea:name>
+                <editorArea:value>true</editorArea:value>
+              </editorArea:editor-parameter>
+            </editorArea:attribute>
+          </editorArea:panel>
+        </editorArea:section>
+      </editorArea:tab>
+    </editorArea:editorArea>
+  </context>
+  <context merge-by="type" type="SolrIndexedType" component="editor-area" module="unbxdBackoffice">
+    <editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea" xmlns:na="http://www.hybris.com/cockpitng/config/notifications" xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+      <editorArea:tab name="hmc.section.unbxd" position="0">
+        <editorArea:section name="hmc.sec.configuration.indexedtype.indexedproperties">
+          <editorArea:panel colspan="4" name="solrIndexedPropertiesPanel">
+            <editorArea:attribute editor="com.hybris.cockpitng.editor.extendedmultireferenceeditor" qualifier="solrIndexedProperties">
+              <editorArea:editor-parameter>
+                <editorArea:name>listConfigContext</editorArea:name>
+                <editorArea:value>inLineEditorConfig</editorArea:value>
+              </editorArea:editor-parameter>
+              <editorArea:editor-parameter>
+                <editorArea:name>inlineEditing</editorArea:name>
+                <editorArea:value>true</editorArea:value>
+              </editorArea:editor-parameter>
+            </editorArea:attribute>
+          </editorArea:panel>
+        </editorArea:section>
+      </editorArea:tab>
+    </editorArea:editorArea>
+  </context>
+  <context type="SolrIndexedType" merge-by="type" component="inLineEditorConfig" module="unbxdBackoffice" >
+    <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView" xmlns:na="http://www.hybris.com/cockpitng/config/notifications" xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+      <list-view:column qualifier="identifier"/>
+      <list-view:column qualifier="type"/>
+      <list-view:column qualifier="indexName"/>
+      <list-view:column label="SolrIndexedType.isUnbxd" qualifier="isUnbxd"/>
+    </list-view:list-view>
+</context>
+  <context type="SolrIndexedProperty" merge-by="type" component="inLineEditorConfig" module="unbxdBackoffice" >
+    <list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView" xmlns:na="http://www.hybris.com/cockpitng/config/notifications" xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+      <list-view:column qualifier="name"/>
+      <list-view:column label="SolrIndexedProperty.isUnbxd" qualifier="isUnbxd"/>
+      <list-view:column qualifier="type"/>
+      <list-view:column label="SolrIndexedProperty.unbxdType" qualifier="unbxdType"/>
+      <list-view:column qualifier="multiValue"/>
+      <list-view:column qualifier="facet"/>
+      <list-view:column qualifier="useForSpellchecking"/>
+      <list-view:column qualifier="useForAutocomplete"/>
+      <list-view:column qualifier="includeInResponse"/>
+    </list-view:list-view>
+</context>
 </config>
