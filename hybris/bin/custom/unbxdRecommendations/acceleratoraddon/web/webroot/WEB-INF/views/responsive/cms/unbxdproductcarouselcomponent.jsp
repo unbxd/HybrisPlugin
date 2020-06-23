@@ -26,29 +26,6 @@
         var contextPath = '${encodedContextPath}';
         var baseUrl = scheme + host + contextPath;
 
-        var categoryPathfull = '${searchPageData.unbxdCategoryPath}';
-        if (categoryPathfull) {
-            var categoryarray = categoryPathfull.split(">", 4);
-            console.log("Category 1", categoryarray[0]);
-            console.log("Category 2", categoryarray[1]);
-            console.log("Category 3", categoryarray[2]);
-            console.log("Category 4", categoryarray[3]);
-        }
-
-        var UnbxdRecommendationJSUrl = 'https://d3m8huu8gvuyn3.cloudfront.net/rex_template_content/unbxd_rex_template_sdk.js';
-
-        function initUnbxdRecommendations() {
-            (function () {
-                var ubx = document.createElement('script');
-                ubx.type = 'text/javascript';
-                ubx.async = false;
-                ubx.src = UnbxdRecommendationJSUrl;
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ubx);
-            })();
-        }
-
-        window.addEventListener("load", initUnbxdRecommendations);
-
     </script>
 
     <c:choose>
@@ -88,6 +65,16 @@
         <c:when test="${UnbxdPageType == 'CATEGORY' && pageType == 'CATEGORY'}">
 
             <script type="text/javascript">
+
+                var categoryPathfull = '${searchPageData.unbxdCategoryPath}';
+                if (categoryPathfull) {
+                    var categoryarray = categoryPathfull.split(">", 4);
+                    console.log("Category 1", categoryarray[0]);
+                    console.log("Category 2", categoryarray[1]);
+                    console.log("Category 3", categoryarray[2]);
+                    console.log("Category 4", categoryarray[3]);
+                }
+
                 widgets = window.widgets || {};
                 if (categoryarray[0] === 'brands') {
                     var pageInfo = {

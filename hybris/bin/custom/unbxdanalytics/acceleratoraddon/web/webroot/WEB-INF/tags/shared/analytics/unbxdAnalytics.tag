@@ -257,38 +257,4 @@
         </c:when>
     </c:choose>
 </c:if>
-<c:if test="${not empty unbxdAutoSuggestSiteKey && not empty unbxdAutoSuggestApiKey}">
-    <script type="text/javascript">
-        function getRecommendations() {
-            window.setTimeout(function () {
-                if (typeof _unbxd_getRecommendations === "function") {
-                    // safe to use the function
-                    _unbxd_getRecommendations({
-                        widgets: widgets,
-                        userInfo: {
-                            userId: Unbxd.getUserId(),
-                            siteKey: unbxdSiteKey,
-                            apiKey: unbxdApiKey
-                        },
-                        pageInfo: pageInfo,
-                        itemClickHandler: function (product) {
-                            //do what you want to do with product that has been clicked here
-                            console.log(JSON.stringify(product));
-                            console.log(product.url);
-                            window.location = baseUrl + product.url;
-                        },
-                        dataParser: function (templateData) {
-                            // modify the data received from recommendation API in case required.
-                            for (i = 0; i < templateData.recommendations.length; i++) {
-                                templateData.recommendations[i]['imageUrl'] = templateData.recommendations[i]['img-300Wx300H'];
-                            }
-                            return templateData;
-                        }
-                    });
-                }
-            }, 1000);
-        }
-        window.addEventListener("load", getRecommendations);
-    </script>
-</c:if>
 
