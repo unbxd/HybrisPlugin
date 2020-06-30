@@ -16,11 +16,6 @@
 
         var unbxdSiteKey = '${ycommerce:encodeJavaScript(unbxdSiteKey)}';
         var unbxdApiKey = '${ycommerce:encodeJavaScript(unbxdApiKey)}';
-        console.log("Generic page type", '${pageType}');
-        console.log("Recommendation widget type : ", '${UnbxdPageType}');
-        console.log("CMS Page Id : ", '${cmsPage.uid}');
-        console.log("CMS Page Name : ", '${cmsPage.name}');
-
         var scheme = '${request.secure}' ? 'https:' : 'http:';
         var host = '${header['host']}';
         var contextPath = '${encodedContextPath}';
@@ -69,10 +64,6 @@
                 var categoryPathfull = '${searchPageData.unbxdCategoryPath}';
                 if (categoryPathfull) {
                     var categoryarray = categoryPathfull.split(">", 4);
-                    console.log("Category 1", categoryarray[0]);
-                    console.log("Category 2", categoryarray[1]);
-                    console.log("Category 3", categoryarray[2]);
-                    console.log("Category 4", categoryarray[3]);
                 }
 
                 widgets = window.widgets || {};
@@ -147,7 +138,6 @@
 
             <script type="text/javascript">
                 widgets = window.widgets || {};
-                console.log('Products in Cart : ', '${productcodes}');
                 var productcodes = new Array();
                 <c:forEach items="${productcodes}" var="productcode">
                 productcodes.push('${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${productcode}');

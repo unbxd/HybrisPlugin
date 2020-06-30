@@ -15,7 +15,7 @@
 		<!-- you should add all required extensions to this list, except platform extensions which are automatically required -->         
 		<requires-extension name="addonsupport"/>
 		<requires-extension name="acceleratorcms"/>
-
+		<requires-extension name="unbxd"/>
 		<coremodule generated="true" manager="com.unbxd.recommendations.jalo.UnbxdRecommendationsManager" packageroot="com.unbxd.recommendations"/>
 
 		

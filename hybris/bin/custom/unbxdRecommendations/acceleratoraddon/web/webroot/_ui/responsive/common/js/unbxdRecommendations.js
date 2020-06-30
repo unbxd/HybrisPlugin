@@ -15,7 +15,8 @@ if (unbxdSiteKey && unbxdApiKey) {
     window.addEventListener("load", initUnbxdRecommendations);
 
     function getRecommendations() {
-        window.setTimeout(function () {
+        var x = 0;
+        var intervalID = window.setInterval(function () {
             if (typeof _unbxd_getRecommendations === "function") {
                 // safe to use the function
                 _unbxd_getRecommendations({
@@ -40,6 +41,10 @@ if (unbxdSiteKey && unbxdApiKey) {
                         return templateData;
                     }
                 });
+                window.clearInterval(intervalID);
+            }
+            if (++x === 10) {
+                window.clearInterval(intervalID);
             }
         }, 1000);
     }
