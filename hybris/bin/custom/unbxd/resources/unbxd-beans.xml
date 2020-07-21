@@ -76,4 +76,10 @@
         <description>POJO containing the result page for product or category search.</description>
         <property name="unbxdCategoryPath" type="String"/>
     </bean>
+    <bean class="de.hybris.platform.solrfacetsearch.config.FacetSearchConfig">
+        <property name="unbxdSiteKey" type="String" />
+        <property name="unbxdSecretKey" type="String" />
+        <property name="unbxdApiKey" type="String" />
+    </bean>
+
 </beans>

@@ -92,11 +92,8 @@ public class UnbxdIndexer implements BeanFactoryAware {
             return Collections.emptyList();
         } else {
             try {
-                Unbxd.configure(Config.getParameter(UnbxdConstants.SITE_KEY + indexedType.getIndexNameFromConfig()),
-                        Config.getParameter(UnbxdConstants.API_KEY + indexedType.getIndexNameFromConfig()),
-                        Config.getParameter(UnbxdConstants.SECRET_KEY + indexedType.getIndexNameFromConfig()));
 
-                FeedClient feedClient = Unbxd.getFeedClient();
+                FeedClient feedClient = Unbxd.getFeedClient(facetSearchConfig);
                 indexedType.getIndexedProperties().entrySet().stream().filter(entry -> entry.getValue().isUnbxd()).forEach(entry -> {
                     feedClient.addSchema(entry.getKey(), entry.getValue().getUnbxdType() != null ? entry.getValue().getUnbxdType() : map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest());
                     feedClient.addSchema("v" + StringUtils.capitalize(entry.getKey()), entry.getValue().getUnbxdType() != null ? entry.getValue().getUnbxdType() : map(entry.getValue().getType()), entry.getValue().isMultiValue(), entry.getValue().isAutoSuggest());
@@ -329,7 +326,7 @@ public class UnbxdIndexer implements BeanFactoryAware {
             }
 
             try {
-                FeedClient feedClient = Unbxd.getFeedClient();
+                FeedClient feedClient = Unbxd.getFeedClient(facetSearchConfig);
                 feedClient.addProducts(new ArrayList<>(documents));
                 feedClient.updateProducts(new ArrayList<>(updateDocuments));
             } catch (ConfigException e) {
@@ -402,7 +399,7 @@ public class UnbxdIndexer implements BeanFactoryAware {
             }
 
             try {
-                FeedClient feedClient = Unbxd.getFeedClient();
+                FeedClient feedClient = Unbxd.getFeedClient(facetSearchConfig);
                 feedClient.deleteProducts(new ArrayList<>(delIds));
             } catch (ConfigException e) {
                 e.printStackTrace();

@@ -111,7 +111,7 @@
         <property name="solrSearchProviderFactory" ref="solrSearchProviderFactory" />
     </bean>
 
-    <alias name="unbxdIndexerBatchStrategy" alias="indexerBatchStrategy" />
+    <alias name="unbxdIndexerBatchStrategy" alias="unbxdIndexerBatchStrategy" />
     <bean id="unbxdIndexerBatchStrategy" class="com.unbxd.strategy.UnbxdIndexerBatchStrategy"
           scope="prototype">
         <property name="indexerQueriesExecutor" ref="indexerQueriesExecutor" />
@@ -119,11 +119,11 @@
         <property name="indexer" ref="unbxdIndexer" />
     </bean>
 
-    <alias name="unbxdIndexerBatchStrategyFactory" alias="indexerBatchStrategyFactory" />
+    <!--<alias name="unbxdIndexerBatchStrategyFactory" alias="indexerBatchStrategyFactory" />
     <bean id="unbxdIndexerBatchStrategyFactory" class="com.unbxd.service.impl.UnbxdIndexerBatchStrategyFactory" parent="defaultIndexerBatchStrategyFactory">
         <property name="unbxdIndexerBatchStrategyBeanId" value="unbxdIndexerBatchStrategy" />
         <property name="defaultIndexerBatchStrategyBeanId" value="defaultIndexerBatchStrategy" />
-    </bean>
+    </bean>-->
 
     <alias alias="facetSearchConfigService" name="defaultUnbxdFacetSearchConfigService" />
     <bean id="defaultUnbxdFacetSearchConfigService" class="com.unbxd.service.impl.DefaultUnbxdFacetSearchConfigService" parent="defaultFacetSearchConfigService">
@@ -173,4 +173,62 @@
         <property name="mediaContainerService" ref="mediaContainerService" />
         <property name="fieldNameProvider" ref="solrFieldNameProvider" />
     </bean>
+
+    <bean id="abstractUnbxdIndexerJob" parent="abstractJobPerformable" abstract="true">
+        <property name="facetSearchConfigService" ref="facetSearchConfigService" />
+        <property name="indexerService" ref="unbxdIndexerService" />
+        <property name="indexer" ref="indexer" />
+    </bean>
+
+    <bean id="unbxdIndexerJob" class="com.unbxd.cron.UnbxdIndexerJob" parent="abstractUnbxdIndexerJob" />
+
+    <alias name="defaultUnbxdIndexerService" alias="unbxdIndexerService" />
+    <bean id="defaultUnbxdIndexerService" class="de.hybris.platform.solrfacetsearch.indexer.impl.DefaultIndexerService">
+        <property name="indexerStrategyFactory" ref="unbxdIndexerStrategyFactory" />
+    </bean>
+
+    <alias name="defaultUnbxdIndexerStrategyFactory" alias="unbxdIndexerStrategyFactory" />
+    <bean id="defaultUnbxdIndexerStrategyFactory" class="de.hybris.platform.solrfacetsearch.indexer.strategies.impl.DefaultIndexerStrategyFactory">
+        <property name="indexerStrategyBeanId" value="unbxdIndexerStrategy" />
+        <property name="distributedIndexerStrategyBeanId" value="distributedIndexerStrategy" />
+    </bean>
+
+    <alias name="defaultUnbxdIndexerStrategy" alias="unbxdIndexerStrategy" />
+    <bean id="defaultUnbxdIndexerStrategy" class="de.hybris.platform.solrfacetsearch.indexer.strategies.impl.DefaultIndexerStrategy"
+          scope="prototype" parent="abstractIndexerStrategy">
+        <property name="indexerWorkerFactory" ref="unbxdIndexerWorkerFactory" />
+    </bean>
+
+    <alias name="defaultUnbxdIndexerWorkerFactory" alias="unbxdIndexerWorkerFactory" />
+    <bean id="defaultUnbxdIndexerWorkerFactory" class="de.hybris.platform.solrfacetsearch.indexer.workers.impl.DefaultIndexerWorkerFactory">
+        <property name="workerBeanId" value="unbxdIndexerWorker" />
+    </bean>
+
+    <alias name="defaultUnbxdIndexerWorker" alias="unbxdIndexerWorker" />
+    <bean id="defaultUnbxdIndexerWorker" class="de.hybris.platform.solrfacetsearch.indexer.workers.impl.DefaultIndexerWorker"
+          scope="prototype">
+        <property name="sessionService" ref="sessionService" />
+        <property name="userService" ref="userService" />
+        <property name="commonI18NService" ref="commonI18NService" />
+        <property name="facetSearchConfigService" ref="facetSearchConfigService" />
+        <property name="indexerBatchStrategyFactory" ref="unbxdIndexerBatchStrategyFactory2" />
+        <property name="solrSearchProviderFactory" ref="solrSearchProviderFactory" />
+    </bean>
+
+    <alias name="defaultUnbxdIndexerBatchStrategyFactory2" alias="unbxdIndexerBatchStrategyFactory2" />
+    <bean id="defaultUnbxdIndexerBatchStrategyFactory2" class="de.hybris.platform.solrfacetsearch.indexer.strategies.impl.DefaultIndexerBatchStrategyFactory">
+        <property name="indexerBatchStrategyBeanId" value="unbxdIndexerBatchStrategy" />
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="solrFacetSearchConfigConverter" />
+        <property name="add" ref="unbxdSolrFacetSearchConfigPopulator" />
+    </bean>
+
+    <alias name="defaultUnbxdSolrFacetSearchConfigPopulator" alias="unbxdSolrFacetSearchConfigPopulator" />
+    <bean id="defaultUnbxdSolrFacetSearchConfigPopulator" class="com.unbxd.populator.DefaultUnbxdSolrFacetSearchConfigPopulator">
+    </bean>
+
+    <bean id="unbxdIndexerJobListAttribute" class="com.unbxd.model.UnbxdIndexerJobListAttribute" />
+
 </beans>

@@ -73,7 +73,7 @@ public class CatalogSyncService {
 
     //comment1
 
-    public void refreshUploadStatus(UnbxdUploadTaskModel uploadTaskObj) {
+    /*public void refreshUploadStatus(UnbxdUploadTaskModel uploadTaskObj) {
         try{
             String uploadId = uploadTaskObj.getUploadId();
             boolean isDelta = uploadTaskObj.getIsDelta();
@@ -100,7 +100,7 @@ public class CatalogSyncService {
         catch (Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
 
     public FeedClientFactory getFeedClientFactory() {
         return feedClientFactory;

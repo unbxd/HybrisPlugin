@@ -15,6 +15,9 @@
 
 <items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="items.xsd">
+    <collectiontypes>
+        <collectiontype code="UnbxdIndexerJobList" elementtype="UnbxdIndexerCronJob" type="list"/>
+    </collectiontypes>
     <enumtypes>
         <enumtype generate="true" code="UnbxdUploadStatus"
                   autocreate="true" dynamic="true">
@@ -137,6 +140,69 @@
                     <persistence type="property" />
                 </attribute>
             </attributes>
+        </itemtype>
+
+        <itemtype code="SolrFacetSearchConfig" autocreate="false" generate="false">
+            <attributes>
+                <attribute qualifier="unbxdSiteKey" type="java.lang.String">
+                    <description>Unbxd site key</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="unbxdSecretKey" type="java.lang.String">
+                    <description>Unbxd secret key</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="unbxdApiKey" type="java.lang.String">
+                    <description>Unbxd api key</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="unbxdDomain" type="java.lang.String">
+                    <description>Unbxd feed domain</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="unbxdSearchEnabled" type="boolean">
+                    <description>Enable/disable Unbxd search</description>
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                </attribute>
+                <attribute qualifier="unbxdAutosuggestEnabled" type="boolean">
+                    <description>Enable/disable Unbxd auto suggest</description>
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                </attribute>
+                <attribute qualifier="unbxdCategoryEnabled" type="boolean">
+                    <description>Enable/disable Unbxd category</description>
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                </attribute>
+                <attribute qualifier="unbxdSearchConfig" type="java.lang.String">
+                    <description>Unbxd search config</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>HYBRIS.LONG_STRING</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="unbxdAutosuggestConfig" type="java.lang.String">
+                    <description>Unbxd auto suggest config</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>HYBRIS.LONG_STRING</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="unbxdFeedPush" type="boolean">
+                    <description>Enable/disable Unbxd feed push</description>
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                </attribute>
+                <attribute type="UnbxdIndexerJobList" qualifier="unbxdIndexerJobList">
+                    <description>Dynamic attribute to list Unbxd indexer jobs</description>
+                    <persistence type="dynamic" attributeHandler="unbxdIndexerJobListAttribute" />
+                </attribute>
+            </attributes>
+        </itemtype>
+        <itemtype code="UnbxdIndexerCronJob"  extends="SolrIndexerCronJob">
         </itemtype>
 
     </itemtypes>

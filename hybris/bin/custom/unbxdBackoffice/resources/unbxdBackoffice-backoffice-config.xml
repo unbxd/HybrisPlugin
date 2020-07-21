@@ -190,22 +190,70 @@
 
   <context merge-by="type" type="SolrFacetSearchConfig" component="editor-area" module="unbxdBackoffice">
     <editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea" xmlns:na="http://www.hybris.com/cockpitng/config/notifications" xmlns:y="http://www.hybris.com/cockpit/config/hybris">
-      <editorArea:tab name="hmc.section.unbxd" position="0">
-        <editorArea:section name="hmc.sec.configuration.indexedtypes">
-          <editorArea:panel colspan="4" name="solrIndexedTypesPanelNew">
-            <editorArea:attribute editor="com.hybris.cockpitng.editor.extendedmultireferenceeditor" qualifier="solrIndexedTypes">
-              <editorArea:editor-parameter>
-                <editorArea:name>listConfigContext</editorArea:name>
-                <editorArea:value>inLineEditorConfig</editorArea:value>
-              </editorArea:editor-parameter>
-              <editorArea:editor-parameter>
-                <editorArea:name>inlineEditing</editorArea:name>
-                <editorArea:value>true</editorArea:value>
-              </editorArea:editor-parameter>
-            </editorArea:attribute>
-          </editorArea:panel>
-        </editorArea:section>
-      </editorArea:tab>
+      <editorArea:tab name="hmc.tab.configuration.unbxd.setup" position="0">
+                <editorArea:section name="hmc.sec.configuration.unbxd.keys">
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" qualifier="unbxdSiteKey" />
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" qualifier="unbxdApiKey" />
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" qualifier="unbxdSecretKey" />
+                </editorArea:section>
+                <editorArea:section name="hmc.sec.configuration.unbxd.feeddomain">
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" qualifier="unbxdDomain" />
+                </editorArea:section>
+            </editorArea:tab>
+            <editorArea:tab name="hmc.tab.configuration.unbxd.product" position="1">
+                <editorArea:section name="hmc.sec.configuration.unbxd.search">
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" qualifier="unbxdSearchEnabled" />
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" qualifier="unbxdSearchConfig" >
+                    	<editor-parameter>
+							<name>rows</name>
+							<value>10</value>
+						</editor-parameter>
+                    </editorArea:attribute>
+                    
+                </editorArea:section>
+                <editorArea:section name="hmc.sec.configuration.unbxd.autosuggest">
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" qualifier="unbxdAutosuggestEnabled" >
+                    <editor-parameter>
+							<name>rows</name>
+							<value>10</value>
+						</editor-parameter>
+                    </editorArea:attribute>
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" qualifier="unbxdAutosuggestConfig" />
+                </editorArea:section>
+                <editorArea:section name="hmc.sec.configuration.unbxd.browse">
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" qualifier="unbxdCategoryEnabled" />
+                </editorArea:section>
+            </editorArea:tab>
+            <editorArea:tab name="hmc.tab.configuration.unbxd.catalog" position="2">
+                <editorArea:section name="hmc.sec.configuration.unbxd.feed">
+                    <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" qualifier="unbxdFeedPush" />
+                </editorArea:section>
+                <editorArea:section name="hmc.sec.configuration.unbxd.sync">
+                    <editorArea:customPanel name="unbxdFullFeedSync" spring-bean="unbxdFullFeedSyncButtonRenderer">
+                        <editorArea:render-parameter>
+                            <editorArea:name>dataModelProperty</editorArea:name>
+                            <editorArea:value>currentObject</editorArea:value>
+                        </editorArea:render-parameter>
+                    </editorArea:customPanel>
+                </editorArea:section>
+            </editorArea:tab>
+            <editorArea:tab name="hmc.tab.configuration.unbxd.cronjobs" position="4">
+                <editorArea:section name="hmc.sec.configuration.unbxd.cronjobs">
+                    <editorArea:panel name="solrIndexerCronJobPanel" colspan="4">
+                        <editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" editor="com.hybris.cockpitng.editor.extendedmultireferenceeditor"
+                                              qualifier="unbxdIndexerJobList">
+                            <editorArea:editor-parameter>
+                                <editorArea:name>listConfigContext</editorArea:name>
+                                <editorArea:value>referenceListView</editorArea:value>
+                            </editorArea:editor-parameter>
+                            <editorArea:editor-parameter>
+                                <editorArea:name>selectedItemsMaxSize</editorArea:name>
+                                <editorArea:value>7</editorArea:value>
+                            </editorArea:editor-parameter>
+                        </editorArea:attribute>
+                    </editorArea:panel>
+                </editorArea:section>
+            </editorArea:tab>
     </editorArea:editorArea>
   </context>
   <context merge-by="type" type="SolrIndexedType" component="editor-area" module="unbxdBackoffice">
