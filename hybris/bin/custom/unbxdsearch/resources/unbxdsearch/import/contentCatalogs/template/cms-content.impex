@@ -1,0 +1,42 @@
+# -----------------------------------------------------------------------
+# [y] hybris Platform
+#
+# Copyright (c) 2018 SAP SE or an SAP affiliate company.  All rights reserved.
+#
+# This software is the confidential and proprietary information of SAP
+# ("Confidential Information"). You shall not disclose such Confidential
+# Information and shall use it only in accordance with the terms of the
+# license agreement you entered into with SAP.
+# -----------------------------------------------------------------------
+######
+## PARAMETERS REQUIRED FOR THIS SCRIPT
+##
+##   * contentCatalog   - content catalog id
+##   * addonExtensionName - extension name of the ui addon
+#######
+
+$contentCatalog=retailContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+INSERT_UPDATE UnbxdWebRestriction;$contentCV[unique=true];uid[unique=true];name
+;;UnbxdWebRestriction;Enables the component only when unbxd components are configured correctly
+
+INSERT_UPDATE CMSInverseRestriction;$contentCV[unique=true];name;originalRestriction(uid,$contentCV);uid[unique=true];
+;;Inverse Unbxd Web Restriction;UnbxdWebRestriction;InverseUnbxdWebRestriction
+
+INSERT_UPDATE UnbxdWebConfigComponent;$contentCV[unique=true];uid[unique=true];name;restrictions(uid,$contentCV)
+;;UnbxdWebConfigComponent;Unbxd Web Component;UnbxdWebRestriction
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];active;cmsComponents(uid,$contentCV)[mode=append]
+;;PlaceholderContentSlot;true;UnbxdWebConfigComponent
+
+$contentCatalog=retailContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+$addonExtensionName=unbxdsearch
+
+
+INSERT_UPDATE JspIncludeComponent;$contentCV[unique=true];uid[unique=true];name;page;actions(uid,$contentCV);restrictions(uid,$contentCV)
+;;UnbxdCategoryContainerComponent;Unbxd Category Container Component;/WEB-INF/views/addons/$addonExtensionName/responsive/cms/unbxdCategoryComponent.jsp;;UnbxdWebRestriction
+;;UnbxdSearchContainerComponent;Unbxd Search Container Component;/WEB-INF/views/addons/$addonExtensionName/responsive/cms/unbxdSearchComponent.jsp;;UnbxdWebRestriction
+

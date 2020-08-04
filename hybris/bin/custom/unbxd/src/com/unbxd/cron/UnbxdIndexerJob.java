@@ -1,6 +1,7 @@
 package com.unbxd.cron;
 
 import com.unbxd.model.UnbxdIndexerCronJobModel;
+import com.unbxd.model.UnbxdSiteConfigModel;
 import de.hybris.platform.cronjob.enums.CronJobResult;
 import de.hybris.platform.cronjob.enums.CronJobStatus;
 import de.hybris.platform.cronjob.model.CronJobModel;
@@ -16,26 +17,31 @@ import org.apache.log4j.Logger;
 public class UnbxdIndexerJob  extends SolrIndexerJob {
     private static final Logger LOG = Logger.getLogger(UnbxdIndexerJob.class);
     @Override
-    public PerformResult performIndexingJob(CronJobModel cronJob) {
+    public PerformResult performIndexingJob(final CronJobModel cronJob) {
         LOG.info("Started unbxd indexer cronjob.");
         if (!(cronJob instanceof UnbxdIndexerCronJobModel)) {
             LOG.warn("Unexpected cronjob type: " + cronJob);
             return new PerformResult(CronJobResult.FAILURE, CronJobStatus.ABORTED);
         }else {
-            SolrIndexerCronJobModel solrIndexerCronJob = (SolrIndexerCronJobModel)cronJob;
-            SolrFacetSearchConfigModel facetSearchConfigModel = solrIndexerCronJob.getFacetSearchConfig();
-            FacetSearchConfig facetSearchConfig = this.getFacetSearchConfig(facetSearchConfigModel);
+            final UnbxdIndexerCronJobModel unbxdIndexerCronJob = (UnbxdIndexerCronJobModel)cronJob;
+            if(null == unbxdIndexerCronJob.getFacetSearchConfig().getUnbxdSiteConfig())
+            {
+                LOG.warn("Unbxd Site config for solr facet search "+unbxdIndexerCronJob.getFacetSearchConfig().getName()+" is not mapped");
+                return new PerformResult(CronJobResult.FAILURE, CronJobStatus.ABORTED);
+            }
+            if(BooleanUtils.isNotTrue(unbxdIndexerCronJob.getFacetSearchConfig().getUnbxdSiteConfig().isFeedPush()))
+            {
+                LOG.warn("Enable Unbxd feed push in Unbxd site config.");
+                return new PerformResult(CronJobResult.FAILURE, CronJobStatus.ABORTED);
+            }
+            final SolrFacetSearchConfigModel facetSearchConfigModel = unbxdIndexerCronJob.getFacetSearchConfig();
+            final FacetSearchConfig facetSearchConfig = this.getFacetSearchConfig(facetSearchConfigModel);
             if (facetSearchConfig == null) {
                 return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);
             }
-            else if(BooleanUtils.isNotTrue(facetSearchConfigModel.getUnbxdFeedPush()))
-            {
-                LOG.warn("Enable Unbxd feed push in SolrFacetSearchConfig.");
-                return new PerformResult(CronJobResult.FAILURE, CronJobStatus.ABORTED);
-            }
             else {
                 try {
-                    super.indexItems(solrIndexerCronJob, facetSearchConfig);
+                    super.indexItems(unbxdIndexerCronJob, facetSearchConfig);
                 } catch (IndexerException var6) {
                     LOG.warn("Error during indexing: " + facetSearchConfigModel.getName(), var6);
                     return new PerformResult(CronJobResult.ERROR, CronJobStatus.ABORTED);

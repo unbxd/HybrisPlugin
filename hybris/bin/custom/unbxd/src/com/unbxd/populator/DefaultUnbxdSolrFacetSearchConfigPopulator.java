@@ -1,5 +1,7 @@
 package com.unbxd.populator;
 
+import com.unbxd.model.UnbxdSiteConfigModel;
+
 import de.hybris.platform.converters.Populator;
 import de.hybris.platform.servicelayer.dto.converter.ConversionException;
 import de.hybris.platform.solrfacetsearch.config.FacetSearchConfig;
@@ -13,8 +15,13 @@ public class DefaultUnbxdSolrFacetSearchConfigPopulator implements Populator<Sol
     @Override
     public void populate(SolrFacetSearchConfigModel solrFacetSearchConfigModel, FacetSearchConfig facetSearchConfig)
             throws ConversionException {
-        facetSearchConfig.setUnbxdSiteKey(solrFacetSearchConfigModel.getUnbxdSiteKey());
-        facetSearchConfig.setUnbxdSecretKey(solrFacetSearchConfigModel.getUnbxdSecretKey());
-        facetSearchConfig.setUnbxdApiKey(solrFacetSearchConfigModel.getUnbxdApiKey());
+    	
+    	UnbxdSiteConfigModel unbxdSiteConfig = solrFacetSearchConfigModel.getUnbxdSiteConfig();
+    	if (unbxdSiteConfig != null) {
+        facetSearchConfig.setUnbxdSiteKey(unbxdSiteConfig.getSiteName());
+        facetSearchConfig.setUnbxdSecretKey(unbxdSiteConfig.getSecretKey());
+        facetSearchConfig.setUnbxdApiKey(unbxdSiteConfig.getApiKey());
+        facetSearchConfig.setUnbxdDomain(unbxdSiteConfig.getDomain());
+    	}
     }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+
+<widget-definition id="com.unbxd.backoffice.widgets.indexerType"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/widget-definition.xsd">
+
+	<name>Indexer type selector</name>
+	<description>Select between full or delta index</description>
+	<defaultTitle>Unbxd Indexer Type</defaultTitle>
+    <author>Jack-oss</author>
+    <version>0.1</version>
+    
+	<sockets>
+		<input type="com.unbxd.model.UnbxdSiteConfigModel" id="unbxdSiteConfigInput" />
+		<output type="java.lang.String" id="confirmOutput" />
+	</sockets>
+
+	 <keywords>
+        <keyword>unbxd</keyword>
+    </keywords>
+    
+    <controller class="com.unbxd.backoffice.widgets.indexer.IndexerTypeWidgetController" />
+    
+</widget-definition>

@@ -14,7 +14,7 @@ public class UnbxdIndexedPropertyPopulator implements Populator<SolrIndexedPrope
      */
     @Override
     public void populate(final SolrIndexedPropertyModel property, final IndexedProperty indexedProperty) throws ConversionException {
-        indexedProperty.setUnbxd(Boolean.TRUE.equals(property.getIsUnbxd()));
+        indexedProperty.setUnbxd(!Boolean.TRUE.equals(property.getNotInUnbxd()));
         if (property.getUnbxdType() != null) {
             indexedProperty.setUnbxdType(property.getUnbxdType().getCode());
         }

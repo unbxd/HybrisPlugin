@@ -1,209 +1,259 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!--
- [y] hybris Platform
+<!-- [y] hybris Platform Copyright (c) 2017 SAP SE or an SAP affiliate company. 
+	All rights reserved. This software is the confidential and proprietary information 
+	of SAP ("Confidential Information"). You shall not disclose such Confidential 
+	Information and shall use it only in accordance with the terms of the license 
+	agreement you entered into with SAP. -->
+<!-- ATTENTION: This is just an example file. You have to edit it according 
+	to your needs. -->
 
- Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="items.xsd">
+	<collectiontypes>
+		<collectiontype code="UnbxdIndexerJobList"
+			elementtype="UnbxdIndexerCronJob" type="list" />
+	</collectiontypes>
+	<enumtypes>
+		<enumtype generate="true" code="UnbxdUploadStatus"
+			autocreate="true" dynamic="true">
+			<description>This type determines status of unbxd upload.</description>
+			<value code="INDEXING" />
+			<value code="INDEXED" />
+			<value code="FAILED" />
+		</enumtype>
+		<enumtype generate="true" code="UnbxdDataType"
+			autocreate="true" dynamic="true">
+			<value code="text" />
+			<value code="decimal" />
+			<value code="number" />
+			<value code="descriptiontext" />
+			<value code="link" />
+			<value code="date" />
+			<value code="bool" />
+			<value code="nsku" />
+			<value code="facet" />
+			<value code="sku" />
+			<value code="path" />
+		</enumtype>
+	</enumtypes>
+	<relations>
+		<!-- <relation code="UnbxdSiteConfig2UnbxdIndexerCronJob" localized="false"> 
+			<sourceElement qualifier="unbxdSiteConfig" type="UnbxdSiteConfig" cardinality="one"> 
+			<modifiers optional="false" read="true" write="true" search="true" /> </sourceElement> 
+			<targetElement qualifier="unbxdIndexerCronJob" type="UnbxdIndexerCronJob" 
+			cardinality="many" collectiontype="list" ordered="true"> <modifiers optional="true" 
+			read="true" write="true" search="false" /> </targetElement> </relation> <relation 
+			code="SolrFacetSearchConfig2UnbxdSiteConfig" localized="false"> <sourceElement 
+			qualifier="facetSearchConfig" type="SolrFacetSearchConfig" cardinality="one"> 
+			<modifiers optional="false" read="true" write="true" search="true" /> </sourceElement> 
+			<targetElement qualifier="unbxdSiteConfig" type="UnbxdSiteConfig" cardinality="many" 
+			collectiontype="list" ordered="true"> <modifiers optional="true" read="true" 
+			write="true" search="false" /> </targetElement> </relation> -->
+	</relations>
+	<itemtypes>
+		<!-- <itemtype generate="true" code="MyProduct" jaloclass="com.unbxd.jalo.MyProduct" 
+			extends="Product" autocreate="true" > <attributes> <attribute qualifier="myExampleInitialStringField" 
+			type="java.lang.String"> <description>My Example Initial String Value</description> 
+			<modifiers initial="true"/> <persistence type="property"/> </attribute> <attribute 
+			qualifier="myExampleBooleanField" type="java.lang.Boolean"> <description>Example 
+			Initial Boolean Field</description> <persistence type="property"/> </attribute> 
+			<attribute qualifier="media" type="Media"> <persistence type="property"/> 
+			</attribute> </attributes> </itemtype> -->
+		<itemtype code="SolrIndexedType" generate="false"
+			autocreate="false">
+			<attributes>
+				<attribute qualifier="isUnbxd" type="java.lang.Boolean">
+					<description>If index is for Unbxd</description>
+					<persistence type="property" />
+					<modifiers read="true" write="true" optional="false" />
+					<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+				</attribute>
+			</attributes>
+		</itemtype>
 
- This software is the confidential and proprietary information of SAP
- ("Confidential Information"). You shall not disclose such Confidential
- Information and shall use it only in accordance with the terms of the
- license agreement you entered into with SAP.
--->
-<!--
-	ATTENTION: This is just an example file. You have to edit it according to your needs.
--->
+		<itemtype code="SolrIndexedProperty" generate="false"
+			autocreate="false">
+			<attributes>
+				<attribute qualifier="notInUnbxd" type="java.lang.Boolean">
+					<description>If index property is relevant for Unbxd</description>
+					<persistence type="property" />
+					<modifiers read="true" write="true" optional="false" />
+					<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+				</attribute>
+				<attribute qualifier="unbxdType" type="UnbxdDataType">
+					<description>Index property type Unbxd</description>
+					<persistence type="property" />
+					<modifiers read="true" write="true" optional="true" />
+				</attribute>
+			</attributes>
+		</itemtype>
 
-<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:noNamespaceSchemaLocation="items.xsd">
-    <collectiontypes>
-        <collectiontype code="UnbxdIndexerJobList" elementtype="UnbxdIndexerCronJob" type="list"/>
-    </collectiontypes>
-    <enumtypes>
-        <enumtype generate="true" code="UnbxdUploadStatus"
-                  autocreate="true" dynamic="true">
-            <description>This type determines status of unbxd upload.</description>
-            <value code="INDEXING" />
-            <value code="INDEXED" />
-            <value code="FAILED" />
-        </enumtype>
-        <enumtype generate="true" code="UnbxdDataType" autocreate="true" dynamic="true">
-            <value code="text"/>
-            <value code="decimal"/>
-            <value code="number"/>
-            <value code="descriptiontext"/>
-            <value code="link"/>
-            <value code="date"/>
-            <value code="bool"/>
-            <value code="nsku"/>
-            <value code="facet"/>
-            <value code="sku"/>
-            <value code="path"/>
-        </enumtype>
-    </enumtypes>
-    <itemtypes>
-        <!--
-                <itemtype generate="true"
-                   code="MyProduct"
-                   jaloclass="com.unbxd.jalo.MyProduct"
-                   extends="Product"
-                   autocreate="true"
-               >
-                    <attributes>
-                        <attribute qualifier="myExampleInitialStringField" type="java.lang.String">
-                            <description>My Example Initial String Value</description>
-                            <modifiers initial="true"/>
-                            <persistence type="property"/>
-                        </attribute>
+		<!-- <itemtype code="Product" generate="false" autocreate="false">
+			<attributes>
+				<attribute qualifier="unbxdSyncDate" type="java.util.Date">
+					<modifiers read="true" write="true" search="false"
+						optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype> -->
 
-                        <attribute qualifier="myExampleBooleanField" type="java.lang.Boolean">
-                            <description>Example Initial Boolean Field</description>
-                       <persistence type="property"/>
-                        </attribute>
+		<itemtype code="UnbxdUploadTask" extends="GenericItem"
+			autocreate="true" generate="true">
+			<deployment table="unbxduploadtasks" typecode="10300" />
+			<attributes>
+				<attribute type="java.lang.String" qualifier="fileName">
+					<modifiers read="true" write="true" optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.String" qualifier="uploadId">
+					<modifiers read="true" write="true" optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.String" qualifier="indexName">
+					<modifiers read="true" write="true" optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.String" qualifier="status">
+					<modifiers read="true" write="true" optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.String" qualifier="message">
+					<modifiers read="true" write="true" optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.Integer" qualifier="code">
+					<modifiers read="true" write="true" optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="timeStamp" type="java.util.Date">
+					<modifiers read="true" write="true" optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.Boolean" qualifier="isDelta">
+					<modifiers read="true" write="true" optional="false" />
+					<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
 
-                        <attribute qualifier="media" type="Media">
-                            <persistence type="property"/>
-                        </attribute>
+		<itemtype code="SolrFacetSearchConfig" autocreate="false"
+			generate="false">
+			<attributes>
+				<attribute qualifier="unbxdSiteConfig"
+					type="UnbxdSiteConfig">
+					<description>Unbxd Site Config with server details</description>
+					<modifiers optional="true" />
+					<persistence type="dynamic"
+						attributeHandler="unbxdSiteConfigAttributeHandler" />
+				</attribute>
+			</attributes>
+		</itemtype>
 
-                    </attributes>
-                </itemtype>
-        -->
-        <itemtype code="SolrIndexedType" generate="false" autocreate="false">
-            <attributes>
-                <attribute qualifier="isUnbxd" type="java.lang.Boolean">
-                    <description>If index is for Unbxd</description>
-                    <persistence type="property"/>
-                    <modifiers read="true" write="true" optional="false"/>
-                    <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
-                </attribute>
-            </attributes>
-        </itemtype>
+		<itemtype code="UnbxdSiteConfig" extends="GenericItem">
+			<deployment table="UnbxdSiteConfig" typecode="31000" />
+			<attributes>
+				<attribute qualifier="facetSearchConfig"
+					type="SolrFacetSearchConfig">
+					<modifiers optional="false" unique="true"></modifiers>
+					<description>Unbxd site key</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="siteName" type="java.lang.String">
+					<modifiers optional="false"></modifiers>
+					<description>Unbxd site key</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="secretKey" type="java.lang.String">
+					<modifiers optional="false"></modifiers>
+					<description>Unbxd secret key</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="apiKey" type="java.lang.String">
+					<modifiers optional="false"></modifiers>
+					<description>Unbxd api key</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="domain" type="java.lang.String">
+				<modifiers optional="false"></modifiers>
+					<description>Unbxd feed domain</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="searchBoxSelector" type="java.lang.String">
+					<modifiers optional="true"></modifiers>
+					<description>Unbxd Search Box Selector</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="useDefaultLayout" type="boolean">
+					<modifiers optional="true"></modifiers>
+					<description>Unbxd Search Box Selector</description>
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+				</attribute>
+				<attribute qualifier="searchEnabled" type="boolean">
+					<description>Enable/disable Unbxd search</description>
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+				</attribute>
+				<attribute qualifier="autosuggestEnabled" type="boolean">
+					<description>Enable/disable Unbxd auto suggest</description>
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+				</attribute>
+				<attribute qualifier="analyticsEnabled" type="boolean">
+					<description>Enable/disable Unbxd analytics</description>
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+				</attribute>
+				<attribute qualifier="categoryEnabled" type="boolean">
+					<description>Enable/disable Unbxd category</description>
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+				</attribute>
+				<attribute qualifier="searchConfig"
+					type="java.lang.String">
+					<description>Unbxd search config</description>
+					<persistence type="property">
+						<columntype>
+							<value>HYBRIS.LONG_STRING</value>
+						</columntype>
+					</persistence>
+				</attribute>
+				<attribute qualifier="categoryConfig"
+					type="java.lang.String">
+					<description>Unbxd category config</description>
+					<persistence type="property">
+						<columntype>
+							<value>HYBRIS.LONG_STRING</value>
+						</columntype>
+					</persistence>
+				</attribute>
+				<attribute qualifier="autosuggestConfig"
+					type="java.lang.String">
+					<description>Unbxd auto suggest config</description>
+					<persistence type="property">
+						<columntype>
+							<value>HYBRIS.LONG_STRING</value>
+						</columntype>
+					</persistence>
+				</attribute>
+				<attribute qualifier="feedPush" type="boolean">
+					<description>Enable/disable Unbxd feed push</description>
+					<persistence type="property" />
+					<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+				</attribute>
+				<attribute qualifier="indexerJobs" type="UnbxdIndexerJobList">
+					<description>Unbxd Indexer jobs configured for this site</description>
+					<modifiers optional="true" />
+					<persistence type="dynamic"
+						attributeHandler="unbxdIndexerJobListAttribute" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		<itemtype code="UnbxdIndexerCronJob"
+			extends="SolrIndexerCronJob">
+		</itemtype>
 
-        <itemtype code="SolrIndexedProperty" generate="false" autocreate="false">
-            <attributes>
-                <attribute qualifier="isUnbxd" type="java.lang.Boolean">
-                    <description>If index property is relevant for Unbxd</description>
-                    <persistence type="property"/>
-                    <modifiers read="true" write="true" optional="false"/>
-                    <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
-                </attribute>
-                <attribute qualifier="unbxdType" type="UnbxdDataType">
-                    <description>Index property type Unbxd</description>
-                    <persistence type="property"/>
-                    <modifiers read="true" write="true" optional="true"/>
-                </attribute>
-            </attributes>
-        </itemtype>
-
-        <itemtype code="Product" generate="false" autocreate="false">
-            <attributes>
-                <attribute qualifier="unbxdSyncDate" type="java.util.Date">
-                    <modifiers read="true" write="true" search="false" optional="true"/>
-                    <persistence type="property"/>
-                </attribute>
-            </attributes>
-        </itemtype>
-
-        <itemtype code="UnbxdUploadTask" extends="GenericItem" autocreate="true" generate="true">
-            <deployment table="unbxduploadtasks" typecode="10300"/>
-            <attributes>
-                <attribute type="java.lang.String" qualifier="fileName">
-                    <modifiers read="true" write="true"  optional="false" />
-                    <persistence type="property" />
-                </attribute>
-                <attribute type="java.lang.String" qualifier="uploadId">
-                    <modifiers read="true" write="true" optional="false" />
-                    <persistence type="property" />
-                </attribute>
-                <attribute type="java.lang.String" qualifier="indexName">
-                    <modifiers read="true" write="true" optional="false" />
-                    <persistence type="property" />
-                </attribute>
-                <attribute type="java.lang.String" qualifier="status">
-                    <modifiers read="true" write="true"  optional="false" />
-                    <persistence type="property" />
-                </attribute>
-                <attribute type="java.lang.String" qualifier="message">
-                    <modifiers read="true" write="true"  optional="true" />
-                    <persistence type="property" />
-                </attribute>
-                <attribute type="java.lang.Integer" qualifier="code">
-                    <modifiers read="true" write="true"  optional="true" />
-                    <persistence type="property" />
-                </attribute>
-                <attribute qualifier="timeStamp" type="java.util.Date">
-                    <modifiers read="true" write="true"  optional="false" />
-                    <persistence type="property" />
-                </attribute>
-                <attribute type="java.lang.Boolean" qualifier="isDelta">
-                    <modifiers read="true" write="true"  optional="false" />
-                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
-                    <persistence type="property" />
-                </attribute>
-            </attributes>
-        </itemtype>
-
-        <itemtype code="SolrFacetSearchConfig" autocreate="false" generate="false">
-            <attributes>
-                <attribute qualifier="unbxdSiteKey" type="java.lang.String">
-                    <description>Unbxd site key</description>
-                    <persistence type="property"/>
-                </attribute>
-                <attribute qualifier="unbxdSecretKey" type="java.lang.String">
-                    <description>Unbxd secret key</description>
-                    <persistence type="property"/>
-                </attribute>
-                <attribute qualifier="unbxdApiKey" type="java.lang.String">
-                    <description>Unbxd api key</description>
-                    <persistence type="property"/>
-                </attribute>
-                <attribute qualifier="unbxdDomain" type="java.lang.String">
-                    <description>Unbxd feed domain</description>
-                    <persistence type="property"/>
-                </attribute>
-                <attribute qualifier="unbxdSearchEnabled" type="boolean">
-                    <description>Enable/disable Unbxd search</description>
-                    <persistence type="property"/>
-                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
-                </attribute>
-                <attribute qualifier="unbxdAutosuggestEnabled" type="boolean">
-                    <description>Enable/disable Unbxd auto suggest</description>
-                    <persistence type="property"/>
-                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
-                </attribute>
-                <attribute qualifier="unbxdCategoryEnabled" type="boolean">
-                    <description>Enable/disable Unbxd category</description>
-                    <persistence type="property"/>
-                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
-                </attribute>
-                <attribute qualifier="unbxdSearchConfig" type="java.lang.String">
-                    <description>Unbxd search config</description>
-                    <persistence type="property">
-                        <columntype>
-                            <value>HYBRIS.LONG_STRING</value>
-                        </columntype>
-                    </persistence>
-                </attribute>
-                <attribute qualifier="unbxdAutosuggestConfig" type="java.lang.String">
-                    <description>Unbxd auto suggest config</description>
-                    <persistence type="property">
-                        <columntype>
-                            <value>HYBRIS.LONG_STRING</value>
-                        </columntype>
-                    </persistence>
-                </attribute>
-                <attribute qualifier="unbxdFeedPush" type="boolean">
-                    <description>Enable/disable Unbxd feed push</description>
-                    <persistence type="property"/>
-                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
-                </attribute>
-                <attribute type="UnbxdIndexerJobList" qualifier="unbxdIndexerJobList">
-                    <description>Dynamic attribute to list Unbxd indexer jobs</description>
-                    <persistence type="dynamic" attributeHandler="unbxdIndexerJobListAttribute" />
-                </attribute>
-            </attributes>
-        </itemtype>
-        <itemtype code="UnbxdIndexerCronJob"  extends="SolrIndexerCronJob">
-        </itemtype>
-
-    </itemtypes>
+	</itemtypes>
 </items>

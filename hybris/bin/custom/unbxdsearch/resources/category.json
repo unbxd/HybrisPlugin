@@ -1,0 +1,104 @@
+{
+ searchBoxSelector: document.getElementById("js-site-search-input"),
+  searchTrigger: "click",
+  searchButtonSelector: document.getElementsByClassName('js_search_button')[0],
+  searchResultsSelector: document.getElementById("searchResultsWrapper"),
+  siteKey: UnbxdSiteName,
+  apiKey: UnbxdApiKey,
+  productType:"CATEGORY",
+  searchQueryParam:"q",
+  products:{
+      el:document.getElementById("searchResultsWrapper"),
+      productType:"CATEGORY",
+      productClick: function(product,e) {
+          window.location=product.productUrl;
+      },
+      gridCount:getGridCount(),
+      productAttributes: ["name",
+        "uniqueId",
+        "priceValue",
+        "code",
+        "img-300Wx300H",
+        "originalPrice",
+        "productUrl",
+      "description"],
+      attributesMap: {
+        unxTitle: "name",
+        unxImageUrl: "img-300Wx300H",
+        unxPrice: "priceValue",
+        unxStrikePrice: "originalPrice",
+        unxId: "code",
+        unxDescription: "description"
+      }
+  },
+  spellCheck: {
+    enabled: true,
+    el: document.getElementById("didYouMeanWrapper")
+  },
+  noResults: {
+      //noResultEl: document.getElementById("noResultWrapper"),
+      el: document.getElementById("noResultWrapper")
+  },
+  facet: {
+    facetsEl: document.getElementById("facetsWrapper"),
+    selectedFacetsEl: document.getElementById("selectedFacetWrapper"),
+    rangeFacetEl: document.getElementById("rangeFacetWrapper"),
+    multiLevelFacetEl: document.getElementById("bucketedFacetWrapper"),
+    applyMultipleFilters:checkMobile()
+  },
+  pagination: {
+    el: document.querySelectorAll(".unxPagination"),
+    type:'FIXED_PAGINATION'
+  },
+  breadcrumb: {
+    el: document.getElementById("breadcrumpContainer"),
+    enabled: false
+  },
+  pagesize: {
+    el: document.getElementById("changeNoOfProducts")
+  },
+
+  sort: {
+    el: document.getElementById("sortWrapper"),
+    options: [
+      {
+        value: "priceValue desc",
+        text: "Price High to Low"
+      },
+      {
+        value: "priceValue asc",
+        text: " Price Low to High"
+      }
+    ]
+  },
+  loader :{
+      el:document.getElementById("loaderEl")
+  },
+  productView:{
+    el: document.getElementById("productViewTypeContainer"),
+    viewTypes: getView()
+  },
+  banner: {
+    el: document.getElementById("bannerContainer"),
+    count: 1
+  },
+  swatches: {
+    enabled: false,
+    attributesMap: {
+      swatchList: "color",
+      swatchImgs: "unbxd_color_mapping",
+      swatchColors: "color"
+    }
+  },
+  hashMode:false,
+  updateUrls:true,
+  variants: {
+    enabled: true,
+    count: 1,
+    groupBy: "",
+    attributes: [],
+    mapping: {
+        image_url: "v_image_url"
+    }
+}
+}

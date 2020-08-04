@@ -14,7 +14,7 @@ public class Unbxd {
      */
     public static FeedClient getFeedClient(FacetSearchConfig facetSearchConfig) throws ConfigException {
         if(null == facetSearchConfig)
-            throw new ConfigException("Please configure UnBxd properties in FacetSearchConfig.");
+            throw new ConfigException("FacetSearch Config should not be null.");
         if(StringUtils.isEmpty(facetSearchConfig.getUnbxdSiteKey())
                 || StringUtils.isEmpty(facetSearchConfig.getUnbxdSecretKey())
                 || StringUtils.isEmpty(facetSearchConfig.getUnbxdApiKey()))
@@ -22,6 +22,6 @@ public class Unbxd {
             throw new ConfigException("Please configure UnBxd properties in FacetSearchConfig.");
         }
         return FeedClientFactory.getFeedClient(facetSearchConfig.getUnbxdSiteKey(),
-                facetSearchConfig.getUnbxdSecretKey(), Boolean.FALSE);
+                facetSearchConfig.getUnbxdSecretKey(),facetSearchConfig.getUnbxdApiKey(), facetSearchConfig.getUnbxdDomain());
     }
 }

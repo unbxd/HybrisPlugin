@@ -3,11 +3,17 @@ package com.unbxd.client.feed;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.log4j.Logger;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class JsonFeedFile {
     private JSONObject feed;
+    
+    private static final Logger LOG = Logger.getLogger(JsonFeedFile.class);
+    
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     public JsonFeedFile(Collection<FeedField> fields,
                         Collection<FeedProduct> addedDocs,
@@ -58,7 +64,15 @@ public class JsonFeedFile {
     }
 
     private void writeAttribute(JSONObject item, String field, Object o, boolean associated) {
+    	if (o != null && o instanceof Date) {
+    		try {
+    			item.put(field, format.format(o));
+    		}catch(Exception e) {
+    			LOG.error("Failed to format date -"+o.toString());
+    		}
+    	}else {
         item.put(field, o);
+    	}
         /*Collection<Object> values;
         if (o instanceof Collection) {
             values = (Collection<Object>) o;

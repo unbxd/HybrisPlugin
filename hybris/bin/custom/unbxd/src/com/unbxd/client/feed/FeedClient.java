@@ -6,6 +6,8 @@ import com.unbxd.client.feed.exceptions.FeedStatusException;
 import com.unbxd.client.feed.exceptions.FeedUploadException;
 import com.unbxd.client.feed.response.FeedResponse;
 import com.unbxd.client.feed.response.FeedStatusResponse;
+
+import de.hybris.platform.util.Config;
 import net.minidev.json.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -34,17 +36,19 @@ public class FeedClient {
 
     private String siteKey;
     private String secretKey;
-    private boolean secure;
+    private String apiKey;
+    private String domain;
 
     private List<FeedField> _fields;
     private Map<String, FeedProduct> _addedDocs;
     private Map<String, FeedProduct> _updatedDocs;
     private Set<String> _deletedDocs;
 
-    protected FeedClient(String siteKey, String secretKey, boolean secure) {
+    protected FeedClient(String siteKey, String secretKey, String apiKey,String domain) {
         this.siteKey = siteKey;
         this.secretKey = secretKey;
-        this.secure = secure;
+        this.apiKey = apiKey;
+        this.domain = sanitize(domain);
 
         _fields = new ArrayList<FeedField>();
         _addedDocs = new HashMap<String, FeedProduct>();
@@ -52,29 +56,36 @@ public class FeedClient {
         _deletedDocs = new HashSet<String>();
 
     }
+    
+    private String sanitize(String domain) {
+    	if (domain != null && domain.endsWith("/")) {
+    		return domain.substring(0, domain.lastIndexOf("/"));
+    	}
+    	return domain;
+    }
 
     public List<FeedField> get_fields() {
         return _fields;
     }
 
     public String getFeedUrl() {
-        return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/upload/catalog/";
+        return domain+"/api/" + siteKey + "/upload/catalog/";
     }
 
     public String getFeedStatusUrl() {
-        return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/catalog/status";
+        return domain+"/api/" + siteKey + "/catalog/status";
     }
 
     public String getDeltaFeedStatusUrl() {
-        return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/catalog/delta/status";
+        return domain+"/api/" + siteKey + "/catalog/delta/status";
     }
 
     public String getFeedStatusUrlForUploadId(String uploadId) {
-        return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/catalog/" + uploadId + "/status";
+        return domain+"/api/" + siteKey + "/catalog/" + uploadId + "/status";
     }
 
     public String getDeltaFeedStatusUrlForUploadId(String uploadId) {
-        return (secure ? "https://" : "http://") + "feed.unbxd.io/api/" + siteKey + "/catalog/delta/" + uploadId + "/status";
+        return domain+"/api/" + siteKey + "/catalog/delta/" + uploadId + "/status";
     }
 
     /**
@@ -312,7 +323,7 @@ public class FeedClient {
             LOG.error(e.getMessage(), e);
             throw new FeedUploadException(e);
         } finally {
-            if (null != file) {
+            if (null != file && Config.getBoolean("unbxd.feed.deletefile", true)) {
                 file.delete();
             }
         }

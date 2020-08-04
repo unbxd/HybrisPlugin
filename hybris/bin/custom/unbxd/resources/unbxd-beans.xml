@@ -80,6 +80,28 @@
         <property name="unbxdSiteKey" type="String" />
         <property name="unbxdSecretKey" type="String" />
         <property name="unbxdApiKey" type="String" />
+        <property name="unbxdDomain" type="String" />
     </bean>
-
+    
+    <bean class="com.unbxd.web.UnbxdConfig">
+    	<property name="siteName" type="String"/>
+    	<property name="apiKey" type="String"/>
+    	<property name="useDefaultLayout" type="boolean"/>
+    	<property name="autosuggestEnabled" type="boolean"/>
+    	<property name="searchInputSelector" type="String"/>
+    	<property name="autosuggestConfig" type="String"/>
+    	<property name="searchEnabled" type="boolean"/>
+    	<property name="searchConfig" type="String"/>
+    	<property name="categoryEnabled" type="boolean"/>
+    	<property name="categoryConfig" type="String"/>
+    	<property name="analyticsEnabled" type="boolean"/>
+    </bean>
+    
+    <bean class="com.unbxd.web.PageConfig">
+    	<property name="pageType" type="String"/>
+    	<property name="productID" type="String"/>
+    	<property name="categoryPath" type="String"/>
+    </bean>
+    
+    
 </beans>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+
+<action-definition id="com.unbxd.backoffice.widgets.actions.site.indexer"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/action-definition.xsd">
+
+    <name>Index</name>
+    <description>Manually trigger full or delta index</description>
+    <author>oss</author>
+    <version>0.1</version>
+
+    <actionClassName>com.unbxd.backoffice.widgets.actions.IndexerAction</actionClassName>
+    <inputType>com.unbxd.model.UnbxdSiteConfigModel</inputType>
+    <outputType>com.unbxd.model.UnbxdSiteConfigModel</outputType>
+
+    <iconUri>icons/indexer_operations_wizard_default.png</iconUri>
+    <iconHoverUri>icons/indexer_operations_wizard_disabled.png</iconHoverUri>
+    <iconDisabledUri>icons/indexer_operations_wizard_hover.png</iconDisabledUri>
+
+
+    <settings>
+        <setting key="viewMode" default-value="iconAndText"/>
+    </settings>
+
+    <!-- Sockets definition-->
+    <sockets>
+        <output id="unbxdIndexerTypeContext"/>
+    </sockets>
+
+</action-definition>

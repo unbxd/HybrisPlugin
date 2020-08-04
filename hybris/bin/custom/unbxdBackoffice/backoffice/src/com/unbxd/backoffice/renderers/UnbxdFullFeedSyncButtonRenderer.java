@@ -3,8 +3,6 @@ package com.unbxd.backoffice.renderers;
 import de.hybris.platform.cronjob.enums.CronJobStatus;
 import de.hybris.platform.servicelayer.cronjob.CronJobService;
 import de.hybris.platform.solrfacetsearch.enums.IndexerOperationValues;
-import de.hybris.platform.solrfacetsearch.model.config.SolrFacetSearchConfigModel;
-import de.hybris.platform.solrfacetsearch.model.indexer.cron.SolrIndexerCronJobModel;
 
 import java.util.Optional;
 
@@ -22,7 +20,9 @@ import com.hybris.cockpitng.core.config.impl.jaxb.editorarea.AbstractPanel;
 import com.hybris.cockpitng.dataaccess.facades.type.DataType;
 import com.hybris.cockpitng.engine.WidgetInstanceManager;
 import com.hybris.cockpitng.widgets.editorarea.renderer.impl.AbstractEditorAreaPanelRenderer;
+import com.unbxd.backoffice.notificationarea.event.NotificationUtils;
 import com.unbxd.model.UnbxdIndexerCronJobModel;
+import com.unbxd.model.UnbxdSiteConfigModel;
 
 
 public class UnbxdFullFeedSyncButtonRenderer extends AbstractEditorAreaPanelRenderer<Object>
@@ -45,13 +45,12 @@ public class UnbxdFullFeedSyncButtonRenderer extends AbstractEditorAreaPanelRend
 		exportButton.setSclass("export-solr-configuration-btn");
 		parent.appendChild(exportButton);
 		exportButton.addEventListener("onClick", (event) -> {
-			if (data instanceof SolrFacetSearchConfigModel)
+			if (data instanceof UnbxdSiteConfigModel)
 			{
-				final SolrFacetSearchConfigModel solrFacetSearchConfig = (SolrFacetSearchConfigModel) data;
-				final Optional<SolrIndexerCronJobModel> runningInstance = solrFacetSearchConfig.getSolrIndexerCronJob().stream()
-						.filter(solrIndexerCronJobModel -> {
-							if (solrIndexerCronJobModel instanceof UnbxdIndexerCronJobModel
-									&& CronJobStatus.RUNNING.equals(solrIndexerCronJobModel.getStatus()))
+				final UnbxdSiteConfigModel unbxdSiteConfigModel = (UnbxdSiteConfigModel) data;
+				final Optional<UnbxdIndexerCronJobModel> runningInstance = unbxdSiteConfigModel.getIndexerJobs().stream()
+						.filter(unbxdIndexerCronJobModel -> {
+							if (CronJobStatus.RUNNING.equals(unbxdIndexerCronJobModel.getStatus()))
 							{
 								return true;
 							}
@@ -59,15 +58,14 @@ public class UnbxdFullFeedSyncButtonRenderer extends AbstractEditorAreaPanelRend
 						}).findFirst();
 				if (runningInstance.isPresent())
 				{
-					notificationService.notifyUser("Unbxd full sync already running [" + runningInstance.get().getCode() + "].", null,
-							NotificationEvent.Level.WARNING);
+					notificationService.notifyUser(NotificationUtils.getWidgetNotificationSource(widgetInstanceManager),
+							"unbxdFullFeedSyncRunning", NotificationEvent.Level.WARNING);
 					return;
 				}
-				final Optional<SolrIndexerCronJobModel> fullIndexJob = solrFacetSearchConfig.getSolrIndexerCronJob().stream()
-						.filter(solrIndexerCronJobModel -> {
-							if (solrIndexerCronJobModel instanceof UnbxdIndexerCronJobModel
-									&& IndexerOperationValues.FULL.equals(solrIndexerCronJobModel.getIndexerOperation())
-									&& BooleanUtils.isTrue(solrIndexerCronJobModel.getActive()))
+				final Optional<UnbxdIndexerCronJobModel> fullIndexJob = unbxdSiteConfigModel.getIndexerJobs().stream()
+						.filter(unbxdIndexerCronJobModel -> {
+							if (IndexerOperationValues.FULL.equals(unbxdIndexerCronJobModel.getIndexerOperation())
+									&& BooleanUtils.isTrue(unbxdIndexerCronJobModel.getActive()))
 							{
 								return true;
 							}
@@ -76,12 +74,13 @@ public class UnbxdFullFeedSyncButtonRenderer extends AbstractEditorAreaPanelRend
 				if (fullIndexJob.isPresent())
 				{
 					cronJobService.performCronJob(fullIndexJob.get());
-					notificationService.notifyUser("Unbxd full sync triggered successfully.", null, NotificationEvent.Level.SUCCESS);
+					notificationService.notifyUser(NotificationUtils.getWidgetNotificationSource(widgetInstanceManager),
+							"unbxdFullFeedSyncInitiated", NotificationEvent.Level.SUCCESS);
 				}
 				else
 				{
-					notificationService.notifyUser("Unbxd full sync is not configured/enabled. ", null,
-							NotificationEvent.Level.WARNING);
+					notificationService.notifyUser(NotificationUtils.getWidgetNotificationSource(widgetInstanceManager),
+							"unbxdFullFeedSyncNotConfigured", NotificationEvent.Level.WARNING);
 				}
 			}
 		});
