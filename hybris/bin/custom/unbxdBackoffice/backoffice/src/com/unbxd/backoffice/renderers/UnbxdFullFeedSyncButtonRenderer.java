@@ -43,7 +43,13 @@ public class UnbxdFullFeedSyncButtonRenderer extends AbstractEditorAreaPanelRend
 		parent.appendChild(label);
 		final Button exportButton = new Button(Labels.getLabel("unbxd.full.feed.sync.button", "Index"));
 		exportButton.setSclass("export-solr-configuration-btn");
+		if (data instanceof UnbxdSiteConfigModel && !((UnbxdSiteConfigModel) data).isFeedPush())
+		{
+			exportButton.setAttribute("disabled", "true");
+		}
+
 		parent.appendChild(exportButton);
+
 		exportButton.addEventListener("onClick", (event) -> {
 			if (data instanceof UnbxdSiteConfigModel)
 			{

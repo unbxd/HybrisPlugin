@@ -10,8 +10,7 @@
  */
 
 $(document).ready(function () {
-    if (("PRODUCTSEARCH" == UnbxdHybris.pageType || "CATEGORY" == UnbxdHybris.pageType)){
-    if ("UnbxdHybris" in window && UnbxdHybris.listingConfig ) {
+    if ("UnbxdHybris" in window && UnbxdHybris.listingConfig && ("PRODUCTSEARCH" == UnbxdHybris.pageType || "CATEGORY" == UnbxdHybris.pageType)){
       initSearch.call({ counter: 1 });
     } else {
       console.error("Unbxd Search config not found");
@@ -24,8 +23,8 @@ $(document).ready(function () {
       window.unbxdSearch = new UnbxdSearch(UnbxdHybris.listingConfig);
       bindEvents();
       renderIfMobile();
-      if (UnbxdHybris.listingConfig.productType != "SEARCH") {
-        unbxdSearch.renderFromUrl();
+      if (UnbxdHybris.listingConfig.productType && UnbxdHybris.listingConfig.productType != "SEARCH") {
+        unbxdSearch.getCategoryPage();
       }
     } else {
       if (this.counter > 5) {
@@ -47,16 +46,7 @@ $(document).ready(function () {
   };
   
   const getGridCount = function () {
-    const w = window.innerWidth;
-    if (w > 1200) {
-      return 4;
-    }
-    if (w < 1200 && w >= 980) {
-      return 3;
-    }
-    if (w < 980) {
-      return 2;
-    }
+   return 1;
   };
   const getView = () => {
     const w = window.innerWidth;

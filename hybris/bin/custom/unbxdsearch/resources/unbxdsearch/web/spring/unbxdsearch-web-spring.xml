@@ -47,7 +47,7 @@
 
 	<bean id="unbxdAddonBeforeViewHandler" class="com.unbxd.search.interceptors.UnbxdAddonBeforeViewHandler">
 		<property name="viewMap" ref="unbxdSearchViewMap" />
-		<property name="componentViewMap" ref="unbxdSearchViewMap" />
+		<property name="componentViewMap" ref="unbxdSearchComponentViewMap" />
 	</bean>
 	
 	<bean depends-on="beforeViewHandlersList" parent="listMergeDirective">

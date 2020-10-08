@@ -22,5 +22,5 @@ yb2bacceleratorstorefront.additionalWebSpringConfigs.unbxdsearch=classpath:/unbx
 
 
 
-unbxdsearch.javascript.paths.responsive=/responsive/common/js/unbxdsearch.js,/responsive/common/js/unbxdautosuggest.js,/responsive/common/js/unbxdanalytics.js
-unbxdsearch.css.paths.responsive=/responsive/common/css/unbxdsearch.css,/responsive/common/css/unbxdautosuggest.css
+unbxdsearch.javascript.paths.responsive=/responsive/common/js/unbxdsearch.js;/responsive/common/js/unbxdautosuggest.js;/responsive/common/js/unbxdanalytics.js
+unbxdsearch.css.paths.responsive=/responsive/common/css/unbxdsearch.css;/responsive/common/css/unbxdautosuggest.css

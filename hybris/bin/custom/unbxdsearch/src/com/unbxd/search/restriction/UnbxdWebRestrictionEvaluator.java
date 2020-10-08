@@ -35,11 +35,42 @@ public class UnbxdWebRestrictionEvaluator implements CMSRestrictionEvaluator<Unb
 
 		final UnbxdSiteConfigModel siteConfigModel = unbxdHelperFunction.getCurrentUnbxdConfigModel.get();
 
-		if (siteConfigModel != null && isKeysConfigured.test(siteConfigModel) && isAlteastOneModuleEnabled.test(siteConfigModel))
+		if (siteConfigModel != null && isKeysConfigured.test(siteConfigModel)
+				&& validateUnbxdComponentType(siteConfigModel, unbxdWebRestrictionModel))
 		{
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @param siteConfigModel
+	 * @param unbxdWebRestrictionModel
+	 * @return
+	 */
+	private boolean validateUnbxdComponentType(final UnbxdSiteConfigModel siteConfigModel,
+			final UnbxdWebRestrictionModel unbxdWebRestrictionModel)
+	{
+		if (unbxdWebRestrictionModel.getCheckUnbxdComponent() == null && isAlteastOneModuleEnabled.test(siteConfigModel))
+		{
+			return true;
+		}
+		if (unbxdWebRestrictionModel.getCheckUnbxdComponent() == null)
+		{
+			return false;
+		}
+		switch (unbxdWebRestrictionModel.getCheckUnbxdComponent())
+		{
+			case SEARCH:
+				return siteConfigModel.isSearchEnabled() && siteConfigModel.getSearchConfig() != null;
+			case AUTOSUGGEST:
+				return siteConfigModel.isAutosuggestEnabled() && siteConfigModel.getAutosuggestConfig() != null;
+			case CATEGORY:
+				return siteConfigModel.isCategoryEnabled() && siteConfigModel.getCategoryConfig() != null;
+			default:
+				return false;
+
+		}
 	}
 
 	Predicate<UnbxdSiteConfigModel> isKeysConfigured = (siteConfig) -> {

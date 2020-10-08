@@ -26,12 +26,16 @@
 	<context merge-by="module" component="explorer-tree">
 		<n:explorer-tree xmlns:n="http://www.hybris.com/cockpitng/config/explorertree">
 			<n:navigation-node id="Unbxd">
-				<!-- <n:type-node id="hmc.unbxd.products" code="Product"/>
-				<n:type-node id="hmc.unbxd.uploads" code="UnbxdUploadTask"/> -->
+				<!-- <n:type-node id="hmc.unbxd.products" code="Product"/> -->
+				<n:type-node id="hmc.unbxd.uploads" code="UnbxdUploadTask"/>
 				<n:type-node id="hmc.unbxd.indexes" code="UnbxdSiteConfig"/>
 			</n:navigation-node>
 		</n:explorer-tree>
 	</context>
+	
+	
+	
+	
 
 	<!-- <context type="Product" component="listviewactions" merge-by="type">
 		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
@@ -219,6 +223,33 @@
 			</y:group>
 	</y:actions>
 </context>
+
+<context type="UnbxdSiteConfig" component="create-wizard">
+		<wz:flow xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config" id="UnbxdSiteConfigWizard" title="create.title(ctx.TYPE_CODE)">
+			<wz:prepare id="unbxdSiteConfigPrepare">
+				<wz:initialize property="newItem" type="ctx.TYPE_CODE" />
+				<wz:assign property="newItem.domain" type="java.lang.String" value="{'http://feed.unbxd.io'}" />
+			</wz:prepare>
+			<wz:step id="step1" label="create.solrEndpointUrl.essential.label" sublabel="create.solrEndpointUrl.essential.sublabel">
+				<wz:content id="step1.content">
+					<wz:property-list root="newItem">
+						<wz:property qualifier="facetSearchConfig" />
+						<wz:property qualifier="siteName" />
+						<wz:property qualifier="apiKey" />
+						<wz:property qualifier="secretKey" />
+						<wz:property qualifier="domain" />
+						
+					</wz:property-list>
+				</wz:content>
+				<wz:navigation id="step1.navigation">
+					<wz:cancel />
+					<wz:done visible="!#empty(newItem.siteName) AND newItem.apiKey != null AND newItem.secretKey != null AND newItem.domain != null">
+						<wz:save property="newItem" />
+					</wz:done>
+				</wz:navigation>
+			</wz:step>
+		</wz:flow>
+	</context>
 
 
   <context type="UnbxdSiteConfig" component="editor-area" module="unbxdBackoffice">

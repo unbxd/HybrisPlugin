@@ -81,7 +81,7 @@
 		<property name="solrSearchProviderFactory"
 			ref="solrSearchProviderFactory" />
 		<property name="indexerBatchContextFactory"
-			ref="indexerBatchContextFactory" />
+			ref="unbxdIndexerBatchContextFactory" />
 		<property name="fieldNameProvider"
 			ref="solrFieldNameProvider" />
 		<property name="rangeNameProvider" ref="rangeNameProvider" />
@@ -104,7 +104,7 @@
 		<property name="indexerQueriesExecutor"
 			ref="indexerQueriesExecutor" />
 		<property name="indexerBatchContextFactory"
-			ref="indexerBatchContextFactory" />
+			ref="unbxdIndexerBatchContextFactory" />
 		<property name="indexer" ref="unbxdIndexer" />
 	</bean>
 
@@ -201,7 +201,11 @@
 		<property name="indexerStrategyFactory"
 			ref="unbxdIndexerStrategyFactory" />
 	</bean>
+	
+	<bean id="unbxdIndexerContextFactory" class="com.unbxd.service.impl.UnbxdIndexerContextFactory" parent="defaultIndexerContextFactory"/>
 
+	<bean id="unbxdIndexerBatchContextFactory" class="com.unbxd.service.impl.UnbxdIndexerBatchContextFactory" parent="defaultIndexerBatchContextFactory"/>
+	
 	<alias name="defaultUnbxdIndexerStrategyFactory"
 		alias="unbxdIndexerStrategyFactory" />
 	<bean id="defaultUnbxdIndexerStrategyFactory"
@@ -219,6 +223,7 @@
 		scope="prototype" parent="abstractIndexerStrategy">
 		<property name="indexerWorkerFactory"
 			ref="unbxdIndexerWorkerFactory" />
+		<property name="indexerContextFactory" ref="unbxdIndexerContextFactory"></property>
 	</bean>
 
 	<alias name="defaultUnbxdIndexerWorkerFactory"
@@ -291,6 +296,24 @@
 	
 	<bean id="unbxdConfigPopulator" class="com.unbxd.populator.UnbxdConfigPopulator">
 	</bean>
+	
+	
+	<bean id="unbxdSiteConfigPrepareInterceptor"
+		class="com.unbxd.interceptor.UnbxdSiteConfigPrepareInterceptor">
+	</bean>
+
+	<bean id="unbxdSiteConfigPrepareInterceptorMapping"
+		class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor"
+			ref="unbxdSiteConfigPrepareInterceptor" />
+		<property name="typeCode" value="UnbxdSiteConfig" />
+	</bean>
+	
+	<bean id="cacheClearEventListener" class="com.unbxd.event.listener.CacheClearEventListener">
+		<property name="tenantService" ref="tenantService" />
+		<property name="clusterService" ref="clusterService" />
+	</bean>
+	
 
 
 </beans>

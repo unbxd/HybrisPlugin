@@ -6,7 +6,7 @@
   siteKey: UnbxdSiteName,
   apiKey: UnbxdApiKey,
   productType:"SEARCH",
-  searchQueryParam:"text",
+  searchQueryParam:"q",
   products:{
       el:document.getElementById("searchResultsWrapper"),
       productType:"SEARCH",
@@ -16,7 +16,7 @@
       gridCount:getGridCount(),
       productAttributes: ["name",
         "uniqueId",
-        "priceValue",
+        "priceValue_gbp",
         "code",
         "img-300Wx300H",
         "originalPrice",
@@ -25,7 +25,7 @@
       attributesMap: {
         unxTitle: "name",
         unxImageUrl: "img-300Wx300H",
-        unxPrice: "priceValue",
+        unxPrice: "priceValue_gbp",
         unxStrikePrice: "originalPrice",
         unxId: "code",
         unxDescription: "description"

@@ -21,7 +21,8 @@ UnbxdHybris.searchInputSelector = "${unbxdConfig.searchInputSelector}" || '#js-s
 <script type="text/javascript">
 UnbxdHybris.listingConfig = ${unbxdConfig.searchConfig};
 </script>
-<script type="text/javascript" src="https://libraries.unbxdapi.com/search-sdk/v0.0.6/vanillaSearch.js"></script>
+<link rel="stylesheet" type="text/css" href="https://libraries.unbxdapi.com/search-sdk/v0.1.9/vanillaSearch.css">
+<script type="text/javascript" src="https://libraries.unbxdapi.com/search-sdk/v0.1.9/vanillaSearch.js"></script>
 </c:if>
 
 <c:if test="${unbxdConfig.categoryEnabled and pageType eq 'CATEGORY'}">
@@ -41,7 +42,8 @@ UnbxdAnalyticsConf = window.UnbxdAnalyticsConf || {};
 UnbxdAnalyticsConf["page"] = "${categories}";
 UnbxdAnalyticsConf["page_type"] = "CATEGORY_PATH";
 </script>
-<script type="text/javascript" src="https://libraries.unbxdapi.com/search-sdk/v0.0.6/vanillaSearch.js"></script>
+<link rel="stylesheet" type="text/css" href="https://libraries.unbxdapi.com/search-sdk/v0.1.9/vanillaSearch.css">
+<script type="text/javascript" src="https://libraries.unbxdapi.com/search-sdk/v0.1.9/vanillaSearch.js"></script>
 </c:if>
 
 <c:if test="${unbxdConfig.analyticsEnabled}">

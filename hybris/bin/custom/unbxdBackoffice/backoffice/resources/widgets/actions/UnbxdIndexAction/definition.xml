@@ -25,8 +25,8 @@
     <outputType>com.unbxd.model.UnbxdSiteConfigModel</outputType>
 
     <iconUri>icons/indexer_operations_wizard_default.png</iconUri>
-    <iconHoverUri>icons/indexer_operations_wizard_disabled.png</iconHoverUri>
-    <iconDisabledUri>icons/indexer_operations_wizard_hover.png</iconDisabledUri>
+    <iconHoverUri>icons/indexer_operations_wizard_hover.png</iconHoverUri>
+    <iconDisabledUri>icons/indexer_operations_wizard_disabled.png</iconDisabledUri>
 
 
     <settings>
