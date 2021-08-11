@@ -14,7 +14,6 @@ import java.util.function.Predicate;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -25,6 +24,7 @@ import com.unbxd.client.feed.FeedProduct;
 import com.unbxd.client.feed.exceptions.FeedUploadException;
 import com.unbxd.client.feed.response.FeedResponse;
 import com.unbxd.enums.UnbxdDataType;
+import com.unbxd.model.UnbxdSiteConfigModel;
 import com.unbxd.model.UnbxdUploadTaskModel;
 import com.unbxd.service.UnbxdIndexer;
 
@@ -45,6 +45,7 @@ import de.hybris.platform.solrfacetsearch.config.FacetSearchConfig;
 import de.hybris.platform.solrfacetsearch.config.IndexOperation;
 import de.hybris.platform.solrfacetsearch.config.IndexedProperty;
 import de.hybris.platform.solrfacetsearch.config.IndexedType;
+import de.hybris.platform.solrfacetsearch.daos.SolrFacetSearchConfigDao;
 import de.hybris.platform.solrfacetsearch.enums.SolrPropertiesTypes;
 import de.hybris.platform.solrfacetsearch.indexer.IndexerBatchContext;
 import de.hybris.platform.solrfacetsearch.indexer.IndexerBatchContextFactory;
@@ -58,6 +59,8 @@ public class UnbxdIndexerBatchStrategy implements IndexerBatchStrategy {
 	private static final Logger LOG = Logger.getLogger("solrIndexThreadLogger");
 	private IndexerQueriesExecutor indexerQueriesExecutor;
 	private IndexerBatchContextFactory<?> indexerBatchContextFactory;
+	@Resource
+	private SolrFacetSearchConfigDao solrFacetSearchConfigDao;
 	private UnbxdIndexer indexer;
 	private long indexOperationId;
 	private IndexOperation indexOperation;
@@ -266,8 +269,8 @@ public class UnbxdIndexerBatchStrategy implements IndexerBatchStrategy {
 			feedClient.updateProducts(new ArrayList<>(updateDocuments));
 			FeedResponse response = feedClient.push(isFull.test(getIndexOperation()));
 			LOG.info(String.format("Feed for index %s submitted for indexing to unbxd, returned with response %d", facetSearchConfig.getName()+":"+indexedType.getCode(),response.getStatusCode()));
-			if (response.getStatusCode() == HttpStatus.SC_OK || response.getStatusCode() == HttpStatus.SC_CREATED) {
-				/*
+			/*if (response.getStatusCode() == HttpStatus.SC_OK || response.getStatusCode() == HttpStatus.SC_CREATED) {
+				
 				 * Iterator itemIterator = items.iterator(); List<ProductModel> itemsToBeSaved =
 				 * new ArrayList<>(); while (itemIterator.hasNext()) { ItemModel itemModel =
 				 * (ItemModel) itemIterator.next(); ProductModel productModel = (ProductModel)
@@ -281,9 +284,9 @@ public class UnbxdIndexerBatchStrategy implements IndexerBatchStrategy {
 				 * variantProductModel.setUnbxdSyncDate(response.get_timestamp());
 				 * itemsToBeSaved.add(variantProductModel); }); } }
 				 * modelService.saveAll(itemsToBeSaved);
-				 */
-			}
-			createUnbxdUploadTask(response, isFull.test(getIndexOperation()), indexedType.getIndexNameFromConfig());
+				
+			} */
+			createUnbxdUploadTask(response, isFull.test(getIndexOperation()), solrFacetSearchConfigDao.findFacetSearchConfigByName(facetSearchConfig.getName()).getUnbxdSiteConfig());
 			LOG.info("Unbxd Feed response" + response.toString());
 		} catch (FeedUploadException e) {
 			e.printStackTrace();
@@ -293,11 +296,11 @@ public class UnbxdIndexerBatchStrategy implements IndexerBatchStrategy {
 
 	}
 
-	private void createUnbxdUploadTask(FeedResponse response, boolean isFull, String indexName) {
+	private void createUnbxdUploadTask(FeedResponse response, boolean isFull, UnbxdSiteConfigModel unbxdSiteConfig) {
 		final UnbxdUploadTaskModel unbxdUploadTask = modelService.create(UnbxdUploadTaskModel.class);
 		unbxdUploadTask.setFileName(response.get_fileName() != null ?response.get_fileName():"NA" );
 		unbxdUploadTask.setUploadId(response.getUploadID());
-		unbxdUploadTask.setIndexName(indexName);
+		unbxdUploadTask.setUnbxdSiteConfig(unbxdSiteConfig);
 		unbxdUploadTask.setStatus("UPLOADED");
 		unbxdUploadTask.setIsDelta(!isFull);
 		unbxdUploadTask.setTimeStamp(response.get_timestamp());

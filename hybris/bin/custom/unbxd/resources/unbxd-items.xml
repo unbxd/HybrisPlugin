@@ -111,7 +111,7 @@
 					<modifiers read="true" write="true" optional="false" />
 					<persistence type="property" />
 				</attribute>
-				<attribute type="java.lang.String" qualifier="indexName">
+				<attribute type="UnbxdSiteConfig" qualifier="unbxdSiteConfig">
 					<modifiers read="true" write="true" optional="false" />
 					<persistence type="property" />
 				</attribute>

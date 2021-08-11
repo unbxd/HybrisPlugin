@@ -67,8 +67,8 @@
 			ref="flexibleSearchService" />
 	</bean>
 
-	<bean id="catalogSyncService"
-		class="com.unbxd.service.impl.CatalogSyncService">
+	<bean id="unbxdUploadTaskService"
+		class="com.unbxd.service.impl.UnbxdUploadTaskService">
 
 	</bean>
 

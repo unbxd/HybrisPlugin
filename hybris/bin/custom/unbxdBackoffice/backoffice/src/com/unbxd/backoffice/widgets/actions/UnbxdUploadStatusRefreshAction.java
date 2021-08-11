@@ -18,9 +18,8 @@ import com.hybris.cockpitng.actions.ActionResult;
 import com.hybris.cockpitng.actions.CockpitAction;
 import com.hybris.cockpitng.dataaccess.facades.object.ObjectFacade;
 import com.hybris.cockpitng.engine.impl.AbstractComponentWidgetAdapterAware;
-import com.unbxd.backoffice.notificationarea.event.NotificationEvent;
-import com.unbxd.backoffice.notificationarea.event.NotificationUtils;
-import com.unbxd.service.impl.CatalogSyncService;
+import com.unbxd.model.UnbxdUploadTaskModel;
+import com.unbxd.service.impl.UnbxdUploadTaskService;
 
 
 public class UnbxdUploadStatusRefreshAction extends AbstractComponentWidgetAdapterAware implements CockpitAction<Object, List>
@@ -29,7 +28,7 @@ public class UnbxdUploadStatusRefreshAction extends AbstractComponentWidgetAdapt
 	@Resource
 	private ObjectFacade objectFacade;
 	@Autowired
-	private CatalogSyncService catalogSyncService;
+	private UnbxdUploadTaskService unbxdUploadTaskService;
 
 
 	public UnbxdUploadStatusRefreshAction()
@@ -54,24 +53,20 @@ public class UnbxdUploadStatusRefreshAction extends AbstractComponentWidgetAdapt
 		ActionResult<List> result = new ActionResult("error");
 		if (context.getData() != null)
 		{
-			//TODO call UnbxdSyncService
 			try
 			{
 				final List<Object> currentObjects = this.getData(context);
 				for (final Object currentObject : currentObjects)
 				{
-					//catalogSyncService.refreshUploadStatus((UnbxdUploadTaskModel)currentObject);
+					unbxdUploadTaskService.refreshUploadStatus((UnbxdUploadTaskModel) currentObject);
 				}
 				result = new ActionResult("success");
 				result.setStatusFlags(EnumSet.of(ActionResult.StatusFlag.OBJECT_MODIFIED));
-				NotificationUtils.notifyUser(NotificationUtils.getWidgetNotificationSource(context), "unbxdSyncInitiated",
-						NotificationEvent.Level.SUCCESS, new Object[0]);
 				return result;
 			}
 			catch (final Exception e)
 			{
-				NotificationUtils.notifyUser(NotificationUtils.getWidgetNotificationSource(context), "unbxdSyncInitFailed",
-						NotificationEvent.Level.FAILURE, e);
+				//
 			}
 		}
 		return result;
@@ -98,8 +93,5 @@ public class UnbxdUploadStatusRefreshAction extends AbstractComponentWidgetAdapt
 		return this.objectFacade;
 	}
 
-	public CatalogSyncService getCatalogSyncService()
-	{
-		return this.catalogSyncService;
-	}
+
 }

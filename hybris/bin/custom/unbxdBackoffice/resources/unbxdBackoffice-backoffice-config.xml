@@ -27,8 +27,8 @@
 		<n:explorer-tree xmlns:n="http://www.hybris.com/cockpitng/config/explorertree">
 			<n:navigation-node id="Unbxd">
 				<!-- <n:type-node id="hmc.unbxd.products" code="Product"/> -->
-				<n:type-node id="hmc.unbxd.uploads" code="UnbxdUploadTask"/>
 				<n:type-node id="hmc.unbxd.indexes" code="UnbxdSiteConfig"/>
+				<n:type-node id="hmc.unbxd.uploads" code="UnbxdUploadTask"/>
 			</n:navigation-node>
 		</n:explorer-tree>
 	</context>
@@ -84,8 +84,8 @@
 										  qualifier="uploadId" readonly="true"/>
 					<editorArea:attribute label="UnbxdUploadTask.fileName"
 										  qualifier="fileName" readonly="true"/>
-					<editorArea:attribute label="UnbxdUploadTask.indexName"
-										  qualifier="indexName" readonly="true"/>
+					<editorArea:attribute label="UnbxdUploadTask.unbxdSiteConfig"
+										  qualifier="unbxdSiteConfig" readonly="true"/>
 					<editorArea:attribute label="UnbxdUploadTask.isDelta"
 										  qualifier="isDelta" readonly="true"/>
 					<editorArea:attribute label="UnbxdUploadTask.status"
@@ -142,7 +142,6 @@
 			<list:column qualifier="uploadId" label="UnbxdUploadTask.uploadId" />
 			<list:column qualifier="timeStamp" label="UnbxdUploadTask.timeStamp" />
 			<list:column qualifier="fileName" label="UnbxdUploadTask.fileName" />
-			<list:column qualifier="indexName" label="UnbxdUploadTask.indexName" />
 			<list:column qualifier="isDelta" label="UnbxdUploadTask.isDelta" />
 			<list:column qualifier="status" label="UnbxdUploadTask.status" />
 			<list:column qualifier="message" label="UnbxdUploadTask.message" />
@@ -251,6 +250,17 @@
 		</wz:flow>
 	</context>
 
+<context type="UnbxdSiteConfig" component="listview">
+		<list:list-view xmlns:list="http://www.hybris.com/cockpitng/component/listView">
+			<list:column qualifier="siteName" label="UnbxdSiteConfig.siteName" />
+			<list:column qualifier="facetSearchConfig" label="UnbxdSiteConfig.facetSearchConfig" />
+			<list:column qualifier="feedPush" label="UnbxdSiteConfig.feedPush" />
+			<list:column qualifier="autosuggestEnabled" label="UnbxdSiteConfig.autosuggestEnabled" />
+			<list:column qualifier="searchEnabled" label="UnbxdSiteConfig.searchEnabled" />
+			<list:column qualifier="categoryEnabled" label="UnbxdSiteConfig.categoryEnabled" />
+			<list:column qualifier="analyticsEnabled" label="UnbxdSiteConfig.analyticsEnabled" />
+		</list:list-view>
+</context>
 
   <context type="UnbxdSiteConfig" component="editor-area" module="unbxdBackoffice">
     <editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea" xmlns:na="http://www.hybris.com/cockpitng/config/notifications" xmlns:y="http://www.hybris.com/cockpit/config/hybris">

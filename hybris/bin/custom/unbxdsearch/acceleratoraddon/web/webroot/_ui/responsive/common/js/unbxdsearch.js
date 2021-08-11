@@ -15,7 +15,6 @@ $(document).ready(function () {
     } else {
       console.error("Unbxd Search config not found");
     }
-  }
   });
   
   function initSearch() {
