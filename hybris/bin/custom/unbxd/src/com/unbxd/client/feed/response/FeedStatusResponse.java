@@ -7,8 +7,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 public class FeedStatusResponse {
 
+	private Logger Log = Logger.getLogger(FeedStatusResponse.class);
+
+	
     private int _code;
     private String _status;
     private String _message;
@@ -31,8 +36,9 @@ public class FeedStatusResponse {
             _uploadID = (String) response.get("uploadId");
         if(response.get("fileName") != null)
             _fileName = (String) response.get("fileName");
+        try {
         if(response.get("timeStamp") != null)
-            _timestamp = new Date((Long)response.get("timeStamp"));
+            _timestamp = new Date(Long.parseLong(response.get("timeStamp").toString()));
         if(response.containsKey("unknownSchemaFields")) {
             _unknownSchemaFields = (List<String>) response.get("unknownSchemaFields");
         }
@@ -49,6 +55,9 @@ public class FeedStatusResponse {
 
         if(response.get("colNum") != null)
             this._colNum = Integer.parseInt((String) response.get("colNum"));
+        }catch (Exception e) {
+        	Log.error(e.getMessage(),e);
+        }
     }
 
     public int getCode(){

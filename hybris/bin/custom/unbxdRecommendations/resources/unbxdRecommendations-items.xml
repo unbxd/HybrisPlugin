@@ -27,6 +27,7 @@
 			<value code="WIDGET1"/>
 			<value code="WIDGET2"/>
 			<value code="WIDGET3"/>
+			<value code="ALLWIDGETS"/>
 		</enumtype>
 	</enumtypes>
 

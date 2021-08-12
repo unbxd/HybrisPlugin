@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2018 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<!--
+	ATTENTION: This is just an example file. You have to edit it according to your needs.
+-->
+
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:noNamespaceSchemaLocation="items.xsd">
+
+	<enumtypes>
+	
+		<enumtype code="UnbxdComponentType" autocreate="true" generate="true"
+			dynamic="false">
+			<value code="SEARCH" />
+			<value code="AUTOSUGGEST" />
+			<value code="CATEGORY" />
+		</enumtype>
+	</enumtypes>
+	<itemtypes>
+		
+		<itemtype code="UnbxdWebConfigComponent" jaloclass="com.unbxd.search.jalo.UnbxdWebConfigComponent" extends="SimpleCMSComponent" autocreate="true" generate="true"/>
+		
+		<itemtype code="UnbxdWebRestriction"
+			jaloclass="com.unbxd.search.jalo.UnbxdWebRestriction"
+			extends="AbstractRestriction" autocreate="true" generate="true">
+			<attributes>
+				<attribute type="UnbxdComponentType"
+						qualifier="checkUnbxdComponent">
+						<modifiers read="true" write="true" search="false"
+							optional="true" />
+						<persistence type="property" />
+					</attribute>
+			</attributes>
+		</itemtype>
+	</itemtypes>
+</items>

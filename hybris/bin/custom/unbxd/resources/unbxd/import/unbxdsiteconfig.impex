@@ -1,0 +1,14 @@
+INSERT_UPDATE UnbxdSiteConfig;facetSearchConfig(name)[unique=true];siteName;secretKey;apiKey;domain;feedPush;
+;apparel-ukIndex;DevHybris801271569422411;0be6a8a021c0c37f2ce5f4e9ed11acb1;06b56a9356d527730b4545047f3f7c3c;https://feed.unbxd.io;true
+
+
+INSERT_UPDATE ServicelayerJob;code[unique=true];springId[unique=true]
+;unbxdIndexerJob;unbxdIndexerJob
+
+
+INSERT_UPDATE UnbxdIndexerCronJob;code[unique=true];job(code);sessionLanguage(isoCode)[default=en];sessionUser(uid);indexerOperation(code);facetSearchConfig(name)
+;unbxd-apparel-ukIndex;unbxdIndexerJob;;anonymous;full;apparel-ukIndex
+
+
+INSERT_UPDATE Trigger; cronJob(code)[unique=true]; cronExpression
+;unbxd-apparel-ukIndex; 0 30 0/1 * * ? *

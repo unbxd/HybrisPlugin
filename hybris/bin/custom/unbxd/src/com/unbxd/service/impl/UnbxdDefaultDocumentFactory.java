@@ -20,7 +20,10 @@ import de.hybris.platform.solrfacetsearch.solr.Index;
 import de.hybris.platform.solrfacetsearch.solr.SolrSearchProvider;
 import de.hybris.platform.solrfacetsearch.solr.SolrSearchProviderFactory;
 import de.hybris.platform.solrfacetsearch.solr.exceptions.SolrServiceException;
+import de.hybris.platform.util.Config;
+
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -42,6 +45,8 @@ public class UnbxdDefaultDocumentFactory implements UnbxdDocumentFactory, BeanFa
     private RangeNameProvider rangeNameProvider;
     private ValueProviderSelectionStrategy valueProviderSelectionStrategy;
     private BeanFactory beanFactory;
+	private static final String USED_SEPARATOR = Config.getString("solr.indexedproperty.forbidden.char", "_");
+
 
     public UnbxdDefaultDocumentFactory() {
     }
@@ -214,7 +219,17 @@ public class UnbxdDefaultDocumentFactory implements UnbxdDocumentFactory, BeanFa
 
                 while(var12.hasNext()) {
                     FieldValue fieldValue = (FieldValue)var12.next();
-                    document.addField(fieldValue.getFieldName(), fieldValue.getValue());
+                    	if(indexedProperty.isCurrency()) {
+                    		 String[] parts = fieldValue.getFieldName().split(USED_SEPARATOR);
+                    		 if (parts.length > 1) {
+                    			 document.addField(indexedProperty,fieldValue.getValue(),parts[1]);
+                    			 continue;
+                    		 }
+                    		
+                        }
+                    	
+                    	document.addField(fieldValue.getFieldName(), fieldValue.getValue());
+                   
                 }
             } catch (RuntimeException | FieldValueProviderException var13) {
                 String message = "Failed to resolve values for item with PK: " + model.getPk() + ", by resolver: " + valueProviderId + ", for property: " + indexedProperty.getName() + ", reason: " + var13.getMessage();

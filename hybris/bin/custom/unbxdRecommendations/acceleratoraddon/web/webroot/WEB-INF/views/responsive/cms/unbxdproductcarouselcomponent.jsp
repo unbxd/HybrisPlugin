@@ -33,28 +33,6 @@
                     productIds: ['${fn:escapeXml(unbxdCatalog.id)}_${fn:escapeXml(unbxdCatalog.version)}_${product.code}']
                 };
             </script>
-            <c:choose>
-
-                <c:when test="${widgetType == 'WIDGET1'}">
-                    <div id="product_recommendations1"></div>
-                    <script type="text/javascript">
-                        widgets['widget1'] = {name: "product_recommendations1"};
-                    </script>
-                </c:when>
-                <c:when test="${widgetType == 'WIDGET2'}">
-                    <div id="product_recommendations2"></div>
-                    <script type="text/javascript">
-                        widgets['widget2'] = {name: "product_recommendations2"};
-                    </script>
-                </c:when>
-                <c:when test="${widgetType == 'WIDGET3'}">
-                    <div id="product_recommendations3"></div>
-                    <script type="text/javascript">
-                        widgets['widget3'] = {name: "product_recommendations3"};
-                    </script>
-                </c:when>
-            </c:choose>
-
         </c:when>
 
         <c:when test="${UnbxdPageType == 'CATEGORY' && pageType == 'CATEGORY'}">
@@ -82,26 +60,6 @@
                 }
 
             </script>
-            <c:choose>
-                <c:when test="${widgetType == 'WIDGET1'}">
-                    <div id="category_recommendations1"></div>
-                    <script type="text/javascript">
-                        widgets['widget1'] = {name: "category_recommendations1"};
-                    </script>
-                </c:when>
-                <c:when test="${widgetType == 'WIDGET2'}">
-                    <div id="category_recommendations2"></div>
-                    <script type="text/javascript">
-                        widgets['widget2'] = {name: "category_recommendations2"};
-                    </script>
-                </c:when>
-                <c:when test="${widgetType == 'WIDGET3'}">
-                    <div id="category_recommendations3"></div>
-                    <script type="text/javascript">
-                        widgets['widget3'] = {name: "category_recommendations3"};
-                    </script>
-                </c:when>
-            </c:choose>
         </c:when>
 
         <c:when test="${UnbxdPageType == 'HOME' && cmsPage.uid == 'homepage'}">
@@ -111,27 +69,6 @@
                     pageType: 'HOME'
                 };
             </script>
-            <c:choose>
-
-                <c:when test="${widgetType == 'WIDGET1'}">
-                    <div id="home_recommendations1"></div>
-                    <script type="text/javascript">
-                        widgets['widget1'] = {name: "home_recommendations1"};
-                    </script>
-                </c:when>
-                <c:when test="${widgetType == 'WIDGET2'}">
-                    <div id="home_recommendations2"></div>
-                    <script type="text/javascript">
-                        widgets['widget2'] = {name: "home_recommendations2"};
-                    </script>
-                </c:when>
-                <c:when test="${widgetType == 'WIDGET3'}">
-                    <div id="home_recommendations3"></div>
-                    <script type="text/javascript">
-                        widgets['widget3'] = {name: "home_recommendations3"};
-                    </script>
-                </c:when>
-            </c:choose>
         </c:when>
 
         <c:when test="${UnbxdPageType == 'CART' && pageType == 'CART'}">
@@ -148,27 +85,40 @@
                     productIds: productcodes
                 };
             </script>
-            <c:choose>
+        </c:when>
+    </c:choose>
+    
+    	<c:choose>
+
                 <c:when test="${widgetType == 'WIDGET1'}">
-                    <div id="cart_recommendations1"></div>
+                    <div id="unbxd_recommendations1"></div>
                     <script type="text/javascript">
-                        widgets['widget1'] = {name: "cart_recommendations1"};
+                        widgets['widget1'] = {name: "unbxd_recommendations1"};
                     </script>
                 </c:when>
                 <c:when test="${widgetType == 'WIDGET2'}">
-                    <div id="cart_recommendations2"></div>
+                    <div id="unbxd_recommendations2"></div>
                     <script type="text/javascript">
-                        widgets['widget2'] = {name: "cart_recommendations2"};
+                        widgets['widget2'] = {name: "unbxd_recommendations2"};
                     </script>
                 </c:when>
                 <c:when test="${widgetType == 'WIDGET3'}">
-                    <div id="cart_recommendations3"></div>
+                    <div id="unbxd_recommendations3"></div>
                     <script type="text/javascript">
-                        widgets['widget3'] = {name: "cart_recommendations3"};
+                        widgets['widget3'] = {name: "unbxd_recommendations3"};
+                    </script>
+                </c:when>
+                <c:when test="${widgetType == 'ALLWIDGETS'}">
+                    <div id="unbxd_recommendations1"></div>
+                    <div id="unbxd_recommendations2"></div>
+                    <div id="unbxd_recommendations3"></div>
+                    <script type="text/javascript">
+                        widgets['widget1'] = {name: "unbxd_recommendations1"};
+                        widgets['widget2'] = {name: "unbxd_recommendations2"};
+						widgets['widget3'] = {name: "unbxd_recommendations3"};
+
                     </script>
                 </c:when>
             </c:choose>
-        </c:when>
-    </c:choose>
 
 </c:if>

@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
- [y] hybris Platform
-
- Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
-
- This software is the confidential and proprietary information of SAP
- ("Confidential Information"). You shall not disclose such Confidential
- Information and shall use it only in accordance with the terms of the
- license agreement you entered into with SAP.
--->
+<!-- [y] hybris Platform Copyright (c) 2017 SAP SE or an SAP affiliate company. 
+	All rights reserved. This software is the confidential and proprietary information 
+	of SAP ("Confidential Information"). You shall not disclose such Confidential 
+	Information and shall use it only in accordance with the terms of the license 
+	agreement you entered into with SAP. -->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
@@ -17,160 +12,308 @@
            http://www.springframework.org/schema/aop
            http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-	<!--
-	The hybris platform provides one single Spring application context for beans located at the jalo layer.
-	Each extension can add beans to this context by specifying them at this configuration file.
-	 
-	You can use and/or redefine beans defined at configuration files of other extensions as well as
-	adding new one.
-		
-	If you want to locate this file at a different location or want to use several files for better,
-	structuring, please use the '<yourextension>.application-context' property at your project.properties file.
-	There you can specify a comma separated list of files where first is tried to find a file per classpath and
-	then per file system.
+	<!-- The hybris platform provides one single Spring application context 
+		for beans located at the jalo layer. Each extension can add beans to this 
+		context by specifying them at this configuration file. You can use and/or 
+		redefine beans defined at configuration files of other extensions as well 
+		as adding new one. If you want to locate this file at a different location 
+		or want to use several files for better, structuring, please use the '<yourextension>.application-context' 
+		property at your project.properties file. There you can specify a comma separated 
+		list of files where first is tried to find a file per classpath and then 
+		per file system. If you want to configure beans for your web module please 
+		have a look at your web/webroot/WEB-INF/<extname>-web-spring.xml. -->
 
-	
-	If you want to configure beans for your web module please have a look at
-	your web/webroot/WEB-INF/<extname>-web-spring.xml.
-	-->
-	
-	<!--  Example how to override a manager -->
-	<!--
-	<bean id="core.productManager"   class="com.unbxd.jalo.UnbxdProductManager" 	init-method="init"	destroy-method="destroy" />
-	-->
-	
-	
- 	<!--  Example how to configure the class to use for jalo session creation -->
-	<!--
-	<bean id="jalosession"   class="de.hybris.platform.jalo.JaloSessionFactory">
-		<property name="targetClassName" value="com.unbxd.jalo.UnbxdJaloSession"/>
+	<!-- Example how to override a manager -->
+	<!-- <bean id="core.productManager" class="com.unbxd.jalo.UnbxdProductManager" 
+		init-method="init" destroy-method="destroy" /> -->
+
+
+	<!-- Example how to configure the class to use for jalo session creation -->
+	<!-- <bean id="jalosession" class="de.hybris.platform.jalo.JaloSessionFactory"> 
+		<property name="targetClassName" value="com.unbxd.jalo.UnbxdJaloSession"/> 
+		</bean> -->
+
+
+	<!-- Example how to override an item -->
+	<!-- <bean id="de.hybris.platform.jalo.product.Product" class="com.unbxd.jalo.UnbxdProduct" 
+		scope="prototype" /> -->
+
+	<!-- Example how to register and use an AOP aspect Also see http://static.springframework.org/spring/docs/2.5.x/reference/aop.html -->
+
+	<!-- <bean id="unbxdProfBean" class="com.unbxd.aop.UnbxdProfilingAspect"/> 
+		<aop:config proxy-target-class="true"> <aop:aspect id="unbxdProfAspect" ref="unbxdProfBean" 
+		> <aop:pointcut id="profiledMethods" expression="execution(* getModificationTime(..))" 
+		/> <aop:around pointcut-ref="profiledMethods" method="profile" /> </aop:aspect> 
+		</aop:config> -->
+
+
+	<!-- some other examples of a pointcut that matches everything: <aop:pointcut 
+		id="profiledMethods" expression="bean(de.hybris.platform.jalo.user.Customer) 
+		&amp;&amp; !execution(* getPK(..))" /> <aop:pointcut id="profiledMethods" 
+		expression="execution(* *(..))" /> -->
+
+	<bean id="unbxdSystemSetup"
+		class="com.unbxd.setup.UnbxdSystemSetup">
+		<!-- constructor arg injection example -->
+		<constructor-arg ref="unbxdService" />
 	</bean>
-	-->
 
+	<bean id="unbxdService"
+		class="com.unbxd.service.impl.DefaultUnbxdService">
+		<!-- setter injection example -->
+		<property name="modelService" ref="modelService" />
+		<property name="mediaService" ref="mediaService" />
+		<property name="flexibleSearchService"
+			ref="flexibleSearchService" />
+	</bean>
+
+	<bean id="unbxdUploadTaskService"
+		class="com.unbxd.service.impl.UnbxdUploadTaskService">
+
+	</bean>
+
+	<alias name="unbxdDefaultDocumentFactory"
+		alias="unbxdDocumentFactory" />
+	<bean id="unbxdDefaultDocumentFactory"
+		class="com.unbxd.service.impl.UnbxdDefaultDocumentFactory">
+		<property name="modelService" ref="modelService" />
+		<property name="typeService" ref="typeService" />
+		<property name="solrSearchProviderFactory"
+			ref="solrSearchProviderFactory" />
+		<property name="indexerBatchContextFactory"
+			ref="unbxdIndexerBatchContextFactory" />
+		<property name="fieldNameProvider"
+			ref="solrFieldNameProvider" />
+		<property name="rangeNameProvider" ref="rangeNameProvider" />
+		<property name="valueProviderSelectionStrategy"
+			ref="valueProviderSelectionStrategy" />
+	</bean>
+
+	<alias name="unbxdIndexer" alias="unbxdIndexer" />
+	<bean id="unbxdIndexer" class="com.unbxd.service.UnbxdIndexer">
+		<property name="unbxdDocumentFactory"
+			ref="unbxdDocumentFactory" />
+		<property name="solrSearchProviderFactory"
+			ref="solrSearchProviderFactory" />
+	</bean>
+
+	<alias name="unbxdIndexerBatchStrategy"
+		alias="unbxdIndexerBatchStrategy" />
+	<bean id="unbxdIndexerBatchStrategy"
+		class="com.unbxd.strategy.UnbxdIndexerBatchStrategy" scope="prototype">
+		<property name="indexerQueriesExecutor"
+			ref="indexerQueriesExecutor" />
+		<property name="indexerBatchContextFactory"
+			ref="unbxdIndexerBatchContextFactory" />
+		<property name="indexer" ref="unbxdIndexer" />
+	</bean>
+
+	<!--<alias name="unbxdIndexerBatchStrategyFactory" alias="indexerBatchStrategyFactory" 
+		/> <bean id="unbxdIndexerBatchStrategyFactory" class="com.unbxd.service.impl.UnbxdIndexerBatchStrategyFactory" 
+		parent="defaultIndexerBatchStrategyFactory"> <property name="unbxdIndexerBatchStrategyBeanId" 
+		value="unbxdIndexerBatchStrategy" /> <property name="defaultIndexerBatchStrategyBeanId" 
+		value="defaultIndexerBatchStrategy" /> </bean> -->
+
+	<alias alias="facetSearchConfigService"
+		name="defaultUnbxdFacetSearchConfigService" />
+	<bean id="defaultUnbxdFacetSearchConfigService"
+		class="com.unbxd.service.impl.DefaultUnbxdFacetSearchConfigService"
+		parent="defaultFacetSearchConfigService">
+	</bean>
+
+	<!-- Converters and Populators -->
+
+	<alias name="unbxdIndexedTypePopulator"
+		alias="solrIndexedTypePopulator" />
+	<bean id="unbxdIndexedTypePopulator"
+		class="com.unbxd.populator.UnbxdIndexedTypePopulator"
+		parent="defaultSolrIndexedTypePopulator" />
+
+	<bean id="unbxdIndexedPropertyPopulator"
+		class="com.unbxd.populator.UnbxdIndexedPropertyPopulator">
+	</bean>
+	<alias name="unbxdIndexedPropertyConverter"
+		alias="indexedPropertyConverter" />
+	<bean id="unbxdIndexedPropertyConverter"
+		parent="commerceIndexedPropertyConverter">
+		<property name="populators">
+			<list merge="true">
+				<ref bean="unbxdIndexedPropertyPopulator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="unbxdProductCategorySearchPagePopulator"
+		class="com.unbxd.populator.UnbxdProductCategorySearchPagePopulator">
+		<property name="commerceCategoryService"
+			ref="commerceCategoryService" />
+	</bean>
+
+	<alias name="unbxdProductCategorySearchPageConverter"
+		alias="productCategorySearchPageConverter" />
+	<bean id="unbxdProductCategorySearchPageConverter"
+		parent="defaultProductCategorySearchPageConverter">
+		<property name="populators">
+			<list merge="true">
+				<ref bean="unbxdProductCategorySearchPagePopulator" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Value Providers -->
+	<alias name="unbxdCategoryPathValueProvider"
+		alias="unbxdCategoryPathValueProvider" />
+	<bean id="unbxdCategoryPathValueProvider"
+		class="com.unbxd.search.provider.UnbxdCategoryPathValueProvider"
+		parent="abstractPropertyFieldValueProvider">
+		<property name="fieldNameProvider"
+			ref="solrFieldNameProvider" />
+		<property name="categoryService" ref="categoryService" />
+		<property name="categorySource" ref="allCategoriesSource" />
+	</bean>
+
+	<alias name="unbxdImageValueProvider"
+		alias="abstractImageValueProvider" />
+	<bean id="unbxdImageValueProvider" abstract="true"
+		class="com.unbxd.search.provider.UnbxdImageValueProvider">
+		<property name="mediaService" ref="mediaService" />
+		<property name="mediaContainerService"
+			ref="mediaContainerService" />
+		<property name="fieldNameProvider"
+			ref="solrFieldNameProvider" />
+	</bean>
+
+	<bean id="abstractUnbxdIndexerJob" parent="abstractJobPerformable"
+		abstract="true">
+		<property name="facetSearchConfigService"
+			ref="facetSearchConfigService" />
+		<property name="indexerService" ref="unbxdIndexerService" />
+		<property name="indexer" ref="indexer" />
+	</bean>
+
+	<bean id="unbxdIndexerJob" class="com.unbxd.cron.UnbxdIndexerJob"
+		parent="abstractUnbxdIndexerJob" />
+
+	<alias name="defaultUnbxdIndexerService"
+		alias="unbxdIndexerService" />
+	<bean id="defaultUnbxdIndexerService"
+		class="de.hybris.platform.solrfacetsearch.indexer.impl.DefaultIndexerService">
+		<property name="indexerStrategyFactory"
+			ref="unbxdIndexerStrategyFactory" />
+	</bean>
 	
-	<!--  Example how to override an item  -->
-	<!-- 
-	<bean id="de.hybris.platform.jalo.product.Product" class="com.unbxd.jalo.UnbxdProduct" scope="prototype" />		
- 	-->
+	<bean id="unbxdIndexerContextFactory" class="com.unbxd.service.impl.UnbxdIndexerContextFactory" parent="defaultIndexerContextFactory"/>
 
-	<!--  
-	 Example how to register and use an AOP aspect 
-     Also see http://static.springframework.org/spring/docs/2.5.x/reference/aop.html	
-     -->
+	<bean id="unbxdIndexerBatchContextFactory" class="com.unbxd.service.impl.UnbxdIndexerBatchContextFactory" parent="defaultIndexerBatchContextFactory"/>
 	
-	<!-- 
-	<bean id="unbxdProfBean" class="com.unbxd.aop.UnbxdProfilingAspect"/>
-	<aop:config proxy-target-class="true">
-  		<aop:aspect id="unbxdProfAspect" ref="unbxdProfBean" >
-    	  <aop:pointcut id="profiledMethods" 
-	      	expression="execution(* getModificationTime(..))" />  	            
-	   		<aop:around pointcut-ref="profiledMethods" method="profile" />
-  		</aop:aspect>
-	</aop:config>
-	 -->
+	<alias name="defaultUnbxdIndexerStrategyFactory"
+		alias="unbxdIndexerStrategyFactory" />
+	<bean id="defaultUnbxdIndexerStrategyFactory"
+		class="de.hybris.platform.solrfacetsearch.indexer.strategies.impl.DefaultIndexerStrategyFactory">
+		<property name="indexerStrategyBeanId"
+			value="unbxdIndexerStrategy" />
+		<property name="distributedIndexerStrategyBeanId"
+			value="distributedIndexerStrategy" />
+	</bean>
 
+	<alias name="defaultUnbxdIndexerStrategy"
+		alias="unbxdIndexerStrategy" />
+	<bean id="defaultUnbxdIndexerStrategy"
+		class="com.unbxd.service.impl.UnbxdIndexerStrategy"
+		scope="prototype" parent="abstractIndexerStrategy">
+		<property name="indexerWorkerFactory"
+			ref="unbxdIndexerWorkerFactory" />
+		<property name="indexerContextFactory" ref="unbxdIndexerContextFactory"></property>
+	</bean>
+
+	<alias name="defaultUnbxdIndexerWorkerFactory"
+		alias="unbxdIndexerWorkerFactory" />
+	<bean id="defaultUnbxdIndexerWorkerFactory"
+		class="de.hybris.platform.solrfacetsearch.indexer.workers.impl.DefaultIndexerWorkerFactory">
+		<property name="workerBeanId" value="unbxdIndexerWorker" />
+	</bean>
+
+	<alias name="defaultUnbxdIndexerWorker"
+		alias="unbxdIndexerWorker" />
+	<bean id="defaultUnbxdIndexerWorker"
+		class="de.hybris.platform.solrfacetsearch.indexer.workers.impl.DefaultIndexerWorker"
+		scope="prototype">
+		<property name="sessionService" ref="sessionService" />
+		<property name="userService" ref="userService" />
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="facetSearchConfigService"
+			ref="facetSearchConfigService" />
+		<property name="indexerBatchStrategyFactory"
+			ref="unbxdIndexerBatchStrategyFactory2" />
+		<property name="solrSearchProviderFactory"
+			ref="solrSearchProviderFactory" />
+	</bean>
+
+	<alias name="defaultUnbxdIndexerBatchStrategyFactory2"
+		alias="unbxdIndexerBatchStrategyFactory2" />
+	<bean id="defaultUnbxdIndexerBatchStrategyFactory2"
+		class="de.hybris.platform.solrfacetsearch.indexer.strategies.impl.DefaultIndexerBatchStrategyFactory">
+		<property name="indexerBatchStrategyBeanId"
+			value="unbxdIndexerBatchStrategy" />
+	</bean>
+
+	<bean id="unbxdSiteConfigDao"
+		class="com.unbxd.dao.impl.UnbxdSiteConfigDaoImpl">
+		<constructor-arg value="UnbxdSiteConfig" />
+	</bean>
+
+	<bean id="unbxdHelperFunction"
+		class="com.unbxd.helper.UnbxdHelperFunction">
+	</bean>
+
+	<bean id="unbxdSiteConfigAttributeHandler"
+		class="com.unbxd.dynamic.UnbxdSiteConfigAttributeHandler" />
+
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="solrFacetSearchConfigConverter" />
+		<property name="add"
+			ref="unbxdSolrFacetSearchConfigPopulator" />
+	</bean>
+
+
+	<alias name="defaultUnbxdSolrFacetSearchConfigPopulator"
+		alias="unbxdSolrFacetSearchConfigPopulator" />
+	<bean id="defaultUnbxdSolrFacetSearchConfigPopulator"
+		class="com.unbxd.populator.DefaultUnbxdSolrFacetSearchConfigPopulator" />
+	<bean id="unbxdIndexerJobListAttribute"
+		class="com.unbxd.dynamic.UnbxdIndexerJobListAttribute" />
+		
+	<alias name="defaultUnbxdConfigConverter" alias="unbxdConfigConverter" />
+	<bean id="defaultUnbxdConfigConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.unbxd.web.UnbxdConfig" />
+		<property name="populators">
+			<list>
+				<ref bean="unbxdConfigPopulator" />
+			</list>
+		</property>
+	</bean>
 	
-	<!-- some other examples of a pointcut that matches everything:
-
-    	  <aop:pointcut id="profiledMethods" 
-	      	expression="bean(de.hybris.platform.jalo.user.Customer) &amp;&amp; 
-	      	            !execution(* getPK(..))" />  	            
-	       <aop:pointcut id="profiledMethods" expression="execution(* *(..))" />	
-	  -->
+	<bean id="unbxdConfigPopulator" class="com.unbxd.populator.UnbxdConfigPopulator">
+	</bean>
 	
-    <bean id="unbxdSystemSetup" class="com.unbxd.setup.UnbxdSystemSetup">
-        <!-- constructor arg injection example -->
-        <constructor-arg ref="unbxdService"/>
-    </bean>
+	
+	<bean id="unbxdSiteConfigPrepareInterceptor"
+		class="com.unbxd.interceptor.UnbxdSiteConfigPrepareInterceptor">
+	</bean>
 
-    <bean id="unbxdService" class="com.unbxd.service.impl.DefaultUnbxdService">
-        <!-- setter injection example -->
-        <property name="modelService" ref="modelService"/>
-        <property name="mediaService" ref="mediaService"/>
-        <property name="flexibleSearchService" ref="flexibleSearchService"/>
-    </bean>
+	<bean id="unbxdSiteConfigPrepareInterceptorMapping"
+		class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor"
+			ref="unbxdSiteConfigPrepareInterceptor" />
+		<property name="typeCode" value="UnbxdSiteConfig" />
+	</bean>
+	
+	<bean id="cacheClearEventListener" class="com.unbxd.event.listener.CacheClearEventListener">
+		<property name="tenantService" ref="tenantService" />
+		<property name="clusterService" ref="clusterService" />
+	</bean>
+	
 
-    <bean id="catalogSyncService" class="com.unbxd.service.impl.CatalogSyncService">
 
-    </bean>
-
-    <alias name="unbxdDefaultDocumentFactory" alias="unbxdDocumentFactory" />
-    <bean id="unbxdDefaultDocumentFactory" class="com.unbxd.service.impl.UnbxdDefaultDocumentFactory">
-        <property name="modelService" ref="modelService" />
-        <property name="typeService" ref="typeService" />
-        <property name="solrSearchProviderFactory" ref="solrSearchProviderFactory" />
-        <property name="indexerBatchContextFactory" ref="indexerBatchContextFactory" />
-        <property name="fieldNameProvider" ref="solrFieldNameProvider" />
-        <property name="rangeNameProvider" ref="rangeNameProvider" />
-        <property name="valueProviderSelectionStrategy" ref="valueProviderSelectionStrategy" />
-    </bean>
-
-    <alias name="unbxdIndexer" alias="unbxdIndexer" />
-    <bean id="unbxdIndexer" class="com.unbxd.service.UnbxdIndexer">
-        <property name="unbxdDocumentFactory" ref="unbxdDocumentFactory" />
-        <property name="solrSearchProviderFactory" ref="solrSearchProviderFactory" />
-    </bean>
-
-    <alias name="unbxdIndexerBatchStrategy" alias="indexerBatchStrategy" />
-    <bean id="unbxdIndexerBatchStrategy" class="com.unbxd.strategy.UnbxdIndexerBatchStrategy"
-          scope="prototype">
-        <property name="indexerQueriesExecutor" ref="indexerQueriesExecutor" />
-        <property name="indexerBatchContextFactory" ref="indexerBatchContextFactory" />
-        <property name="indexer" ref="unbxdIndexer" />
-    </bean>
-
-    <alias name="unbxdIndexerBatchStrategyFactory" alias="indexerBatchStrategyFactory" />
-    <bean id="unbxdIndexerBatchStrategyFactory" class="com.unbxd.service.impl.UnbxdIndexerBatchStrategyFactory" parent="defaultIndexerBatchStrategyFactory">
-        <property name="unbxdIndexerBatchStrategyBeanId" value="unbxdIndexerBatchStrategy" />
-        <property name="defaultIndexerBatchStrategyBeanId" value="defaultIndexerBatchStrategy" />
-    </bean>
-
-    <alias alias="facetSearchConfigService" name="defaultUnbxdFacetSearchConfigService" />
-    <bean id="defaultUnbxdFacetSearchConfigService" class="com.unbxd.service.impl.DefaultUnbxdFacetSearchConfigService" parent="defaultFacetSearchConfigService">
-    </bean>
-
-    <!-- Converters and Populators -->
-
-    <alias name="unbxdIndexedTypePopulator" alias="solrIndexedTypePopulator"/>
-    <bean id="unbxdIndexedTypePopulator" class="com.unbxd.populator.UnbxdIndexedTypePopulator" parent="defaultSolrIndexedTypePopulator" />
-
-    <bean id="unbxdIndexedPropertyPopulator" class="com.unbxd.populator.UnbxdIndexedPropertyPopulator">
-    </bean>
-    <alias name="unbxdIndexedPropertyConverter" alias="indexedPropertyConverter" />
-    <bean id="unbxdIndexedPropertyConverter" parent="commerceIndexedPropertyConverter">
-        <property name="populators">
-            <list merge="true">
-                <ref bean="unbxdIndexedPropertyPopulator" />
-            </list>
-        </property>
-    </bean>
-
-    <bean id="unbxdProductCategorySearchPagePopulator" class="com.unbxd.populator.UnbxdProductCategorySearchPagePopulator">
-        <property name="commerceCategoryService" ref="commerceCategoryService"/>
-    </bean>
-
-    <alias name="unbxdProductCategorySearchPageConverter" alias="productCategorySearchPageConverter"/>
-    <bean id="unbxdProductCategorySearchPageConverter" parent="defaultProductCategorySearchPageConverter">
-        <property name="populators">
-            <list merge="true">
-                <ref bean="unbxdProductCategorySearchPagePopulator" />
-            </list>
-        </property>
-    </bean>
-
-    <!-- Value Providers -->
-    <alias name="unbxdCategoryPathValueProvider" alias="unbxdCategoryPathValueProvider"/>
-    <bean id="unbxdCategoryPathValueProvider" class="com.unbxd.search.provider.UnbxdCategoryPathValueProvider"
-          parent="abstractPropertyFieldValueProvider">
-        <property name="fieldNameProvider" ref="solrFieldNameProvider" />
-        <property name="categoryService" ref="categoryService" />
-        <property name="categorySource" ref="allCategoriesSource" />
-    </bean>
-
-    <alias name="unbxdImageValueProvider" alias="abstractImageValueProvider"/>
-    <bean id="unbxdImageValueProvider" abstract="true" class="com.unbxd.search.provider.UnbxdImageValueProvider">
-        <property name="mediaService" ref="mediaService" />
-        <property name="mediaContainerService" ref="mediaContainerService" />
-        <property name="fieldNameProvider" ref="solrFieldNameProvider" />
-    </bean>
 </beans>

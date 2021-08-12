@@ -5,10 +5,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 public class FeedResponse {
+	
+	
+	private Logger Log = Logger.getLogger(FeedResponse.class);
 
     private int _statusCode;
-    private Integer _status;
+    private String _status;
     private String _message;
     private String _uploadID;
     private String _fileName;
@@ -19,12 +24,17 @@ public class FeedResponse {
     private int _colNum;
 
     public FeedResponse(Map<String, Object> response){
-        _statusCode = (Integer) response.get("statusCode");
-        _status = (Integer) response.get("status");
+        _statusCode = (int) response.get("statusCode");
+        _status = (String) response.get("status");
         _message = (String) response.get("message");
         _uploadID = (String) response.get("uploadId");
         _fileName = (String) response.get("fileName");
-        _timestamp = new Date((Long)response.get("timeStamp"));
+        try {
+        _timestamp = new Date(Long.parseLong(response.get("timeStamp").toString()));
+        } catch (Exception e) {
+        	Log.error("Failed to convert timestamp"+response.get("timeStamp"),e);
+        }
+
         if(response.containsKey("unknownSchemaFields")) {
             _unknownSchemaFields = (List<String>) response.get("unknownSchemaFields");
         }
@@ -36,18 +46,22 @@ public class FeedResponse {
             }
         }
 
+        try {
         if(response.get("rowNum") != null)
             this._rowNum = Integer.parseInt((String) response.get("rowNum"));
 
         if(response.get("colNum") != null)
             this._colNum = Integer.parseInt((String) response.get("colNum"));
+        }catch(Exception e) {
+        	Log.error("Failed to convert rowNum/colNum"+response.get("rowNum")+response.get("colNum"),e);
+        }
     }
 
     public int getStatusCode(){
         return _statusCode;
     }
 
-    public Integer getStatus(){
+    public String getStatus(){
         return _status;
     }
 

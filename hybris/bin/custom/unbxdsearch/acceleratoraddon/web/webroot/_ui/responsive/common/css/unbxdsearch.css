@@ -1,0 +1,3 @@
+  .UNX-sale-price:before,.UNX-strike-price:before {
+      content: '$';
+  }

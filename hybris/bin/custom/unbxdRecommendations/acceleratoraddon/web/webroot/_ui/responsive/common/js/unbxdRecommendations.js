@@ -1,4 +1,4 @@
-if (unbxdSiteKey && unbxdApiKey) {
+if ("unbxdSiteKey" in window && "unbxdApiKey" in window) {
 
     var UnbxdRecommendationJSUrl = 'https://d3m8huu8gvuyn3.cloudfront.net/rex_template_content/unbxd_rex_template_sdk.js';
 

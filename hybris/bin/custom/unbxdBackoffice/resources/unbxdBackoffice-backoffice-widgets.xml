@@ -13,11 +13,11 @@
 	xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/widgets.xsd">
 
     <widget-extension widgetId="backofficeMainSlot">
-        <widget id="unbxdBackoffice-perspective" widgetDefinitionId="com.unbxd.backoffice.widgets.unbxdBackofficewidget"
+       <!--   <widget id="unbxdBackoffice-perspective" widgetDefinitionId="com.unbxd.backoffice.widgets.unbxdBackofficewidget"
             template="false" slotId="perspectives" title="Hello unbxdBackoffice">
             <setting key="perspectiveImageUrl" value="/cng/images/perspective.png"
                 type="String" />
-        </widget>
+        </widget>-->
         <widget id="unbxdSynchronizationPopup" widgetDefinitionId="com.unbxd.backoffice.widgets.syncpopup" slotId="cockpitWidgetChildrenInvisible" template="true">
             <instance-settings socketEventRoutingMode="LAST_USED">
                 <create onInit="false" reuseExisting="true">
@@ -51,7 +51,31 @@
                 <virtual-sockets/>
             </widget>
         </widget>
+        
+        <widget id="unbxdIndexerTypeWidget"
+			widgetDefinitionId="com.unbxd.backoffice.widgets.indexerType"
+			slotId="cockpitWidgetChildrenInvisible" template="true" title="indexer.type.title">
+			<instance-settings socketEventRoutingMode="LAST_USED">
+				<create onInit="false" reuseExisting="true">
+					<all-incoming-events />
+				</create>
+				<close>
+					<all-outgoing-events />
+				</close>
+				<select onInit="false">
+					<all-incoming-events />
+				</select>
+			</instance-settings>
+			<setting key="__externalLocationPath" type="String">extension://unbxdbackoffice
+			</setting>
+			<setting key="widgetStyleAttribute" type="String"></setting>
+			<setting key="_width" type="String">640px</setting>
+			<setting key="_height" type="String">400px</setting>
+			<virtual-sockets />
+		</widget>
     </widget-extension>
-    <widget-connection sourceWidgetId="STUB_com.unbxd.backoffice.widgets.actions.sync" outputId="currentObjects" targetWidgetId="unbxdSynchronizationPopup" inputId="inputObjects"/>
-    <widget-connection sourceWidgetId="unbxdSynchronizationPopup" outputId="startedSyncCronJob" targetWidgetId="processes" inputId="updateCronJob"/>
+    
+    <widget-connection sourceWidgetId="STUB_com.unbxd.backoffice.widgets.actions.site.indexer" outputId="unbxdIndexerTypeContext" targetWidgetId="unbxdIndexerTypeWidget" inputId="unbxdSiteConfigInput"/>
+   <!--  <widget-connection sourceWidgetId="STUB_com.unbxd.backoffice.widgets.actions.sync" outputId="currentObjects" targetWidgetId="unbxdSynchronizationPopup" inputId="inputObjects"/>
+    <widget-connection sourceWidgetId="unbxdSynchronizationPopup" outputId="startedSyncCronJob" targetWidgetId="processes" inputId="updateCronJob"/> -->
 </widgets>

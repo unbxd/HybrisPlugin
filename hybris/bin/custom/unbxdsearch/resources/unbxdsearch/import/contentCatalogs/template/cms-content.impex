@@ -1,0 +1,68 @@
+# -----------------------------------------------------------------------
+# [y] hybris Platform
+#
+# Copyright (c) 2018 SAP SE or an SAP affiliate company.  All rights reserved.
+#
+# This software is the confidential and proprietary information of SAP
+# ("Confidential Information"). You shall not disclose such Confidential
+# Information and shall use it only in accordance with the terms of the
+# license agreement you entered into with SAP.
+# -----------------------------------------------------------------------
+######
+## PARAMETERS REQUIRED FOR THIS SCRIPT
+##
+##   * contentCatalog   - content catalog id
+##   * addonExtensionName - extension name of the ui addon
+#######
+
+$contentCatalog=apparel-ukContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+INSERT_UPDATE UnbxdWebRestriction;$contentCV[unique=true];uid[unique=true];name;checkUnbxdComponent(code)
+;;UnbxdWebRestriction;Enables the component only when unbxd components are configured correctly
+;;UnbxdSearchRestriction;Enables the component only when unbxd search component are configured correctly;SEARCH
+;;UnbxdCategoryRestriction;Enables the component only when unbxd category component are configured correctly;CATEGORY
+
+INSERT_UPDATE CMSInverseRestriction;$contentCV[unique=true];name;originalRestriction(uid,$contentCV);uid[unique=true];
+;;Inverse Unbxd Web Restriction;UnbxdWebRestriction;InverseUnbxdWebRestriction
+;;Inverse Unbxd SEARCH Web Restriction;UnbxdSearchRestriction;InverseUnbxdSearchRestriction
+;;Inverse Unbxd CATEGORY Web Restriction;UnbxdCategoryRestriction;InverseUnbxdCategoryRestriction
+
+
+INSERT_UPDATE UnbxdWebConfigComponent;$contentCV[unique=true];uid[unique=true];name;restrictions(uid,$contentCV)
+;;UnbxdWebConfigComponent;Unbxd Web Component;UnbxdWebRestriction
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];active;cmsComponents(uid,$contentCV)[mode=append]
+;;PlaceholderContentSlot;true;UnbxdWebConfigComponent
+
+
+$addonExtensionName=unbxdsearch
+
+$contentCatalog=apparel-ukContentCatalog 
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;restrictions(uid,$contentCV)
+;;UnbxdSearchCustomComponent;Unbxd Customer Container Component;UnbxdSearchRestriction
+;;UnbxdCategoryCustomComponent;Unbxd Customer Container Component;UnbxdCategoryRestriction
+
+
+INSERT_UPDATE SearchResultsListComponent;$contentCV[unique=true];uid[unique=true];restrictions(uid,$contentCV)
+;;SearchResultsList;InverseUnbxdSearchRestriction
+
+INSERT_UPDATE SearchResultsGridComponent;$contentCV[unique=true];uid[unique=true];restrictions(uid,$contentCV)
+;;SearchResultsGrid;InverseUnbxdSearchRestriction
+
+
+#### SearchResultListPage
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(uid,$contentCV)
+;;SearchResultsListSlot;SearchResultsList,UnbxdSearchCustomComponent;;;
+
+#### SearchResultGridPage
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(uid,$contentCV);;;
+;;SearchResultsGridSlot;SearchResultsGrid,UnbxdSearchCustomComponent;;;
+
+# disable autosuggest
+
+update SearchBoxComponent;uid[unique=true];$contentCV[unique=true];displaySuggestions;displayProducts
+;SearchBox;;false;false;
